@@ -3,7 +3,7 @@ MOD3.MeshThree=function()
 {
 };
 MOD3.MeshThree.prototype=new MOD3.MeshProxy();
-MOD3.MeshProxy.prototype.setMesh=function(mesh)
+MOD3.MeshThree.prototype.setMesh=function(mesh)
 {
 	this.mesh = mesh;
 	
@@ -37,7 +37,7 @@ MOD3.MeshProxy.prototype.setMesh=function(mesh)
 		this.faces.push(nt);
 	}
 };
-MOD3.MeshProxy.prototype.updateMeshPosition=function(p)
+MOD3.MeshThree.prototype.updateMeshPosition=function(p)
 {
 	this.mesh.position.x += p.x;
 	this.mesh.position.y += p.y;
