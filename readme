@@ -1,0 +1,23 @@
+MOD3 As3Mod 3D Modifier Library port for Javascript and Three.js
+
+This is a port of the AS3Mod Modifier Library for Actionscript 3 to Javascript.
+i have named MOD3 (to signify that it has support for THREE.js )
+
+It is a complete port (up to limitations between the 2 frameworks)  and only needs adding more modifiers
+For now it contains only 2 Modifiers: Bend and Pivot
+However the structure is ready for More Modifiers to be added
+Not all Modifiers of AS3Mod can be ported but most can.
+It has support for Three.js for now but it is easy to add support for other 3D javascript libraries as well
+
+Examples (with bend modifier) included
+
+Complete source code and minified version
+
+build with build2.py if having problems with encoding
+build.py is customized to work with my windows codepage so check between build.py and build2.py which has no encoding hard-coded
+
+
+*Author* Nikos M.
+*URL* http://nikos-web-development.netai.net/
+
+
