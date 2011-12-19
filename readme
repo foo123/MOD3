@@ -10,6 +10,7 @@ Not all Modifiers of AS3Mod can be ported but most can.
 It has support for Three.js for now but it is easy to add support for other 3D javascript libraries as well
 
 Examples (with bend modifier) included
+Examples include 3D Flip Book with Three.js, MOD3.js (bend and pivot) and Tween.js
 
 Complete source code and minified version
 
