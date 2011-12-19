@@ -13,8 +13,6 @@ MOD3.VertexProxy=function(v)
 	if (typeof v != 'undefined')
 		this.vertex=v;
 };		
-//MOD3.VertexProxy.prototype=new THREE.Vertex();
-//MOD3.VertexProxy.prototype.constructor=MOD3.VertexProxy;
 MOD3.VertexProxy.prototype.setVertex=function(vertex)
 {
 };

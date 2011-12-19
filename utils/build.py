@@ -14,6 +14,8 @@ import sys
 COMMON_FILES = [
 'MOD3.js',
 'util/ModConstant.js',
+'util/XMath.js',
+'util/Range.js',
 'core/Point.js',
 'core/Matrix.js',
 'core/Vector3.js',
@@ -27,49 +29,68 @@ COMMON_FILES = [
 'ModifierStack.js',
 'modifiers/Pivot.js',
 'modifiers/Bend.js',
+'modifiers/Bloat.js',
+'modifiers/Twist.js',
+'modifiers/Skew.js',
+'modifiers/Taper.js',
+'modifiers/Wheel.js',
+'modifiers/Break.js',
+'modifiers/Noise.js',
 'plugins/Three/LibraryThree.js',
 'plugins/Three/VertexThree.js',
 'plugins/Three/MeshThree.js',
 ]
 
-def merge(files):
+def merge(files,enc):
 
 	buffer = []
 
 	for filename in files:
-		with open(os.path.join('..', 'src', filename), 'r',encoding="cp737") as f:
-			buffer.append(f.read())
+		if enc:
+			with open(os.path.join('..', 'src', filename), 'r',encoding="cp737") as f:
+				buffer.append(f.read())
+		else:
+			with open(os.path.join('..', 'src', filename), 'r') as f:
+				buffer.append(f.read())
 
 	return "".join(buffer)
 
 
-def output(text, filename):
+def output(text, filename, enc):
 
-	with open(os.path.join('..', 'build', filename), 'w',encoding="cp737") as f:
-		f.write(text)
+	if enc:
+		with open(os.path.join('..', 'build', filename), 'w',encoding="cp737") as f:
+			f.write(text)
+	else:
+		with open(os.path.join('..', 'build', filename), 'w') as f:
+			f.write(text)
 
 
-def compress(text):
+def compress(text,enc):
 
 	in_tuple = tempfile.mkstemp()
-	with os.fdopen(in_tuple[0], 'w',encoding="cp737") as handle:
-		handle.write(text)
-
+	if enc:
+		with os.fdopen(in_tuple[0], 'w',encoding="cp737") as handle:
+			handle.write(text)
+	else:
+		with os.fdopen(in_tuple[0], 'w') as handle:
+			handle.write(text)
+	
 	out_tuple = tempfile.mkstemp()
 
 	os.system("java -jar compiler/compiler.jar --language_in=ECMASCRIPT5_STRICT --js %s --js_output_file %s" % (in_tuple[1], out_tuple[1]))
 
-	with os.fdopen(out_tuple[0], 'r') as handle:
-		compressed = handle.read()
+	if enc:
+		with os.fdopen(out_tuple[0], 'r',encoding="cp737") as handle:
+			compressed = handle.read()
+	else:
+		with os.fdopen(out_tuple[0], 'r') as handle:
+			compressed = handle.read()
 
 	os.unlink(in_tuple[1])
 	os.unlink(out_tuple[1])
 
 	return compressed
-
-
-#def addHeader(text, endFilename):
-#	return ("/** http://github.com/foo123/MOD3.js\n\n** port by Nikos M.\n** http://nikos-web-development-netai.net/\n**/"  + text
 
 
 def makeDebug(text):
@@ -84,9 +105,9 @@ def makeDebug(text):
 	return text
 
 
-def buildLib(files, debug, minified, filename):
+def buildLib(files, debug, minified, enc, filename):
 
-	text = merge(files)
+	text = merge(files,enc)
 
 	if debug:
 		text = makeDebug(text)
@@ -101,17 +122,9 @@ def buildLib(files, debug, minified, filename):
 	print ("=" * 40)
 
 	if minified:
-		text = compress(text)
+		text = compress(text,enc)
 
-	output("/** http://github.com/foo123/MOD3\n**\n** AS3Mod port to javascript by Nikos M.\n** http://nikos-web-development-netai.net/\n**/\n"+text, folder + filename)
-
-
-def buildIncludes(files, filename):
-
-	template = '\t\t<script type="text/javascript" src="../src/%s"></script>'
-	text = "\n".join(template % f for f in files)
-
-	output(text, filename + '.js')
+	output("/** http://github.com/foo123/MOD3\n**\n** AS3Mod port to javascript by Nikos M.\n** http://nikos-web-development-netai.net/\n**/\n"+text, folder + filename,enc)
 
 
 def parse_args():
@@ -122,6 +135,7 @@ def parse_args():
 		parser.add_argument('--debug', help='Generate debug versions', action='store_const', const=True, default=False)
 		parser.add_argument('--minified', help='Generate minified versions', action='store_const', const=True, default=False)
 		parser.add_argument('--all', help='Build all MOD3.js', action='store_true')
+		parser.add_argument('--enc', help='Build all MOD3.js', action='store_true')
 
 		args = parser.parse_args()
 
@@ -131,6 +145,7 @@ def parse_args():
 		parser.add_option('--debug', dest='debug', help='Generate debug versions', action='store_const', const=True, default=False)
 		parser.add_option('--minified', help='Generate minified versions', action='store_const', const=True, default=False)
 		parser.add_option('--all', dest='all', help='Build all MOD3.js', action='store_true')
+		parser.add_option('--enc', dest='all', help='Build all MOD3.js', action='store_true')
 
 		args, remainder = parser.parse_args()
 
@@ -147,16 +162,15 @@ def main(argv=None):
 	args = parse_args()
 	debug = args.debug
 	minified = args.minified
+	enc = args.enc
 
 	config = [
-	['MOD3', 'build', COMMON_FILES, args.all],
+	['MOD3', 'all', COMMON_FILES, args.all],
 	]
 
 	for fname_lib, fname_inc, files, enabled in config:
 		if enabled or args.all:
-			buildLib(files, debug, minified, fname_lib)
-			#if args.includes:
-			#	buildIncludes(files, fname_inc)
+			buildLib(files, debug, minified, enc, fname_lib)
 
 if __name__ == "__main__":
 	main()

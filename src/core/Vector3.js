@@ -10,7 +10,7 @@ MOD3.Vector3=function(x, y, z)
 	this.z = z;
 };
 // static
-MOD3.Vector3.ZERO=new MOD3.Vector3(0,0,0);
+MOD3.Vector3.ZERO=function(){return new MOD3.Vector3(0,0,0);};
 MOD3.Vector3.prototype.clone=function()
 {
 	return new MOD3.Vector3(this.x, this.y, this.z);

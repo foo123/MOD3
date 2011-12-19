@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Bend demo and three.js</title>
+<title>Noise demo and three.js</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<style>
@@ -21,7 +21,7 @@
 			var container;
 			var camera, scene, renderer, projector;
 
-			var cube,geometry,vertices;
+			var cube;
 
 			var targetRotationY = 0;
 			var targetRotationOnMouseDownY = 0;
@@ -33,7 +33,7 @@
 			var mouseXOnMouseDown = 0;
 			var mouseY = 0;
 			var mouseYOnMouseDown = 0;
-			var mstack,bend;
+			var mstack,mod;
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
 			var w,h,w2,h2;
@@ -70,8 +70,6 @@
 				}
 				cube =new THREE.Mesh( new THREE.CubeGeometry( 400, 400, 1, 20, 20, 20, materials ), new THREE.MeshFaceMaterial() );
 				scene.add( cube );
-				geometry=cube.geometry;
-				vertices=geometry.vertices;
 				renderer = new THREE.CanvasRenderer();
 				renderer.setSize( w, h );
 
@@ -80,17 +78,12 @@
 				container.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				
 				mstack=new MOD3.ModifierStack(new MOD3.LibraryThree(),cube);
-				bend=new MOD3.Bend();
-				bend.setAngle(0);
-				bend.force=0;
-				bend.offset=0.5;
-				bend.switchAxes=true;
-				bend.constraint=MOD3.ModConstant.LEFT;
-				mstack.addModifier(bend);
-				var tobj={angle:Math.PI/4,force:1.2};
-				new TWEEN.Tween(tobj).to({force:-1.2},5000).onUpdate(function(){
-								bend.setAngle(this.angle);
-								bend.force=this.force;
+				mod=new MOD3.Noise(20);
+				mod.constraintAxes(MOD3.ModConstant.X|MOD3.ModConstant.Y);
+				mstack.addModifier(mod);
+				var tobj={force:0};
+				new TWEEN.Tween(tobj).to({force:200},5000).onUpdate(function(){
+								//mod.force=this.force;
 								mstack.apply();}).start();
 			}
 			
