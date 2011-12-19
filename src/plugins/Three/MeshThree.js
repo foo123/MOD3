@@ -5,8 +5,8 @@ MOD3.MeshThree=function()
 MOD3.MeshThree.prototype=new MOD3.MeshProxy();
 MOD3.MeshThree.prototype.setMesh=function(mesh)
 {
-	this.mesh = mesh;
-	
+	//this.mesh = mesh;
+	MOD3.MeshProxy.prototype.setMesh.call(this, mesh);
 	var lookUp = [];
 	var vs = this.mesh.geometry.vertices;
 	var ts = this.mesh.geometry.faces;
@@ -36,6 +36,7 @@ MOD3.MeshThree.prototype.setMesh=function(mesh)
 		}
 		this.faces.push(nt);
 	}
+	delete lookup;
 };
 MOD3.MeshThree.prototype.updateMeshPosition=function(p)
 {

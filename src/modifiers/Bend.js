@@ -37,7 +37,7 @@ MOD3.Bend.prototype.setAngle=function(a)
 }
 MOD3.Bend.prototype.setModifiable=function(mod)
 {
-	new MOD3.Modifier().setModifiable.call(this,mod);
+	MOD3.Modifier.prototype.setModifiable.call(this,mod);
 	//this.mod=mod;
 	this.max = (this.switchAxes) ? this.mod.midAxis : this.mod.maxAxis;
 	this.min = this.mod.minAxis;

@@ -144,6 +144,9 @@ MOD3.MeshProxy.prototype.getSize=function(axis)
 MOD3.MeshProxy.prototype.setMesh=function(mesh)
 {
 	this.mesh = mesh;
+	// it seems to work correctly only by resetting the values, else previous values are kept
+	this.vertices=[];
+	this.faces=[];
 };
 MOD3.MeshProxy.prototype.postApply=function()
 {
