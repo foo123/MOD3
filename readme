@@ -13,7 +13,11 @@ Examples (with bend modifier) included
 
 Complete source code and minified version
 
-build with build2.py if having problems with encoding
+* There seems to be a problem when adding modifiers to multiple objects 
+(the modifiers for each successive object are run together with the modifiers of the previous object see Bend2-problem example), 
+i'm working on it
+
+* build with build2.py if having problems with encoding
 build.py is customized to work with my windows codepage so check between build.py and build2.py which has no encoding hard-coded
 
 
