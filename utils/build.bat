@@ -1,1 +1,1 @@
-python build.py --all --minified --enc
+python build.py --all --minified

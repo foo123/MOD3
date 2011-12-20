@@ -28,8 +28,7 @@ Complete source code and minified version
 * There seems to be a problem when adding modifiers to multiple objects [SOLVED see MeshProxy.js]
 (the modifiers for each successive object are run together with the modifiers of the previous object see Bend2-problem example), 
 
-* build if having problems with encoding remove -enc option from build.bat
-build.bat is customized to work with my windows codepage so it has the encoding hard-coded
+* build if having problems with encoding set -enc option in build.bat
 
 
 *Author* Nikos M.

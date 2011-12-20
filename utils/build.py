@@ -47,7 +47,7 @@ def merge(files,enc):
 
 	for filename in files:
 		if enc:
-			with open(os.path.join('..', 'src', filename), 'r',encoding="cp737") as f:
+			with open(os.path.join('..', 'src', filename), 'r',encoding=enc) as f:
 				buffer.append(f.read())
 		else:
 			with open(os.path.join('..', 'src', filename), 'r') as f:
@@ -59,7 +59,7 @@ def merge(files,enc):
 def output(text, filename, enc):
 
 	if enc:
-		with open(os.path.join('..', 'build', filename), 'w',encoding="cp737") as f:
+		with open(os.path.join('..', 'build', filename), 'w',encoding=enc) as f:
 			f.write(text)
 	else:
 		with open(os.path.join('..', 'build', filename), 'w') as f:
@@ -70,7 +70,7 @@ def compress(text,enc):
 
 	in_tuple = tempfile.mkstemp()
 	if enc:
-		with os.fdopen(in_tuple[0], 'w',encoding="cp737") as handle:
+		with os.fdopen(in_tuple[0], 'w',encoding=enc) as handle:
 			handle.write(text)
 	else:
 		with os.fdopen(in_tuple[0], 'w') as handle:
@@ -81,7 +81,7 @@ def compress(text,enc):
 	os.system("java -jar compiler/compiler.jar --language_in=ECMASCRIPT5_STRICT --js %s --js_output_file %s" % (in_tuple[1], out_tuple[1]))
 
 	if enc:
-		with os.fdopen(out_tuple[0], 'r',encoding="cp737") as handle:
+		with os.fdopen(out_tuple[0], 'r',encoding=enc) as handle:
 			compressed = handle.read()
 	else:
 		with os.fdopen(out_tuple[0], 'r') as handle:
@@ -105,13 +105,9 @@ def makeDebug(text):
 	return text
 
 
-def buildLib(files, debug, minified, enc, filename):
+def buildLib(files, minified, enc, filename):
 
 	text = merge(files,enc)
-
-	if debug:
-		text = makeDebug(text)
-		filename = filename + 'Debug'
 
 	folder=''
 
@@ -131,21 +127,17 @@ def parse_args():
 
 	if ap:
 		parser = argparse.ArgumentParser(description='Build and compress MOD3.js')
-		parser.add_argument('--common', help='Build MOD3.js', action='store_const', const=True)
-		parser.add_argument('--debug', help='Generate debug versions', action='store_const', const=True, default=False)
 		parser.add_argument('--minified', help='Generate minified versions', action='store_const', const=True, default=False)
 		parser.add_argument('--all', help='Build all MOD3.js', action='store_true')
-		parser.add_argument('--enc', help='Build all MOD3.js', action='store_true')
+		parser.add_argument('-enc', help='set encoding', default=False)
 
 		args = parser.parse_args()
 
 	else:
 		parser = optparse.OptionParser(description='Build and compress MOD3.js')
-		parser.add_option('--common', dest='common', help='Build MOD3.js', action='store_const', const=True)
-		parser.add_option('--debug', dest='debug', help='Generate debug versions', action='store_const', const=True, default=False)
 		parser.add_option('--minified', help='Generate minified versions', action='store_const', const=True, default=False)
 		parser.add_option('--all', dest='all', help='Build all MOD3.js', action='store_true')
-		parser.add_option('--enc', dest='all', help='Build all MOD3.js', action='store_true')
+		parser.add_option('--enc', dest='enc', help='set encoding', default=False)
 
 		args, remainder = parser.parse_args()
 
@@ -160,7 +152,6 @@ def parse_args():
 def main(argv=None):
 
 	args = parse_args()
-	debug = args.debug
 	minified = args.minified
 	enc = args.enc
 
@@ -170,7 +161,7 @@ def main(argv=None):
 
 	for fname_lib, fname_inc, files, enabled in config:
 		if enabled or args.all:
-			buildLib(files, debug, minified, enc, fname_lib)
+			buildLib(files, minified, enc, fname_lib)
 
 if __name__ == "__main__":
 	main()
