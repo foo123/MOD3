@@ -127,7 +127,7 @@ FlipBook3D.Page.prototype.flipLeft=function(pt)
 		new TWEEN.Tween(this.to).to({angle:-Math.PI, xx:1, t:1}, this.duration*1000).onUpdate(this.renderFlip).onComplete(this.flipFinished).start();
 		this.book.flippedleft++;
 		this.book.flippedright--;
-		this.position.z-=-this.zz*this.book.flippedleft;
+		this.position.z=1;
 	}
 };
 FlipBook3D.Page.prototype.flipRight=function(pt)
@@ -144,6 +144,7 @@ FlipBook3D.Page.prototype.flipRight=function(pt)
 		new TWEEN.Tween(this.to).to({angle:0, xx:1, t:1}, this.duration*1000).onUpdate(this.renderFlip).onComplete(this.flipFinished).start();
 		this.book.flippedleft--;
 		this.book.flippedright++;
+		this.position.z=1;
 	}
 };
 FlipBook3D.Page.prototype.renderFlip=function()
@@ -174,6 +175,7 @@ FlipBook3D.Page.prototype.flipFinished=function()
 		this.thiss.isFlippedLeft=true;
 		this.thiss.flippingRight=false;
 		this.thiss.isFlippedRight=false;
+		this.thiss.position.z=-this.thiss.zz*(this.thiss.book.getNumPages()-this.thiss.index);
 	}
 	else if (this.thiss.flippingRight)
 	{

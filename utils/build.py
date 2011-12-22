@@ -39,6 +39,9 @@ COMMON_FILES = [
 'plugins/Three/LibraryThree.js',
 'plugins/Three/VertexThree.js',
 'plugins/Three/MeshThree.js',
+'plugins/Pre3D/LibraryPre3D.js',
+'plugins/Pre3D/VertexPre3D.js',
+'plugins/Pre3D/MeshPre3D.js',
 ]
 
 def merge(files,enc):
