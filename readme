@@ -1,4 +1,4 @@
-MOD3 As3Mod 3D Modifier Library port for Javascript and Three.js and Pre3d
+MOD3 As3Mod 3D Modifier Library port for Javascript and Three.js, Pre3d and J3D
 
 This is a port of the AS3Mod Modifier Library for Actionscript 3 to Javascript.
 i have named MOD3 (to signify that it has support for THREE.js )
@@ -9,6 +9,7 @@ However the structure is ready for More Modifiers to be added
 
 It has support for Three.js for now but it is easy to add support for other 3D javascript libraries as well
 * added support for Pre3d with examples (my pre3d examples are a liitle blurry but you'll get the picture)
+* added support for J3D with examples
 
 Modifiers supported (up to present)
 * Pivot
