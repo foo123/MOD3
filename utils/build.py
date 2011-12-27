@@ -16,6 +16,7 @@ COMMON_FILES = [
 'util/ModConstant.js',
 'util/XMath.js',
 'util/Range.js',
+'util/Phase.js',
 'core/Point.js',
 'core/Matrix.js',
 'core/Vector3.js',
