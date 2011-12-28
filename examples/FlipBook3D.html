@@ -31,7 +31,7 @@
 			var targetRotationOnMouseDownY = 0;
 			var targetRotationX = 0;
 			var targetRotationOnMouseDownX = 0;
-			var rad=600;
+			var rad=700;
 			var mouse={x:0,y:0};
 			var mouseX = 0;
 			var mouseXOnMouseDown = 0;
@@ -70,12 +70,13 @@
 				
 				scene = new THREE.Scene();
 
-				camera = new THREE.PerspectiveCamera( 70, w / h, 1, 1000 );
+				camera = new THREE.PerspectiveCamera( 50, w / h, 1, 1000 );
 				camera.position.z = rad;
 				scene.add( camera );
 				projector = new THREE.Projector();
 				
-				renderer = new THREE.CanvasRenderer();
+				// webgl renderer gives better rendering without problems
+				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( w, h );
 
 				container.appendChild( renderer.domElement );

@@ -97,6 +97,7 @@ FlipBook3D.Page=function(book,i,matf,matb,hard,col)
 	}
 	// call super
 	THREE.Mesh.call(this, new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1, this.mats ), new THREE.MeshFaceMaterial());
+	this.overdraw=true;
 	this.position.x=this.pW*0.5;
 	this.position.z=-this.zz*this.index;
 	

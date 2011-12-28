@@ -13,7 +13,7 @@ MOD3.MeshThree.prototype.setMesh=function(mesh)
 	var vc = vs.length;
 	var tc = ts.length;
 	for (var i = 0; i < vc; i++) {
-		var nv = new MOD3.VertexThree();
+		var nv = new MOD3.VertexThree(this.mesh);
 		nv.setVertex(vs[i]);
 		this.vertices.push(nv);
 		lookUp[vs[i]] = nv;
