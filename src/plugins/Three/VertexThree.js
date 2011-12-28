@@ -18,17 +18,20 @@ MOD3.VertexThree.prototype.setX=function(v)
 {
 this.vertex.position.x=v;
 this.mesh.geometry.__dirtyVertices = true;
+this.mesh.geometry.__dirtyNormals = true;
 this.mesh.geometry.dynamic = true;
 };
 MOD3.VertexThree.prototype.setY=function(v)
 {
 this.vertex.position.y=v;
 this.mesh.geometry.__dirtyVertices = true;
+this.mesh.geometry.__dirtyNormals = true;
 this.mesh.geometry.dynamic = true;
 };
 MOD3.VertexThree.prototype.setZ=function(v)
 {
 this.vertex.position.z=v;
 this.mesh.geometry.__dirtyVertices = true;
+this.mesh.geometry.__dirtyNormals = true;
 this.mesh.geometry.dynamic = true;
 };
