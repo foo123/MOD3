@@ -46,6 +46,9 @@ COMMON_FILES = [
 'plugins/J3D/LibraryJ3D.js',
 'plugins/J3D/VertexJ3D.js',
 'plugins/J3D/MeshJ3D.js',
+'plugins/Copperlicht/LibraryCopperlicht.js',
+'plugins/Copperlicht/VertexCopperlicht.js',
+'plugins/Copperlicht/MeshCopperlicht.js'
 ]
 
 def merge(files,enc):

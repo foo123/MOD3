@@ -10,6 +10,7 @@ However the structure is ready for More Modifiers to be added
 It has support for Three.js for now but it is easy to add support for other 3D javascript libraries as well
 * added support for Pre3d with examples (my pre3d examples are a liitle blurry but you'll get the picture)
 * added support for J3D with examples
+* added support for Copperlicht with examples
 
 Modifiers supported (up to present)
 * Pivot

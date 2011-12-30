@@ -1,25 +1,28 @@
-// Mesh for J3D Class -------------------------------------------------------------------------------------------------------------------
-MOD3.MeshJ3D=function()
+// Mesh for Copperlicht Class -------------------------------------------------------------------------------------------------------------------
+MOD3.MeshCopperlicht=function()
 {
 };
-MOD3.MeshJ3D.prototype=new MOD3.MeshProxy();
-MOD3.MeshJ3D.prototype.setMesh=function(mesh)
+MOD3.MeshCopperlicht.prototype=new MOD3.MeshProxy();
+MOD3.MeshCopperlicht.prototype.setMesh=function(mesh)
 {
 	//this.mesh = mesh;
 	MOD3.MeshProxy.prototype.setMesh.call(this, mesh);
 	var lookUp = [];
-	var vs = this.mesh.geometry.vertexPositionBuffer.data;
-	var ii=this.mesh.geometry.vertexPositionBuffer.itemSize;
+	var buffers=this.mesh.getMesh().GetMeshBuffers();
+	var vs=[];
+	for (var b=0; b<buffers.length; b++)
+	{
+	vs=buffers[b].Vertices;
 	//var ts = this.mesh.geometry.faces;
 	var vc = vs.length;
 	//var tc = ts.length;
-	for (var i = 0; i < vc; i+=ii) {
-		var nv = new MOD3.VertexJ3D(this.mesh.geometry);
-		nv.setVertex(i);
+	for (var i = 0; i < vc; i++) {
+		var nv = new MOD3.VertexCopperlicht(this.mesh,buffers[b]);
+		nv.setVertex(vs[i]);
 		this.vertices.push(nv);
 		//lookUp[vs[i]] = nv;
 	}
-	
+	}
 	/*for (i = 0; i < tc; i++) {
 		var nt = new MOD3.FaceProxy();
 		if (ts[i] instanceof THREE.Face3)
@@ -40,9 +43,9 @@ MOD3.MeshJ3D.prototype.setMesh=function(mesh)
 	this.faces=null;
 	delete lookup;
 };
-MOD3.MeshJ3D.prototype.updateMeshPosition=function(p)
+MOD3.MeshCopperlicht.prototype.updateMeshPosition=function(p)
 {
-	this.mesh.position.x += p.x;
-	this.mesh.position.y += p.y;
-	this.mesh.position.z += p.z;
+	this.mesh.Pos.X += p.x;
+	this.mesh.Pos.Y += p.y;
+	this.mesh.Pos.Z += p.z;
 };
