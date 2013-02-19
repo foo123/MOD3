@@ -28,7 +28,8 @@ MOD3.Skew.prototype.apply=function()
 	for (var i = 0; i < vc; i++) {
 		var v = vs[i];
 		
-		if(this.constraint == MOD3.ModConstant.LEFT && v.getRatio(this.skewAxis) <= this.offset) continue;		if(this.constraint == MOD3.ModConstant.RIGHT && v.getRatio(this.skewAxis) > this.offset) continue;
+		if(this.constraint == MOD3.ModConstant.LEFT && v.getRatio(this.skewAxis) <= this.offset) continue;
+		if(this.constraint == MOD3.ModConstant.RIGHT && v.getRatio(this.skewAxis) > this.offset) continue;
 		
 		var r = v.getRatio(this.skewAxis) - this.offset;
 		if(this.oneSide) r = Math.abs(r);

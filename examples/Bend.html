@@ -68,7 +68,7 @@
 					var mat=new THREE.MeshBasicMaterial( { color: 0xffffff } );
 					materials.push( mat );
 				}
-				cube =new THREE.Mesh( new THREE.CubeGeometry( 400, 400, 1, 20, 20, 20, materials ), new THREE.MeshFaceMaterial() );
+				cube =new THREE.Mesh( new THREE.CubeGeometry( 400, 400, 1, 20, 20, 20 ), new THREE.MeshFaceMaterial( materials) );
 				scene.add( cube );
 				geometry=cube.geometry;
 				vertices=geometry.vertices;

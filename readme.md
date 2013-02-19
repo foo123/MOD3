@@ -36,7 +36,10 @@ Complete source code and minified version
 
 * build if having problems with encoding set -enc option in build.bat  
   
-    
+###Changelog
+* added support for latest Three.js revision (r53)
+
+
 *Contributor* Nikos M.  
 *URL* [Nikos Web Development](http://nikos-web-development.netai.net/ "Nikos Web Development")  
 *URL* [MOD3 blog post](http://nikos-web-development.netai.net/blog/mod3-a-javascript-port-of-as3mod-for-three-js/ "MOD3 blog post")  

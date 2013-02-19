@@ -23,7 +23,8 @@
  * 	a single mesh at the same time. The only thing you need to do is to specify a steer vector and 
  * 	roll vector - usually it will be 2 of the cardinal axes. The default value is:
  * 	<ul>
- * 	<li>steer - along the Y axis / new Vector3(0, 1, 0)</li> * 	<li>roll - along the Z axis / new Vector3(0, 0, 1)</li>
+ * 	<li>steer - along the Y axis / new Vector3(0, 1, 0)</li>
+ * 	<li>roll - along the Z axis / new Vector3(0, 0, 1)</li>
  * 	</ul></p>
  * 	
  * 	<p>It should work with most car models imported from 3D editors as this is the natural position of a wheel.<br>
@@ -56,7 +57,8 @@ MOD3.Wheel.prototype.setModifiable=function(mod)
 {
 	MOD3.Modifier.prototype.setModifiable.call(this,mod);
 	this.radius = this.mod.width / 2;
-};MOD3.Wheel.prototype.apply=function()
+};
+MOD3.Wheel.prototype.apply=function()
 {
 	this.roll += this.speed;
 	
@@ -71,12 +73,16 @@ MOD3.Wheel.prototype.setModifiable=function(mod)
 		ms = new MOD3.Matrix4().rotationMatrix(rv.x, rv.y, rv.z, this.roll);
 	} else {
 		ms = new MOD3.Matrix4().rotationMatrix(this.rollVector.x, this.rollVector.y, this.rollVector.z, this.roll);
-	}
+	}
+
 	for (var i = 0;i < vc; i++) {
 		var v = vs[i];
 		var c = v.getVector().clone();
-		if(this.turn != 0) new MOD3.Matrix4().multiplyVector(mt, c);		new MOD3.Matrix4().multiplyVector(ms, c);
-		v.setX(c.x);		v.setY(c.y);		v.setZ(c.z);
+		if(this.turn != 0) new MOD3.Matrix4().multiplyVector(mt, c);
+		new MOD3.Matrix4().multiplyVector(ms, c);
+		v.setX(c.x);
+		v.setY(c.y);
+		v.setZ(c.z);
 	}
 };
 MOD3.Wheel.prototype.getStep=function()

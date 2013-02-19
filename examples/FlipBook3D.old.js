@@ -96,8 +96,7 @@ FlipBook3D.Page=function(book,i,matf,matb,hard,col)
 		}
 	}
 	// call super
-	// Three.js has made materials added to FaceMaterial instead of CubeGeometry
-    THREE.Mesh.call(this, new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1 ), new THREE.MeshFaceMaterial(this.mats));
+	THREE.Mesh.call(this, new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1, this.mats ), new THREE.MeshFaceMaterial());
 	this.overdraw=true;
 	this.position.x=this.pW*0.5;
 	this.position.z=-this.zz*this.index;

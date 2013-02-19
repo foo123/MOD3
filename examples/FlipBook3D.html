@@ -10,14 +10,25 @@
 	 background-color:#121212;
 	}
 	</style>
-	<script type="text/javascript" src="js/Three.js"></script>
+	<script type="text/javascript" src="js/three.min.js"></script>
 	<script type="text/javascript" src="../build/MOD3.js"></script>
 	<script type="text/javascript" src="js/Tween.js"></script>
 	<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
 	<script type="text/javascript" src="FlipBook3D.js"></script>
 	</head>
 	<body>
-		<div id="controls" style="position:absolute;z-index:1000">
+		<div style="display:none">
+            <!-- load images here -->
+            <img src="img/catalog_13.jpg" id="1f" />
+            <img src="img/mag_page9.jpg" id="1b" />
+            <img src="img/catalog_06.jpg" id="2f" />
+            <img src="img/catalog_05.jpg" id="2b" />
+            <img src="img/catalog_05.jpg" id="3f" />
+            <img src="img/catalog_11.jpg" id="3b" />
+            <img src="img/catalog_04.jpg" id="4f" />
+            <img src="img/catalog_08.jpg" id="4b" />
+        </div>
+        <div id="controls" style="position:absolute;z-index:1000">
 		<input type="button" id="flipleft" value="flipLeft" />
 		<br />
 		<input type="button" id="flipright" value="flipRight" />
@@ -41,13 +52,13 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
 			var w,h,w2,h2;
-			var images=[{f:"img/catalog_13.jpg",b:"img/mag_page9.jpg", hard:1},
-			{f:"img/catalog_06.jpg",b:"img/catalog_05.jpg",hard:0},
-			{f:"img/catalog_05.jpg", b:"img/catalog_11.jpg" ,hard:0},
+            var images=[{f:document.getElementById('1f').src,b:document.getElementById('1b').src, hard:1},
+			{f:document.getElementById('2f').src,b:document.getElementById('2b').src,hard:0},
+			{f:document.getElementById('3f').src, b:document.getElementById('3b').src ,hard:0},
 			/*{f:"img/catalog_11.jpg" ,b:"img/catalog_12.jpg", hard:0},
 			{f:"img/catalog_09.jpg", b:"img/catalog_07.jpg", hard:0},
 			{f:"img/catalog_06.jpg", b:"img/catalog_01.jpg", hard:0},*/
-			{f:"img/catalog_04.jpg", b:"img/catalog_08.jpg",hard:1}];
+			{f:document.getElementById('4f').src, b:document.getElementById('4b').src,hard:1}];
 			var book;
 			var pagew=300;
 			var pageh=pagew*10/7;
