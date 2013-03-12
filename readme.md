@@ -2,7 +2,7 @@
 
 This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to Javascript.  
 
-![MOD3.js](/examples/flipbook.png)
+![MOD3.js](/examples/flipbook2.png)
 
 
 i have named it MOD3 to signify that it has support for [THREE.js](https://github.com/mrdoob/three.js/)
