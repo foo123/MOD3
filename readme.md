@@ -31,6 +31,9 @@ However the structure is ready for more modifiers to be added (even custom ones)
 * Bloat
 * Break
 
+##Todo:
+* optimize (math ops, caching etc..)
+
 ###Examples  included
 ###Examples include 3D Flip Book with Three.js, MOD3.js (bend and pivot) and Tween.js
 
