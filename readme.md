@@ -4,6 +4,9 @@ This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.
 
 ![MOD3.js](/examples/flipbook2.png)
 
+##Live Example
+http://foo123.github.com/examples/flipbook3/
+http://foo123.github.com/examples/dancing-box/
 
 i have named it MOD3 to signify that it has support for [THREE.js](https://github.com/mrdoob/three.js/)
 
