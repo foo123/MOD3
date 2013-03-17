@@ -12,6 +12,8 @@
     };
     // static
     MOD3.Vector3.ZERO=function(){return new MOD3.Vector3(0,0,0);};
+    MOD3.Vector3.dot=function(a, b) { return (a.x*b.x + a.y*b.y + a.z*b.z);}
+    
     MOD3.Vector3.prototype.clone=function()
     {
         return new MOD3.Vector3(this.x, this.y, this.z);
@@ -51,7 +53,8 @@
     };
     MOD3.Vector3.prototype.normalize=function()
     {
-        var m = this.x * this.x + this.y * this.y + this.z * this.z;
+        var x=this.x, y=this.y, z=this.z;
+        var m = x * x + y * y + z * z;
         if(m > 0) {
             var n = 1 / Math.sqrt(m);
             this.x *= n;
@@ -61,7 +64,8 @@
     };
     MOD3.Vector3.prototype.getMagnitude=function()
     {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        var x=this.x, y=this.y, z=this.z;
+        return Math.sqrt(x * x + y * y + z * z);
     };
     MOD3.Vector3.prototype.setMagnitude=function(m)
     {
@@ -84,7 +88,8 @@
     };
     MOD3.Vector3.prototype.cross=function(a, b)
     {
-        return new MOD3.Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+        var ax=a.x, ay=a.y, az=a.z, bx=b.x, by=b.y, bz=b.z;
+        return new MOD3.Vector3(ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx);
     };
     MOD3.Vector3.prototype.distance=function(a, b)
     {

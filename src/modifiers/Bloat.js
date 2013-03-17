@@ -19,23 +19,28 @@
     };
     MOD3.Bloat.prototype.apply=function()
     {
-        var vs = this.mod.getVertices();
-        var vc=vs.length;
-        var v;
-        for (var i=0;i<vc;i++) {
-            v=vs[i];
+        var vs = this.mod.getVertices(), vc = vs.length, 
+            center = this.center, radius = this.radius, a = this.a;
+        var v, magn;
+        
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i=0;i<vc;i++) 
+        {
+            v=vs[vc];
             // get a vector towards vertex
-            this.u.x = v.getX() - this.center.x;
-            this.u.y = v.getY() - this.center.y;
-            this.u.z = v.getZ() - this.center.z;
+            this.u.x = v.getX() - center.x;
+            this.u.y = v.getY() - center.y;
+            this.u.z = v.getZ() - center.z;
 
             // change norm to norm + r * exp (-a * norm)
-            this.u.setMagnitude(this.u.getMagnitude() + this.radius * Math.exp ( - this.u.getMagnitude() * this.a));
+            magn = this.u.getMagnitude();
+            this.u.setMagnitude(magn + radius * Math.exp ( - magn * a));
 
             // move vertex accordingly
-            v.setX(this.u.x + this.center.x);
-            v.setY(this.u.y + this.center.y);
-            v.setZ(this.u.z + this.center.z);
+            v.setX(this.u.x + center.x);
+            v.setY(this.u.y + center.y);
+            v.setZ(this.u.z + center.z);
         }
     };
 })(MOD3);

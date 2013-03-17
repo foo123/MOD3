@@ -2,31 +2,34 @@
 (function(MOD3){
     MOD3.Pivot=function(x,y,z)
     {
-        this.pivot=null;
-
         this.pivot = new MOD3.Vector3(x, y, z);
     };
     MOD3.Pivot.prototype=new MOD3.Modifier();
     MOD3.Pivot.prototype.constructor=MOD3.Pivot;
     MOD3.Pivot.prototype.setMeshCenter=function()
     {
-        var vx = -(this.mod.minX + this.mod.width / 2);
-        var vy = -(this.mod.minY + this.mod.height / 2);
-        var vz = -(this.mod.minZ + this.mod.depth / 2);
-        this.pivot = new MOD3.Vector3(vx, vy, vz);
+        // cache
+        var mod = this.mod;
+        this.pivot = new MOD3.Vector3(
+            -(mod.minX + 0.5*mod.width), 
+            -(mod.minY + 0.5*mod.height), 
+            -(mod.minZ + 0.5*mod.depth)
+        );
     };
     MOD3.Pivot.prototype.apply=function()
     {
-        var vs = this.mod.getVertices();
-        var vc = vs.length;
+        var vs = this.mod.getVertices(), vc=vs.length, pivot=this.pivot, npivot, v, vv;
 
-        for (var i = 0; i < vc; i++) {
-            var v = vs[i];
-            var vv=v.getVector().clone();
-            v.setVector(vv.add(this.pivot));
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0; i < vc; i++) 
+        {
+            v = vs[vc];
+            vv=v.getVector().clone();
+            v.setVector(vv.add(pivot));
         }
         
-        var npivot = this.pivot.clone();
+        npivot = pivot.clone();
         this.mod.updateMeshPosition(npivot.negate());
     };
 })(MOD3);

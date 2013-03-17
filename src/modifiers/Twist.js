@@ -11,14 +11,20 @@
     MOD3.Twist.prototype.apply=function()
     {
         this.vector.normalize();
-        
-        var dv = new MOD3.Vector3(this.mod.maxX / 2, this.mod.maxY / 2, this.mod.maxZ / 2);
-        var d = -MOD3.Vector3.prototype.dot.call(this,this.vector, this.center);
+        var mod = this.mod, vs = mod.getVertices(), vc = vs.length,
+            vector = this.vector, angle = this.angle, center = this.center;
+        var dv = new MOD3.Vector3(0.5*mod.maxX, 0.5*mod.maxY, 0.5*mod.maxZ), invdvm = 1.0/dv.getMagnitude(), factor = invdvm*angle;
+        var d = -MOD3.Vector3.dot(vector, center);
+        var vertex, dd;
 
-        for(var i = 0;i < this.mod.getVertices().length; i++) {
-            var vertex = this.mod.getVertices()[i];
-            var dd = MOD3.Vector3.prototype.dot.call(this,new MOD3.Vector3(vertex.getX(), vertex.getY(), vertex.getZ()), this.vector) + d;
-            this.twistPoint(vertex, (dd / dv.getMagnitude()) * this.angle);
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for(var i = 0;i < this.mod.getVertices().length; i++) 
+        {
+            vertex = vs[vc];
+            // unroll dot product, breaks encapsulation and modularity, but is faster
+            dd = vertex.getX()*vector.x + vertex.getY()*vector.y + vertex.getZ()*vector.z + d;
+            this.twistPoint(vertex, dd * factor);
         }
     };
     MOD3.Twist.prototype.twistPoint=function(v, a)

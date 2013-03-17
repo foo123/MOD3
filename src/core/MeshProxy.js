@@ -2,9 +2,6 @@
 (function(MOD3){
     MOD3.MeshProxy=function()
     {
-        this.vertices=null;
-        this.faces=null;
-        
         this.maxX=null;
         this.maxY=null;
         this.maxZ=null;
@@ -36,82 +33,121 @@
     };
     MOD3.MeshProxy.prototype.analyzeGeometry=function()
     {
-        var vc = this.getVertices().length;
-        var i;
-        var v;
+        // cache
+        var vertices=this.getVertices(), vc = vertices.length, i=vc;
+        var v, x, y, z, minX, maxX, minY, maxY, minZ, maxZ, width, height, firstPass=true;
+        var Mathmin=Math.min, Mathmax=Math.max;
         
-        for (i = 0; i < vc; i++) {
-            v = this.getVertices()[i];
-            
-            if (i == 0) {
-                this.minX = this.maxX = v.getX();
-                this.minY = this.maxY = v.getY();
-                this.minZ = this.maxZ = v.getZ();
-            } else  {
-                this.minX = Math.min(this.minX, v.getX());
-                this.minY = Math.min(this.minY, v.getY());
-                this.minZ = Math.min(this.minZ, v.getZ());
+        // optimize loop using while counting down instead of up
+        while (--i >= 0)
+        //for (i = 0; i < vc; i++) 
+        {
+            // cache
+            v = vertices[i];
+            x = v.getX();
+            y = v.getY();
+            z = v.getZ();
+            if (firstPass) 
+            {
+                minX = maxX = x;
+                minY = maxY = y;
+                minZ = maxZ = z;
+                firstPass=false;
+            } 
+            else  
+            {
+                minX = Mathmin(minX, x);
+                minY = Mathmin(minY, y);
+                minZ = Mathmin(minZ, z);
                 
-                this.maxX = Math.max(this.maxX, v.getX()); 
-                this.maxY = Math.max(this.maxY, v.getY()); 
-                this.maxZ = Math.max(this.maxZ, v.getZ()); 
+                maxX = Mathmax(maxX, x); 
+                maxY = Mathmax(maxY, y); 
+                maxZ = Mathmax(maxZ, z); 
             }
             
-            v.setOriginalPosition(v.getX(), v.getY(), v.getZ());
+            v.setOriginalPosition(x, y, z);
         }
         
-        this.width = this.maxX - this.minX;
-        this.height = this.maxY - this.minY;
-        this.depth = this.maxZ - this.minZ;
+        width = maxX - minX;
+        height = maxY - minY;
+        depth = maxZ - minZ;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.minX = minX;
+        this.maxX = maxX;
+        this.minY = minY;
+        this.maxY = maxY;
+        this.minZ = minZ;
+        this.maxZ = maxZ;
         
-        var maxe = Math.max(this.width, Math.max(this.height, this.depth));
-        var mine = Math.min(this.width, Math.min(this.height, this.depth));
+        var maxe = Mathmax(width, Mathmax(height, depth));
+        var mine = Mathmin(width, Mathmin(height, depth));
         
-        if (maxe == this.width && mine == this.height) {
+        if (maxe == width && mine == height) 
+        {
             this.minAxis = MOD3.ModConstant.Y;
             this.midAxis = MOD3.ModConstant.Z;
             this.maxAxis = MOD3.ModConstant.X;
-        } else if (maxe == this.width && mine == this.depth) {
+        } 
+        else if (maxe == width && mine == depth) 
+        {
             this.minAxis = MOD3.ModConstant.Z;
             this.midAxis = MOD3.ModConstant.Y;
             this.maxAxis = MOD3.ModConstant.X;
-        } else if (maxe == this.height && mine == this.width) {
+        } 
+        else if (maxe == height && mine == width) 
+        {
             this.minAxis = MOD3.ModConstant.X;
             this.midAxis = MOD3.ModConstant.Z;
             this.maxAxis = MOD3.ModConstant.Y;
-        } else if (maxe == this.height && mine == this.depth) {
+        } 
+        else if (maxe == height && mine == depth) 
+        {
             this.minAxis = MOD3.ModConstant.Z;
             this.midAxis = MOD3.ModConstant.X;
             this.maxAxis = MOD3.ModConstant.Y;
-        } else if (maxe == this.depth && mine == this.width) {
+        } 
+        else if (maxe == depth && mine == width) 
+        {
             this.minAxis = MOD3.ModConstant.X;
             this.midAxis = MOD3.ModConstant.Y;
             this.maxAxis = MOD3.ModConstant.Z;
-        } else if (maxe == this.depth && mine == this.height) {
+        } 
+        else if (maxe == depth && mine == height) 
+        {
             this.minAxis = MOD3.ModConstant.Y;
             this.midAxis = MOD3.ModConstant.X;
             this.maxAxis = MOD3.ModConstant.Z;
         }
         
-        for (i = 0; i < vc; i++) {
-            v = this.getVertices()[i];
-            v.setRatios((v.getX() - this.minX) / this.width, (v.getY() - this.minY) / this.height, (v.getZ() - this.minZ) / this.depth);
+        i=vc;
+        // optimize loop using while counting down instead of up
+        while (--i >= 0)
+        //for (i = 0; i < vc; i++) 
+        {
+            v = vertices[i];
+            v.setRatios((v.getX() - minX) / width, (v.getY() - minY) / height, (v.getZ() - minZ) / depth);
         }
     };
     MOD3.MeshProxy.prototype.resetGeometry=function()
     {
-        var vc = this.getVertices().length;
-        for (var i = 0; i < vc; i++) {
-            var v = this.getVertices()[i];
-            v.reset();
+        var vertices=this.getVertices(), vc = vertices.length;
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0; i < vc; i++) 
+        {
+            vertices[vc].reset();
         }
     };
     MOD3.MeshProxy.prototype.collapseGeometry=function()
     {
-        var vc = this.getVertices().length;
-        for (var i = 0; i < vc; i++) {
-            var v = this.getVertices()[i];
-            v.collapse();
+        var vertices=this.getVertices(), vc = vertices.length;
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0; i < vc; i++) 
+        {
+            vertices[vc].collapse();
         }
         this.analyzeGeometry();
     };

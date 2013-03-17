@@ -2,7 +2,6 @@
 (function(MOD3){
     MOD3.VertexProxy=function(v)
     {
-        //THREE.Vertex.call(this);
         this.ratioX=null;
         this.ratioY=null;
         this.ratioZ=null;

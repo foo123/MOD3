@@ -28,17 +28,21 @@
     }
     MOD3.Taper.prototype.apply=function()
     {
-        var vs = this.mod.getVertices();
-        var vc = vs.length;
+        var vs = this.mod.getVertices(), vc = vs.length,
+            vector = this.vector, vector2 = this.vector2, force = this.force, power = this.power;
+        var v, ar, sc, m, n;
         
-        for (var i = 0;i < vc; i++) {
-            var v = vs[i];
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0;i < vc; i++) 
+        {
+            v = vs[vc];
             
-            var ar = v.getRatioVector().multiply(this.vector2);
-            var sc = this.force * Math.pow(ar.getMagnitude(), this.power);
+            ar = v.getRatioVector().multiply(vector2);
+            sc = force * Math.pow(ar.getMagnitude(), power);
             
-            var m = new MOD3.Matrix4().scaleMatrix(1 + sc * this.vector.x, 1 + sc * this.vector.y, 1 + sc * this.vector.z);
-            var n = v.getVector();
+            m = new MOD3.Matrix4().scaleMatrix(1 + sc * vector.x, 1 + sc * vector.y, 1 + sc * vector.z);
+            n = v.getVector();
             
             new MOD3.Matrix4().multiplyVector(m, n);
             v.setVector( n );

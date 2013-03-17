@@ -4,7 +4,6 @@
     {
         this.force=null;
         this.offset=null;
-        
         this.angle=null;
         
         this.diagAngle=null;
@@ -32,13 +31,13 @@
     { 
         this.angle = a; 
         this.m1 = new MOD3.Matrix();
-        this.m1.rotate(this.angle);
+        this.m1.rotate(a);
         this.m2 = new MOD3.Matrix();
-        this.m2.rotate(-this.angle);
+        this.m2.rotate(-a);
     }
     MOD3.Bend.prototype.setModifiable=function(mod)
     {
-        MOD3.Modifier.prototype.setModifiable.call(this,mod);
+        MOD3.Modifier.prototype.setModifiable.call(this, mod);
         //this.mod=mod;
         this.max = (this.switchAxes) ? this.mod.midAxis : this.mod.maxAxis;
         this.min = this.mod.minAxis;
@@ -54,41 +53,53 @@
     {   
         if (this.force == 0) return;
 
-        var vs = this.mod.getVertices();
-        var vc = vs.length;
-        var distance = this.origin + this.width * this.offset;
-        var radius = this.width / Math.PI / this.force;
-        var bendAngle = Math.PI * 2 * (this.width / (radius * Math.PI * 2));
-
-        for (var i = 0; i < vc; i++) {
-            var v = vs[i];
+        var vs = this.mod.getVertices(), vc = vs.length;
+        var width = this.width, offset = this.offset, 
+            origin = this.origin, force = this.force, 
+            max = this.max, min = this.min, mid = this.mid, m1 = this.m1, m2 = this.m2;
+        var distance = origin + width * offset;
+        var radius = width / Math.PI / force;
+        var bendAngle = MOD3.Constants.doublePI * (width / (radius * MOD3.Constants.doublePI));
+        var v, vmax, vmid, vmin, np, p, fa, op, ow, np2;
+        var invwidth = 1.0/width, PI2 = MOD3.Constants.halfPI, Mathsin=Math.sin, Mathcos=Math.cos;
+        
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0; i < vc; i++) 
+        {
+            v = vs[vc];
             
-            var vmax = v.getValue(this.max);
-            var vmid = v.getValue(this.mid);
-            var vmin = v.getValue(this.min);
+            vmax = v.getValue(max);
+            vmid = v.getValue(mid);
+            vmin = v.getValue(min);
 
-            var np = this.m1.transformPoint(new MOD3.Point(vmax, vmid));
+            np = m1.transformPoint(new MOD3.Point(vmax, vmid));
             vmax = np.x;
             vmid = np.y;
 
-            var p = (vmax - this.origin) / this.width;
+            p = (vmax - origin) * invwidth;
 
-            if ((this.constraint == MOD3.ModConstant.LEFT && p <= this.offset) || (this.constraint == MOD3.ModConstant.RIGHT && p >= this.offset)) {    
-            } else {
-                var fa = ((Math.PI / 2) - bendAngle * this.offset) + (bendAngle * p);
-                var op = Math.sin(fa) * (radius + vmin);
-                var ow = Math.cos(fa) * (radius + vmin);
+            if (
+                (this.constraint == MOD3.ModConstant.LEFT && p <= offset) || 
+                (this.constraint == MOD3.ModConstant.RIGHT && p >= offset)
+            ) 
+            {  /* do nothing */ } 
+            else 
+            {
+                fa = (PI2 - bendAngle * offset) + (bendAngle * p);
+                op = Mathsin(fa) * (radius + vmin);
+                ow = Mathcos(fa) * (radius + vmin);
                 vmin = op - radius;
                 vmax = distance - ow;
             }
 
-            var np2 = this.m2.transformPoint(new MOD3.Point(vmax, vmid));
+            np2 = m2.transformPoint(new MOD3.Point(vmax, vmid));
             vmax = np2.x;
             vmid = np2.y;
             
-            v.setValue(this.max, vmax);
-            v.setValue(this.mid, vmid);
-            v.setValue(this.min, vmin);
+            v.setValue(max, vmax);
+            v.setValue(mid, vmid);
+            v.setValue(min, vmin);
         }
     };
 })(MOD3);

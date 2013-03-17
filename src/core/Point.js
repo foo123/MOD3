@@ -9,6 +9,6 @@
     }
     MOD3.Point.prototype.clone=function()
     {
-     return (new MOD3.Point(this.x,this.y));
+        return (new MOD3.Point(this.x,this.y));
     };
 })(MOD3);

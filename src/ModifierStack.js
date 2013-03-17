@@ -1,6 +1,6 @@
 // Modifier Stack -----------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.ModifierStack=function(lib3d,mesh)
+    MOD3.ModifierStack=function(lib3d, mesh)
     {
         this.lib3d = lib3d;
         this.baseMesh=null;
@@ -19,8 +19,13 @@
     MOD3.ModifierStack.prototype.apply=function()
     {
         this.baseMesh.resetGeometry();
-        for (var i = 0; i < this.stack.length; i++) {
-            this.stack[i].apply();
+        var stack = this.stack, sl = stack.length, i=0;
+        
+        // optimize loop using while
+        while (i < sl)
+        //for (var i = 0; i < this.stack.length; i++) 
+        {
+            stack[i++].apply();
         }
         this.baseMesh.postApply();
     };

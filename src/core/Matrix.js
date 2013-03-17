@@ -34,22 +34,21 @@
             this.m22=sy;
         return this;
     };
-    MOD3.Matrix.prototype.multiply=function(m)
+    MOD3.Matrix.prototype.multiply=function(a)
     {
-        var mm11=this.m11*m.m11+this.m12*m.m21;
-        var mm12=this.m11*m.m12+this.m12*m.m22;
-        var mm21=this.m21*m.m11+this.m22*m.m21;
-        var mm22=this.m21*m.m12+this.m22*m.m22;
-        this.m11=mm11;
-        this.m12=mm12;
-        this.m21=mm21;
-        this.m22=mm22;
+        // optimize by caching
+        var m11=this.m11, m12=this.m12, m21=this.m21, m22=this.m22;
+        var am11=a.m11, am12=a.m12, am21=a.m21, am22=a.m22;
+        this.m11=m11*am11+m12*am21;
+        this.m12=m11*am12+m12*am22;
+        this.m21=m21*am11+m22*am21;
+        this.m22=m21*am12+m22*am22;
         return this;
     };
     MOD3.Matrix.prototype.transformPoint=function(p)
     {
         var px=this.m11*p.x+this.m12*p.y;
         var py=this.m21*p.x+this.m22*p.y;
-        return (new MOD3.Point(px,py));
+        return (new MOD3.Point(px, py));
     }
 })(MOD3);

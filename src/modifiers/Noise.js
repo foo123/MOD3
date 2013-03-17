@@ -28,28 +28,37 @@
     };
     MOD3.Noise.prototype.apply=function()
     {
-        var vs = this.mod.getVertices();
-        var vc = vs.length;
-
-        for (var i = 0; i < vc; i++) {
-            var v = vs[i];
-            var r = (Math.random() * this.force) - (this.force / 2);
+        var mod = this.mod, axc = this.axc, start = this.start, end = this.end, 
+            vs = mod.getVertices(), vc = vs.length, force = this.force, halfforce = 0.5*force;
+        var Mathrandom=Math.random, v, r, p;
+        
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0; i < vc; i++) 
+        {
+            v = vs[vc];
+            r = (Mathrandom() * force) - (halfforce);
             
-            var p = v.getRatio(this.mod.maxAxis);
-            if(this.start < this.end) {
-                if (p < this.start) p = 0;
-                if (p > this.end) p = 1;
-            } else if(this.start > this.end) {
+            p = v.getRatio(mod.maxAxis);
+            if(start < end) 
+            {
+                if (p < start) p = 0;
+                if (p > end) p = 1;
+            } 
+            else if(start > end) 
+            {
                 p = 1 - p;
-                if (p > this.start) p = 0;
-                if (p < this.end) p = 1;
-            } else {
+                if (p > start) p = 0;
+                if (p < end) p = 1;
+            } 
+            else 
+            {
                 p = 1;
             }
 
-            if (!(this.axc & 1)) v.setX(v.getX() + r * p);
-            if (!(this.axc >> 1 & 1)) v.setY(v.getY() + r * p);
-            if (!(this.axc >> 2 & 1)) v.setZ(v.getZ() + r * p);
+            if (!(axc & 1)) v.setX(v.getX() + r * p);
+            if (!(axc >> 1 & 1)) v.setY(v.getY() + r * p);
+            if (!(axc >> 2 & 1)) v.setZ(v.getZ() + r * p);
         }
     };
 })(MOD3);

@@ -23,26 +23,32 @@
     };
     MOD3.Skew.prototype.apply=function()
     {
-        var vs = this.mod.getVertices();
-        var vc = vs.length;
+        var vs = this.mod.getVertices(), vc = vs.length,
+            constraint = this.constraint, skewAxis = this.skewAxis, offset = this.offset,
+            oneSide = this.oneSide, inverseFalloff = this.inverseFalloff, falloff = this.falloff, mirrorfalloff = 1-falloff,
+            power = this.power, force = this.force, displaceAxis = this.getDisplaceAxis();
+        var v, r, dr, f, p, vl;
 
-        for (var i = 0; i < vc; i++) {
-            var v = vs[i];
+        // optimize loop using while counting down instead of up
+        while (--vc >= 0)
+        //for (var i = 0; i < vc; i++) 
+        {
+            v = vs[vc];
             
-            if(this.constraint == MOD3.ModConstant.LEFT && v.getRatio(this.skewAxis) <= this.offset) continue;
-            if(this.constraint == MOD3.ModConstant.RIGHT && v.getRatio(this.skewAxis) > this.offset) continue;
+            if (constraint == MOD3.ModConstant.LEFT && v.getRatio(skewAxis) <= offset) continue;
+            if (constraint == MOD3.ModConstant.RIGHT && v.getRatio(skewAxis) > offset) continue;
             
-            var r = v.getRatio(this.skewAxis) - this.offset;
-            if(this.oneSide) r = Math.abs(r);
+            r = v.getRatio(skewAxis) - offset;
+            if (oneSide) r = Math.abs(r);
             
-            var dr = v.getRatio(this.getDisplaceAxis());
-            if(this.inverseFalloff) dr = 1 - dr;
+            dr = v.getRatio(displaceAxis);
+            if (inverseFalloff) dr = 1 - dr;
             
-            var f = this.falloff + dr * (1-this.falloff);
+            f = falloff + dr * mirrorfalloff;
 
-            var p = Math.pow(Math.abs(r), this.power) * MOD3.XMath.sign(r, 1);
-            var vl = v.getValue(this.getDisplaceAxis()) + this.force * p * f;
-            v.setValue(this.getDisplaceAxis(), vl);
+            p = Math.pow(Math.abs(r), power) * MOD3.XMath.sign(r, 1);
+            vl = v.getValue(displaceAxis) + force * p * f;
+            v.setValue(displaceAxis, vl);
         }
     };
     MOD3.Skew.prototype.getDisplaceAxis=function()
