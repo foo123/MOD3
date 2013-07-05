@@ -15,7 +15,7 @@ Not all Modifiers of AS3DMod can be ported but most can.
 However the structure is ready for more modifiers to be added (even custom ones)
 
 ##Support for 3D javascript engines
-* Three.js with examples
+* Three.js with examples (r58)
 * J3D with examples
 * Copperlicht with examples
 * Pre3d with examples (my pre3d examples are a liitle blurry but you'll get the picture)
@@ -47,7 +47,8 @@ Complete source code and minified version
 * build if having problems with encoding set -enc option in build.bat  
   
 ###Changelog
-* added support for latest Three.js revision (r53)
+* added support for Three.js revision (r58)
+* added support for Three.js revision (r53)
 
 
 *Contributor* Nikos M.  
