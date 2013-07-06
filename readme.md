@@ -1,6 +1,6 @@
-#MOD3 As3dMod 
+#MOD3 
 
-__3D Modifier Library port for Javascript and Three.js, Pre3d and J3D and Copperlicht__
+__As3dMod 3D Modifier Library port for Javascript and Three.js, Pre3d and J3D and Copperlicht__
 
 This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to Javascript.  
 
