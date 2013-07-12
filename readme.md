@@ -4,7 +4,7 @@ __As3dMod 3D Modifier Library port for Javascript and Three.js, Pre3d and J3D an
 
 This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to Javascript.  
 
-[![MOD3.js](/examples/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
+[![MOD3.js](/examples/flipbook3/assets/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
 ###Live Examples
 
