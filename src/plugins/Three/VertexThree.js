@@ -18,29 +18,38 @@
     MOD3.VertexThree.prototype.getZ=function(){return this.vertex.z;};
     MOD3.VertexThree.prototype.setX=function(v)
     {
+        if (v!=this.vertex.x)
+        {
+            var mesh = this.mesh;
+            mesh.geometry.verticesNeedUpdate = true;
+            mesh.geometry.normalsNeedUpdate = true;
+            mesh.geometry.buffersNeedUpdate = true;
+            mesh.geometry.dynamic = true;
+        }
         this.vertex.x=v;
-        var mesh = this.mesh;
-        mesh.geometry.verticesNeedUpdate = true;
-        mesh.geometry.normalsNeedUpdate = true;
-        mesh.geometry.buffersNeedUpdate = true;
-        mesh.geometry.dynamic = true;
     };
     MOD3.VertexThree.prototype.setY=function(v)
     {
+        if (v!=this.vertex.y)
+        {
+            var mesh = this.mesh;
+            mesh.geometry.verticesNeedUpdate = true;
+            mesh.geometry.normalsNeedUpdate = true;
+            mesh.geometry.buffersNeedUpdate = true;
+            mesh.geometry.dynamic = true;
+        }
         this.vertex.y=v;
-        var mesh = this.mesh;
-        mesh.geometry.verticesNeedUpdate = true;
-        mesh.geometry.normalsNeedUpdate = true;
-        mesh.geometry.buffersNeedUpdate = true;
-        mesh.geometry.dynamic = true;
     };
     MOD3.VertexThree.prototype.setZ=function(v)
     {
+        if (v!=this.vertex.z)
+        {
+            var mesh = this.mesh;
+            mesh.geometry.verticesNeedUpdate = true;
+            mesh.geometry.normalsNeedUpdate = true;
+            mesh.geometry.buffersNeedUpdate = true;
+            mesh.geometry.dynamic = true;
+        }
         this.vertex.z=v;
-        var mesh = this.mesh;
-        mesh.geometry.verticesNeedUpdate = true;
-        mesh.geometry.normalsNeedUpdate = true;
-        mesh.geometry.buffersNeedUpdate = true;
-        mesh.geometry.dynamic = true;
     };
 })(MOD3);

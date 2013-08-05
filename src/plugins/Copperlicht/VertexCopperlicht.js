@@ -19,17 +19,20 @@
     MOD3.VertexCopperlicht.prototype.getZ=function(){return this.vertex.Pos.Z;};
     MOD3.VertexCopperlicht.prototype.setX=function(v)
     {
+        var prev=this.vertex.Pos.X;
         this.vertex.Pos.X=v;
-        this.buffer.update(true);
+        if (prev!=v) this.buffer.update(true);
     };
     MOD3.VertexCopperlicht.prototype.setY=function(v)
     {
+        var prev=this.vertex.Pos.Y;
         this.vertex.Pos.Y=v;
-        this.buffer.update(true);
+        if (prev!=v) this.buffer.update(true);
     };
     MOD3.VertexCopperlicht.prototype.setZ=function(v)
     {
+        var prev=this.vertex.Pos.Z;
         this.vertex.Pos.Z=v;
-        this.buffer.update(true);
+        if (prev!=v) this.buffer.update(true);
     };
 })(MOD3);

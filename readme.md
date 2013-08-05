@@ -1,6 +1,6 @@
 #MOD3 
 
-__As3dMod 3D Modifier Library port for Javascript and Three.js, Pre3d and J3D and Copperlicht__
+__As3dMod 3D Modifier Library port for Javascript and Three.js, Pre3d, J3D, Copperlicht and CubicVR__
 
 This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to Javascript.  
 
@@ -34,6 +34,7 @@ __Complete source code and minified version__
 * Three.js with examples (r58)
 * J3D with examples
 * Copperlicht with examples
+* CubicVR with examples
 * Pre3d with examples (my pre3d examples are a liitle blurry but you'll get the picture)
 
 
@@ -64,6 +65,7 @@ __Complete source code and minified version__
   
 
 ###Changelog
+* added support for CubicVR.js 3D Engine, minor optimizations for all engines
 * added support for Three.js revision (r58)
 * added support for Three.js revision (r53)
 

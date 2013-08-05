@@ -18,20 +18,20 @@
     MOD3.VertexJ3D.prototype.getZ=function(){return this.geometry.vertexPositionBuffer.data[this.vertex+2];};
     MOD3.VertexJ3D.prototype.setX=function(v)
     {
-        var vertex = this.vertex, geometry = this.geometry;
+        var vertex = this.vertex, geometry = this.geometry, prev=geometry.vertexPositionBuffer.data[vertex];
         geometry.vertexPositionBuffer.data[vertex]=v;
-        geometry.replaceArray(geometry.vertexPositionBuffer, geometry.vertexPositionBuffer.data);
+        if (prev!=v) geometry.replaceArray(geometry.vertexPositionBuffer, geometry.vertexPositionBuffer.data);
     };
     MOD3.VertexJ3D.prototype.setY=function(v)
     {
-        var vertex = this.vertex, geometry = this.geometry;
+        var vertex = this.vertex, geometry = this.geometry, prev=geometry.vertexPositionBuffer.data[vertex+1];
         geometry.vertexPositionBuffer.data[vertex+1]=v;
-        geometry.replaceArray(geometry.vertexPositionBuffer, geometry.vertexPositionBuffer.data);
+        if (prev!=v) geometry.replaceArray(geometry.vertexPositionBuffer, geometry.vertexPositionBuffer.data);
     };
     MOD3.VertexJ3D.prototype.setZ=function(v)
     {
-        var vertex = this.vertex, geometry = this.geometry;
+        var vertex = this.vertex, geometry = this.geometry, prev=geometry.vertexPositionBuffer.data[vertex+2];
         geometry.vertexPositionBuffer.data[vertex+2]=v;
-        geometry.replaceArray(geometry.vertexPositionBuffer, geometry.vertexPositionBuffer.data);
+        if (prev!=v) geometry.replaceArray(geometry.vertexPositionBuffer, geometry.vertexPositionBuffer.data);
     };
 })(MOD3);

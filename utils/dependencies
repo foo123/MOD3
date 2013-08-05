@@ -36,6 +36,9 @@ plugins/J3D/MeshJ3D.js
 plugins/Copperlicht/LibraryCopperlicht.js
 plugins/Copperlicht/VertexCopperlicht.js
 plugins/Copperlicht/MeshCopperlicht.js
+plugins/CubicVR/LibraryCubicVR.js
+plugins/CubicVR/VertexCubicVR.js
+plugins/CubicVR/MeshCubicVR.js
 @MINIFY
 --language_in=ECMASCRIPT5_STRICT
 @OUT
