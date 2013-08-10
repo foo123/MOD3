@@ -1,8 +1,6 @@
 // Mesh for J3D Class -------------------------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.MeshJ3D=function()
-    {
-    };
+    MOD3.MeshJ3D=function() { };
     MOD3.MeshJ3D.prototype=new MOD3.MeshProxy();
     MOD3.MeshJ3D.prototype.setMesh=function(mesh)
     {
@@ -16,7 +14,6 @@
         // optimize loop using while
         i=0;
         while (i < vc)
-        //for (var i = 0; i < vc; i+=ii) 
         {
             nv = new MOD3.VertexJ3D(mesh.geometry);
             nv.setVertex(i);

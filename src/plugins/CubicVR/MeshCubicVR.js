@@ -1,8 +1,6 @@
 // Mesh for CubicVR Lib -------------------------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.MeshCubicVR=function()
-    {
-    };
+    MOD3.MeshCubicVR=function() { };
     MOD3.MeshCubicVR.prototype=new MOD3.MeshProxy();
     MOD3.MeshCubicVR.prototype.setMesh=function(sceneobj)
     {

@@ -8,7 +8,6 @@
     MOD3.VertexCubicVR.prototype.constructor=MOD3.VertexCubicVR;
     MOD3.VertexCubicVR.prototype.setVertex=function(vertex)
     {
-        /* Three js uses vector3 now instead of vertex */
         this.vertex=vertex;
         this.originalX=vertex[0]
         this.originalY=vertex[1];

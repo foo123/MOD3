@@ -1,9 +1,8 @@
 // Vertex for Three.js class --------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.VertexPre3D=function()
-    {
-    };      
+    MOD3.VertexPre3D=function() { };      
     MOD3.VertexPre3D.prototype=new MOD3.VertexProxy();
+    MOD3.VertexPre3D.prototype.constructor=MOD3.VertexPre3D;
     MOD3.VertexPre3D.prototype.setVertex=function(vertex)
     {
         this.vertex=vertex;

@@ -1,8 +1,6 @@
 // Mesh for Copperlicht Class -------------------------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.MeshCopperlicht=function()
-    {
-    };
+    MOD3.MeshCopperlicht=function() { };
     MOD3.MeshCopperlicht.prototype=new MOD3.MeshProxy();
     MOD3.MeshCopperlicht.prototype.setMesh=function(mesh)
     {
@@ -13,34 +11,17 @@
         var vs=[];
         for (var b=0; b<buffers.length; b++)
         {
-        vs=buffers[b].Vertices;
-        //var ts = this.mesh.geometry.faces;
-        var vc = vs.length;
-        //var tc = ts.length;
-        for (var i = 0; i < vc; i++) {
-            var nv = new MOD3.VertexCopperlicht(this.mesh,buffers[b]);
-            nv.setVertex(vs[i]);
-            this.vertices.push(nv);
-            //lookUp[vs[i]] = nv;
-        }
-        }
-        /*for (i = 0; i < tc; i++) {
-            var nt = new MOD3.FaceProxy();
-            if (ts[i] instanceof THREE.Face3)
-            {
-                nt.addVertex(lookUp[vs[ts[i].a]]);
-                nt.addVertex(lookUp[vs[ts[i].b]]);
-                nt.addVertex(lookUp[vs[ts[i].c]]);
+            vs=buffers[b].Vertices;
+            //var ts = this.mesh.geometry.faces;
+            var vc = vs.length;
+            //var tc = ts.length;
+            for (var i = 0; i < vc; i++) {
+                var nv = new MOD3.VertexCopperlicht(this.mesh, buffers[b]);
+                nv.setVertex(vs[i]);
+                this.vertices.push(nv);
+                //lookUp[vs[i]] = nv;
             }
-            else if (ts[i] instanceof THREE.Face4)
-            {
-                nt.addVertex(lookUp[vs[ts[i].a]]);
-                nt.addVertex(lookUp[vs[ts[i].b]]);
-                nt.addVertex(lookUp[vs[ts[i].c]]);
-                nt.addVertex(lookUp[vs[ts[i].d]]);
-            }
-            this.faces.push(nt);
-        }*/
+        }
         this.faces=null;
         delete lookup;
     };

@@ -1,4 +1,4 @@
-// Three.js specific library interface for MOD3 ---------------------------------------------------------------------------------
+// Pre3D specific library interface for MOD3 ---------------------------------------------------------------------------------
 (function(MOD3){
     MOD3.LibraryPre3D=function()
     {

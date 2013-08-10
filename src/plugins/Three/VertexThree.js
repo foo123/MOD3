@@ -5,6 +5,7 @@
         this.mesh=mesh;
     };      
     MOD3.VertexThree.prototype=new MOD3.VertexProxy();
+    MOD3.VertexThree.prototype.constructor=MOD3.VertexThree;
     MOD3.VertexThree.prototype.setVertex=function(vertex)
     {
         /* Three js uses vector3 now instead of vertex */

@@ -1,12 +1,12 @@
 // Vertex for Copperlicht class --------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.VertexCopperlicht=function(node,buffer)
+    MOD3.VertexCopperlicht=function(node, buffer)
     {
         this.node=node;
         this.buffer=buffer;
-        //this.array_index=index;
     };      
     MOD3.VertexCopperlicht.prototype=new MOD3.VertexProxy();
+    MOD3.VertexCopperlicht.prototype.constructor=MOD3.VertexCopperlicht;
     MOD3.VertexCopperlicht.prototype.setVertex=function(vertex)
     {
         this.vertex=vertex;

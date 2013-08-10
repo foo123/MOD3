@@ -1,8 +1,6 @@
 // Mesh for Three.js Class -------------------------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.MeshThree=function()
-    {
-    };
+    MOD3.MeshThree=function() { };
     MOD3.MeshThree.prototype=new MOD3.MeshProxy();
     MOD3.MeshThree.prototype.setMesh=function(mesh)
     {
@@ -16,7 +14,6 @@
         // optimize loop using while
         i=0;
         while (i < vc)
-        //for (var i = 0; i < vc; i++) 
         {
             nv = new MOD3.VertexThree(this.mesh);
             nv.setVertex(vs[i]);
@@ -28,7 +25,6 @@
         // optimize loop using while
         i=0;
         while (i < tc)
-        //for (i = 0; i < tc; i++) 
         {
             nt = new MOD3.FaceProxy();
             if (ts[i] instanceof THREE.Face3)

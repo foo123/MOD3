@@ -5,6 +5,7 @@
         this.geometry=geometry;
     };      
     MOD3.VertexJ3D.prototype=new MOD3.VertexProxy();
+    MOD3.VertexJ3D.prototype.constructor=MOD3.VertexJ3D;
     MOD3.VertexJ3D.prototype.setVertex=function(vertex)
     {
         this.vertex=vertex;

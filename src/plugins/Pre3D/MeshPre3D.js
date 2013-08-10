@@ -1,8 +1,6 @@
-// Mesh for Three.js Class -------------------------------------------------------------------------------------------------------------------
+// Mesh for Pre3D Class -------------------------------------------------------------------------------------------------------------------
 (function(MOD3){
-    MOD3.MeshPre3D=function()
-    {
-    };
+    MOD3.MeshPre3D=function() { };
     MOD3.MeshPre3D.prototype=new MOD3.MeshProxy();
     MOD3.MeshPre3D.prototype.setMesh=function(mesh)
     {
