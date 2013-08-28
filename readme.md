@@ -2,7 +2,7 @@
 
 __As3dMod 3D Modifier Library port for JavaScript and Three.js, Pre3d, J3D, Copperlicht and CubicVR__
 
-This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
+This is a port of the [AS3DMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
 
 [![MOD3.js](/examples/flipbook3/assets/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
