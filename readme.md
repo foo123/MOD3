@@ -1,8 +1,8 @@
 #MOD3 
 
-__As3dMod 3D Modifier Library port for Javascript and Three.js, Pre3d, J3D, Copperlicht and CubicVR__
+__As3dMod 3D Modifier Library port for JavaScript and Three.js, Pre3d, J3D, Copperlicht and CubicVR__
 
-This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to Javascript.  
+This is a port of the [AS3DMod Modifier Library for Actionscript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
 
 [![MOD3.js](/examples/flipbook3/assets/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
@@ -30,7 +30,7 @@ __Complete source code and minified version__
 * [Dancing Box](http://foo123.github.com/examples/dancing-box/)  (a blend of 3D manipulation and sound visualization)
 
 
-###Support for 3D javascript engines
+###Support for 3D JavaScript engines
 * Three.js with examples (r58)
 * J3D with examples
 * Copperlicht with examples
