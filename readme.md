@@ -1,5 +1,8 @@
 #MOD3 
 
+## Further development on this project has stopped!!
+
+
 __As3dMod 3D Modifier Library port for JavaScript and Three.js, Pre3d, J3D, Copperlicht and CubicVR__
 
 This is a port of the [AS3DMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
