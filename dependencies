@@ -1,0 +1,78 @@
+###################################################
+#
+#   The buildtools repository is at:
+#   https://github.com/foo123/scripts/buildtools
+#
+###################################################
+
+@DEPENDENCIES
+
+# core
+./src/MOD3.js
+./src/util/ModConstant.js
+./src/util/XMath.js
+./src/util/Range.js
+./src/util/Phase.js
+./src/core/Point.js
+./src/core/Matrix.js
+./src/core/Vector3.js
+./src/core/Matrix4.js
+./src/core/VertexProxy.js
+./src/core/FaceProxy.js
+./src/core/MeshProxy.js
+./src/core/Modifier.js
+./src/plugins/Library3d.js
+./src/plugins/PluginFactory.js
+./src/ModifierStack.js
+./src/modifiers/Pivot.js
+./src/modifiers/Bend.js
+./src/modifiers/Bloat.js
+./src/modifiers/Twist.js
+./src/modifiers/Skew.js
+./src/modifiers/Taper.js
+./src/modifiers/Wheel.js
+./src/modifiers/Break.js
+./src/modifiers/Noise.js
+
+# Support for Three.js
+./src/plugins/Three/LibraryThree.js
+./src/plugins/Three/VertexThree.js
+./src/plugins/Three/MeshThree.js
+
+# Support for Pre3D
+./src/plugins/Pre3D/LibraryPre3D.js
+./src/plugins/Pre3D/VertexPre3D.js
+./src/plugins/Pre3D/MeshPre3D.js
+
+# Support for J3D
+./src/plugins/J3D/LibraryJ3D.js
+./src/plugins/J3D/VertexJ3D.js
+./src/plugins/J3D/MeshJ3D.js
+
+# Support for Copperlicht
+./src/plugins/Copperlicht/LibraryCopperlicht.js
+./src/plugins/Copperlicht/VertexCopperlicht.js
+./src/plugins/Copperlicht/MeshCopperlicht.js
+
+# Support for CubicVR.js
+./src/plugins/CubicVR/LibraryCubicVR.js
+./src/plugins/CubicVR/VertexCubicVR.js
+./src/plugins/CubicVR/MeshCubicVR.js
+
+# TODO, allow some pre-process to take place
+#@PREPROCESS
+
+@MINIFY
+# Minify the Package
+@CLOSURE
+# Options for Java Closure Compiler (if used), (default minify options)
+--language_in=ECMASCRIPT5_STRICT
+@UGLIFY
+# Options for Node UglifyJS Compiler (if used), (default minify options, mangle and compress)
+-m -c
+
+# TODO, allow some post-process to take place
+#@POSTPROCESS
+
+@OUT
+./build/MOD3.min.js
