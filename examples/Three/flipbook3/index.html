@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        
+        <title>FlipBook3D with Three.js MOD3.js and Tween.js</title>
+        
+        <style>
+            body
+            {
+                background-color:#121212;
+                color:#aaa;
+                font-size:12px;
+            }
+            .button {
+                -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                box-shadow:inset 0px 1px 0px 0px #ffffff;
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+                background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+                background-color:#ededed;
+                -webkit-border-top-left-radius:20px;
+                -moz-border-radius-topleft:20px;
+                border-top-left-radius:20px;
+                -webkit-border-top-right-radius:20px;
+                -moz-border-radius-topright:20px;
+                border-top-right-radius:20px;
+                -webkit-border-bottom-right-radius:20px;
+                -moz-border-radius-bottomright:20px;
+                border-bottom-right-radius:20px;
+                -webkit-border-bottom-left-radius:20px;
+                -moz-border-radius-bottomleft:20px;
+                border-bottom-left-radius:20px;
+                text-indent:0;
+                border:1px solid #dcdcdc;
+                display:inline-block;
+                color:#777777;
+                font-family:Arial;
+                font-size:15px;
+                font-weight:bold;
+                font-style:normal;
+                height:50px;
+                line-height:50px;
+                width:86px;
+                text-decoration:none;
+                text-align:center;
+                text-shadow:1px 1px 0px #ffffff;
+            }
+            .button:hover {
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+                background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+                background-color:#dfdfdf;
+            }.button:active {
+                position:relative;
+                top:1px;
+            }
+            .button {
+                width:120px;
+                height:30px;
+                line-height:30px;
+                cursor:pointer;
+                position:relative;
+                display:inine-block;
+                margin: 3px 5px;
+            }
+        </style>
+        
+        <script type="text/javascript" src="../three.min.js"></script>
+        <script type="text/javascript" src="../../../build/MOD3.min.js"></script>
+        <script type="text/javascript" src="../../js/Tween.js"></script>
+        <script type="text/javascript" src="./FlipBook3D.js"></script>
+        <script type="text/javascript" src="./FlipBook3DApplication.js"></script>
+    </head>
+    
+    <body>
+        <style>#forkongithub a{background:#aa0000;color:#fff;text-decoration:none;font-family:arial, sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:0.9rem;line-height:1.4rem;position:relative;transition:0.5s;}#forkongithub a:hover{background:#aa0000;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;z-index:100;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:800px){#forkongithub{position:absolute;display:block;z-index:100;top:0;right:0;width:200px;overflow:hidden;height:200px;}#forkongithub a{width:200px;position:absolute;top:60px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}</style><span id="forkongithub"><a href="https://github.com/foo123/MOD3">Fork me on GitHub</a></span>
+        
+        <div style="display:none">
+            <!-- load images here -->
+            <img src="./assets/img/catalog_13.jpg" id="1f" />
+            <img src="./assets/img/mag_page9.jpg" id="1b" />
+            <img src="./assets/img/catalog_06.jpg" id="2f" />
+            <img src="./assets/img/catalog_05.jpg" id="2b" />
+            <img src="./assets/img/catalog_05.jpg" id="3f" />
+            <img src="./assets/img/catalog_11.jpg" id="3b" />
+            <img src="./assets/img/catalog_04.jpg" id="4f" />
+            <img src="./assets/img/catalog_08.jpg" id="4b" />
+        </div>
+        
+        <div id="controls" style="position:absolute;z-index:1000">
+            <input class="button" type="button" id="flipleft" value="flipLeft" />
+            <input class="button" type="button" id="flipright" value="flipRight" />
+        </div>
+        
+        
+        <div id="container" style="position:relative;margin:0 auto;padding:0;z-index:0;cursor:pointer;"></div>
+        
+        <script>
+        //<![CDATA[
+        
+            FlipBook3DApplication.init([
+                {f:document.getElementById('1f').src,b:document.getElementById('1b').src, hard:1},
+                {f:document.getElementById('2f').src,b:document.getElementById('2b').src,hard:0},
+                {f:document.getElementById('3f').src, b:document.getElementById('3b').src ,hard:0},
+                /*{f:"img/catalog_11.jpg" ,b:"img/catalog_12.jpg", hard:0},
+                {f:"img/catalog_09.jpg", b:"img/catalog_07.jpg", hard:0},
+                {f:"img/catalog_06.jpg", b:"img/catalog_01.jpg", hard:0},*/
+                {f:document.getElementById('4f').src, b:document.getElementById('4b').src,hard:1}
+            ]);
+        
+        //]]>
+        </script>
+    </body>
+</html>

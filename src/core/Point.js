@@ -1,14 +1,24 @@
-// 2D Point ------------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.Point=function(x,y)
+/**
+*
+* MOD3  2D Point Class
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var Point = MOD3.Point = MOD3.Extends( Object,
     {
-        this.x=0;
-        this.y=0;
-        if ((typeof (x))!='undefined') this.x=x;
-        if ((typeof (y))!='undefined') this.y=y;
-    }
-    MOD3.Point.prototype.clone=function()
-    {
-        return (new MOD3.Point(this.x,this.y));
-    };
+        constructor : function(x, y) {
+            this.x = (x===undef) ? 0 : x;
+            this.y = (y===undef) ? 0 : y;
+        },
+
+        x : 0,
+        y : 0,
+
+        clone : function() {
+            return new Point(this.x, this.y);
+        }
+    });
+    
 })(MOD3);

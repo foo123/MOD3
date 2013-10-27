@@ -1,4 +1,10 @@
 /**
+*
+* MOD3  Wheel Modifier
+*
+*
+**/
+/**
  *  <b>Wheel modifier.</b> Use it with vehicle models for wheels.
  *  <br>
  *  <p>The usual problem with a 3d wheel in a vahicle is that if it is 
@@ -35,71 +41,82 @@
  *  @author Bartek Drozdz
  *  AS3Mod doc on Wheel.as Modifier
  */
- // Wheel Modifier for MOD3 ---------------------------------------------------------------------------------------------
-(function(MOD3){
-    var invPI = 1.0 / Math.PI, PI2 = 2 * Math.PI;
+(function(MOD3, undef){
     
-    MOD3.Wheel=function()
+    var invPI=MOD3.Constants.invPI, 
+        doublePI=MOD3.Constants.doublePI,
+        Vector3=MOD3.Vector3, Matrix4=MOD3.Matrix4
+    ;
+    
+    var Wheel = MOD3.Wheel = MOD3.Extends( MOD3.Modifier,
     {
-        this.speed=null;
-        this.turn=null;
+       constructor : function() {
+            this.speed = 0;
+            this.turn = 0;
+            this.roll = 0;
+            this.radius = 0;
+            this.steerVector = new Vector3([0, 1, 0]);
+            this.rollVector = new Vector3([0, 0, 1]);
+        },
+        
+        speed : 0,
+        turn : 0,
+        roll : 0,
+        radius : 0,
+        steerVector : null,
+        rollVector : null,
+        
+        setModifiable : function(mod) {
+            this.superCall("setModifiable", mod);
+            this.radius = 0.5*this.mod.width;
+            
+            return this;
+        },
+        
+        apply : function() {
+            var vs = this.mod.getVertices(), vc = vs.length,
+                steerVector = this.steerVector, 
+                turn = this.turn, 
+                rollVector = this.rollVector, 
+                roll = this.roll,
+                ms=null, mt=null, rv=null, v, c
+            ;
+            
+            this.roll += this.speed;
+            
+            if (turn) 
+            {
+                mt = new Matrix4().rotationMatrixFromVector(steerVector, turn);
+                rv = mt.multiplyVector(rollVector.clone());
+                ms = new Matrix4().rotationMatrixFromVector(rv, roll);
+            } 
+            else 
+            {
+                ms = new Matrix4().rotationMatrixFrom(rollVector, roll);
+            }
 
-        this.roll=null;
-        this.radius=null;
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for (var i = 0;i < vc; i++) 
+            {
+                v = vs[vc];
+                c = v.getVector();
+                
+                if (mt)  mt.multiplyVector(c);
+                
+                v,setVector( ms.multiplyVector(c) );
+            }
+             
+            return this;
+       },
         
-        this.steerVector = new MOD3.Vector3(0, 1, 0);
-        this.rollVector = new MOD3.Vector3(0, 0, 1);
+        getStep : function()  {
+            return this.radius * this.speed * invPI;
+        },
         
-        this.speed = 0;
-        this.turn = 0;
-        this.roll = 0;
-    };
-    MOD3.Wheel.prototype=new MOD3.Modifier();
-    MOD3.Wheel.prototype.constructor=MOD3.Wheel;
-    MOD3.Wheel.prototype.setModifiable=function(mod)
-    {
-        MOD3.Modifier.prototype.setModifiable.call(this,mod);
-        this.radius = 0.5*this.mod.width;
-    };
-    MOD3.Wheel.prototype.apply=function()
-    {
-        this.roll += this.speed;
-        
-        var vs = this.mod.getVertices(), vc = vs.length;
-        var steerVector = this.steerVector, turn = this.turn, rollVector = this.rollVector, roll = this.roll;
-        var ms, mt, rv, v, c;
-        
-        if(0 != turn) 
-        {
-            mt = new MOD3.Matrix4().rotationMatrix(steerVector.x, steerVector.y, steerVector.z, turn);
-            rv = rollVector.clone();
-            new MOD3.Matrix4().multiplyVector(mt, rv);
-            ms = new MOD3.Matrix4().rotationMatrix(rv.x, rv.y, rv.z, roll);
-        } 
-        else 
-        {
-            ms = new MOD3.Matrix4().rotationMatrix(rollVector.x, rollVector.y, rollVector.z, roll);
+        getPerimeter : function()  {
+            return this.radius * doublePI;
         }
-
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for (var i = 0;i < vc; i++) 
-        {
-            v = vs[vc];
-            c = v.getVector().clone();
-            if (0 != turn) new MOD3.Matrix4().multiplyVector(mt, c);
-            new MOD3.Matrix4().multiplyVector(ms, c);
-            v.setX(c.x);
-            v.setY(c.y);
-            v.setZ(c.z);
-        }
-    };
-    MOD3.Wheel.prototype.getStep=function()
-    {
-        return this.radius * this.speed * MOD3.Constants.invPI;
-    };
-    MOD3.Wheel.prototype.getPerimeter=function()
-    {
-        return this.radius * MOD3.Constants.doublePI;
-    };
+    });
+    
 })(MOD3);

@@ -1,166 +1,259 @@
-// Matrix4 Class ---------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.Matrix4=function(pn11,pn12,pn13,pn14,
-                            pn21,pn22,pn23,pn24,
-                            pn31,pn32,pn33,pn34,
-                            pn41,pn42,pn43,pn44)
+/**
+*
+* MOD3  3D Transform Matrix Class
+*
+*
+**/
+(function(MOD3, undef){
+    var Sin=Math.sin, Cos=Math.cos,
+        calculateMultiply, multiplyVector
+    ;
+
+    var Matrix4 = MOD3.Matrix4 = MOD3.Extends( Object, 
     {
-        this.n11=1;
-        this.n12=0;
-        this.n13=0;
-        this.n14=0;
-        this.n21=0;
-        this.n22=1;
-        this.n23=0;
-        this.n24=0;
-        this.n31=0;
-        this.n32=0;
-        this.n33=1;
-        this.n34=0;
-        this.n41=0;
-        this.n42=0;
-        this.n43=0;
-        this.n44=1;
+        constructor :function(n11, n12, n13, n14,
+                                n21, n22, n23, n24,
+                                n31, n32, n33, n34,
+                                n41, n42, n43, n44)
+        {
+            this.n11 = (n11===undef) ? 1 : n11;
+            this.n12 = (n12===undef) ? 0 : n12;
+            this.n13 = (n13===undef) ? 0 : n13;
+            this.n14 = (n14===undef) ? 0 : n14;
+            
+            this.n21 = (n21===undef) ? 0 : n21;
+            this.n22 = (n22===undef) ? 1 : n22;
+            this.n23 = (n23===undef) ? 0 : n23;
+            this.n24 = (n24===undef) ? 0 : n24;
+            
+            this.n31 = (n31===undef) ? 0 : n31;
+            this.n32 = (n32===undef) ? 0 : n32;
+            this.n33 = (n33===undef) ? 1 : n33;
+            this.n34 = (n34===undef) ? 0 : n34;
+            
+            this.n41 = (n41===undef) ? 0 : n41;
+            this.n42 = (n42===undef) ? 0 : n42;
+            this.n43 = (n43===undef) ? 0 : n43;
+            this.n44 = (n44===undef) ? 1 : n44;
+        },
+    
+        n11 : 1,
+        n12 : 0,
+        n13 : 0,
+        n14 : 0,
+        n21 : 0,
+        n22 : 1,
+        n23 : 0,
+        n24 : 0,
+        n31 : 0,
+        n32 : 0,
+        n33 : 1,
+        n34 : 0,
+        n41 : 0,
+        n42 : 0,
+        n43 : 0,
+        n44 : 1,
+
+        reset : function() {
+            this.n11=1;
+            this.n12=0;
+            this.n13=0;
+            this.n14=0;
+            this.n21=0;
+            this.n22=1;
+            this.n23=0;
+            this.n24=0;
+            this.n31=0;
+            this.n32=0;
+            this.n33=1;
+            this.n34=0;
+            this.n41=0;
+            this.n42=0;
+            this.n43=0;
+            this.n44=1;
+            
+            return this;
+        },
         
-        if (typeof pn11 != 'undefined')
-        this.n11=pn11;
-        if (typeof pn12 != 'undefined')
-        this.n12=pn12;
-        if (typeof pn13 != 'undefined')
-        this.n13=pn13;
-        if (typeof pn14 != 'undefined')
-        this.n14=pn14;
-        if (typeof pn21 != 'undefined')
-        this.n21=pn21;
-        if (typeof pn22 != 'undefined')
-        this.n22=pn22;
-        if (typeof pn23 != 'undefined')
-        this.n23=pn23;
-        if (typeof pn24 != 'undefined')
-        this.n24=pn24;
-        if (typeof pn31 != 'undefined')
-        this.n31=pn31;
-        if (typeof pn32 != 'undefined')
-        this.n32=pn32;
-        if (typeof pn33 != 'undefined')
-        this.n33=pn33;
-        if (typeof pn34 != 'undefined')
-        this.n34=pn34;
-        if (typeof pn41 != 'undefined')
-        this.n41=pn41;
-        if (typeof pn42 != 'undefined')
-        this.n42=pn42;
-        if (typeof pn43 != 'undefined')
-        this.n43=pn43;
-        if (typeof pn44 != 'undefined')
-        this.n44=pn44;
-    };
-    MOD3.Matrix4.prototype.translationMatrix=function( x, y, z )
+        translationMatrix : function( x, y, z ) {
+            this.n14 = x;
+            this.n24 = y;
+            this.n34 = z;
+            
+            return this;
+        },
+
+        translationMatrixFromVector : function( v ) {
+            var xyz=v.xyz;
+            
+            this.n14 = xyz[0];
+            this.n24 = xyz[1];
+            this.n34 = xyz[2];
+            
+            return this;
+        },
+
+        scaleMatrix : function( x, y, z ) {
+            this.n11 = x;
+            this.n22 = y;
+            this.n33 = z;
+            
+            return this;
+        },
+
+        scaleMatrixFromVector : function( v ) {
+            var xyz=v.xyz;
+            
+            this.n11 = xyz[0];
+            this.n22 = xyz[0];
+            this.n33 = xyz[0];
+            
+            return this;
+        },
+
+        rotationMatrix : function( x, y, z, rad )  {
+            var nCos = Cos(rad);
+            var nSin = Sin(rad);
+            var scos = 1 - nCos;
+
+            var sxy = x * y * scos;
+            var syz = y * z * scos;
+            var sxz = x * z * scos;
+            var sz = nSin * z;
+            var sy = nSin * y;
+            var sx = nSin * x;
+
+            this.n11 = nCos + x * x * scos;
+            this.n12 = -sz + sxy;
+            this.n13 = sy + sxz;
+            this.n14 = 0;
+
+            this.n21 = sz + sxy;
+            this.n22 = nCos + y * y * scos;
+            this.n23 = -sx + syz;
+            this.n24 = 0;
+
+            this.n31 = -sy + sxz;
+            this.n32 = sx + syz;
+            this.n33 = nCos + z * z * scos;
+            this.n34 = 0;
+
+            return this;
+        },
+
+        rotationMatrixFromVector : function( v, rad )  {
+            var xyz=v.xyz, 
+                x=xyz[0],
+                y=xyz[1],
+                z=xyz[2]
+            ;
+            var nCos = Cos(rad);
+            var nSin = Sin(rad);
+            var scos = 1 - nCos;
+
+            var sxy = x * y * scos;
+            var syz = y * z * scos;
+            var sxz = x * z * scos;
+            var sz = nSin * z;
+            var sy = nSin * y;
+            var sx = nSin * x;
+
+            this.n11 = nCos + x * x * scos;
+            this.n12 = -sz + sxy;
+            this.n13 = sy + sxz;
+            this.n14 = 0;
+
+            this.n21 = sz + sxy;
+            this.n22 = nCos + y * y * scos;
+            this.n23 = -sx + syz;
+            this.n24 = 0;
+
+            this.n31 = -sy + sxz;
+            this.n32 = sx + syz;
+            this.n33 = nCos + z * z * scos;
+            this.n34 = 0;
+
+            return this;
+        },
+
+        multiply : function( b ) {
+            calculateMultiply(this, b);
+            return this;
+        },
+
+        multiplyVector : function( v ) {
+            var vxyz = v.xyz,
+                vx = vxyz[0],
+                vy = vxyz[1],
+                vz = vxyz[2];
+            
+            vxyz[0] = vx * this.n11 + vy * this.n12 + vz * this.n13 + this.n14;
+            vxyz[1] = vx * this.n21 + vy * this.n22 + vz * this.n23 + this.n24;
+            vxyz[2] = vx * this.n31 + vy * this.n32 + vz * this.n33 + this.n34;
+            
+            return v;
+        }
+    });
+    
+    // static
+    multiplyVector = Matrix4.multiplyVector = function( m, v ) 
     {
-        //var m = new MOD3.Matrix4();
-        this.n14 = x;
-        this.n24 = y;
-        this.n34 = z;
-        return this;
-    };
-    MOD3.Matrix4.prototype.scaleMatrix=function( x, y, z )
-    {
-        //var m = new MOD3.Matrix4();
-        this.n11 = x;
-        this.n22 = y;
-        this.n33 = z;
-        return this;
-    };
-    MOD3.Matrix4.prototype.rotationMatrix=function( x, y, z, rad/*, targetmatrix*/ )
-    {
-        //var m:Matrix4;
-        //if(!targetmatrix) m = new Matrix4();
-        //else m = targetmatrix; 
+        var vxyz = v.xyz,
+            vx = vxyz[0],
+            vy = vxyz[1],
+            vz = vxyz[2];
+
+        vxyz[0] = vx * m.n11 + vy * m.n12 + vz * m.n13 + m.n14;
+        vxyz[1] = vx * m.n21 + vy * m.n22 + vz * m.n23 + m.n24;
+        vxyz[2] = vx * m.n31 + vy * m.n32 + vz * m.n33 + m.n34;
         
-        var nCos = Math.cos(rad);
-        var nSin = Math.sin(rad);
-        var scos = 1 - nCos;
+        return v;
+    };
+    
+    calculateMultiply = Matrix4.calculateMultiply = function( a, b )  {
+        var 
+            a11 = a.n11,
+            b11 = b.n11,
+            a21 = a.n21, 
+            b21 = b.n21,
+            a31 = a.n31, 
+            b31 = b.n31,
+            a12 = a.n12, 
+            b12 = b.n12,
+            a22 = a.n22, 
+            b22 = b.n22,
+            a32 = a.n32, 
+            b32 = b.n32,
+            a13 = a.n13, 
+            b13 = b.n13,
+            a23 = a.n23, 
+            b23 = b.n23,
+            a33 = a.n33, 
+            b33 = b.n33,
+            a14 = a.n14, 
+            b14 = b.n14,
+            a24 = a.n24, 
+            b24 = b.n24,
+            a34 = a.n34, 
+            b34 = b.n34;
 
-        var sxy = x * y * scos;
-        var syz = y * z * scos;
-        var sxz = x * z * scos;
-        var sz = nSin * z;
-        var sy = nSin * y;
-        var sx = nSin * x;
+        a.n11 = a11 * b11 + a12 * b21 + a13 * b31;
+        a.n12 = a11 * b12 + a12 * b22 + a13 * b32;
+        a.n13 = a11 * b13 + a12 * b23 + a13 * b33;
+        a.n14 = a11 * b14 + a12 * b24 + a13 * b34 + a14;
 
-        this.n11 = nCos + x * x * scos;
-        this.n12 = -sz + sxy;
-        this.n13 = sy + sxz;
-        this.n14 = 0;
+        a.n21 = a21 * b11 + a22 * b21 + a23 * b31;
+        a.n22 = a21 * b12 + a22 * b22 + a23 * b32;
+        a.n23 = a21 * b13 + a22 * b23 + a23 * b33;
+        a.n24 = a21 * b14 + a22 * b24 + a23 * b34 + a24;
+
+        a.n31 = a31 * b11 + a32 * b21 + a33 * b31;
+        a.n32 = a31 * b12 + a32 * b22 + a33 * b32;
+        a.n33 = a31 * b13 + a32 * b23 + a33 * b33;
+        a.n34 = a31 * b14 + a32 * b24 + a33 * b34 + a34;
         
-        this.n21 = sz + sxy;
-        this.n22 = nCos + y * y * scos;
-        this.n23 = -sx + syz;
-        this.n24 = 0;
-        
-        this.n31 = -sy + sxz;
-        this.n32 = sx + syz;
-        this.n33 = nCos + z * z * scos;
-        this.n34 = 0;
-        
-        return this;
+        return a;
     };
-    MOD3.Matrix4.prototype.calculateMultiply=function( a, b )
-    {
-        var a11 = a.n11; 
-        var b11 = b.n11;
-        var a21 = a.n21; 
-        var b21 = b.n21;
-        var a31 = a.n31; 
-        var b31 = b.n31;
-        var a12 = a.n12; 
-        var b12 = b.n12;
-        var a22 = a.n22; 
-        var b22 = b.n22;
-        var a32 = a.n32; 
-        var b32 = b.n32;
-        var a13 = a.n13; 
-        var b13 = b.n13;
-        var a23 = a.n23; 
-        var b23 = b.n23;
-        var a33 = a.n33; 
-        var b33 = b.n33;
-        var a14 = a.n14; 
-        var b14 = b.n14;
-        var a24 = a.n24; 
-        var b24 = b.n24;
-        var a34 = a.n34; 
-        var b34 = b.n34;
 
-        this.n11 = a11 * b11 + a12 * b21 + a13 * b31;
-        this.n12 = a11 * b12 + a12 * b22 + a13 * b32;
-        this.n13 = a11 * b13 + a12 * b23 + a13 * b33;
-        this.n14 = a11 * b14 + a12 * b24 + a13 * b34 + a14;
-
-        this.n21 = a21 * b11 + a22 * b21 + a23 * b31;
-        this.n22 = a21 * b12 + a22 * b22 + a23 * b32;
-        this.n23 = a21 * b13 + a22 * b23 + a23 * b33;
-        this.n24 = a21 * b14 + a22 * b24 + a23 * b34 + a24;
-
-        this.n31 = a31 * b11 + a32 * b21 + a33 * b31;
-        this.n32 = a31 * b12 + a32 * b22 + a33 * b32;
-        this.n33 = a31 * b13 + a32 * b23 + a33 * b33;
-        this.n34 = a31 * b14 + a32 * b24 + a33 * b34 + a34;
-    };
-    MOD3.Matrix4.prototype.multiply=function( a, b )
-    {
-        //var m:Matrix4 = new Matrix4();
-        this.calculateMultiply(a, b);
-        return this;
-    };
-    MOD3.Matrix4.prototype.multiplyVector=function( m, v )
-    {
-        var vx = v.x;
-        var vy = v.y;
-        var vz = v.z;
-
-        v.x = vx * m.n11 + vy * m.n12 + vz * m.n13 + m.n14;
-        v.y = vx * m.n21 + vy * m.n22 + vz * m.n23 + m.n24;
-        v.z = vx * m.n31 + vy * m.n32 + vz * m.n33 + m.n34;
-    };
+    
 })(MOD3);

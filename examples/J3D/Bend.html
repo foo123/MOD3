@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>MOD3 J3D Bend Demo</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="common/common.css"/>
+    <script type="text/javascript" src="common/common.js"></script>
+
+<!-- J3DLIB -->
+<script type="text/javascript" src="j3d.js"></script>
+<!-- J3DLIB -->
+<script type="text/javascript" src="../../build/MOD3.min.js"></script>
+<script type="text/javascript" src="../js/Tween.js"></script>
+
+    <script>
+
+        var demo, DemoConstructor;
+
+        function registerDemo(d) {
+            DemoConstructor = d;
+        }
+
+        window.onload = function() {
+
+            if (!J3D.Capabilities.webgl) return;
+
+            J3D.Performance.domElement.setAttribute('class', 'perf');
+            document.body.appendChild(J3D.Performance.domElement);
+
+            engine = new J3D.Engine();
+
+            loadScript("./bend.js", function() {
+                demo = new DemoConstructor(engine);
+                demo.setup(render);
+            });
+        }
+
+        function render() {
+            requestAnimationFrame(render);
+            //J3D.Performance.clear();
+            demo.render();
+            //J3D.Performance.printInfo();
+        }
+
+    </script>
+
+</head>
+
+<body>
+</body>
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+

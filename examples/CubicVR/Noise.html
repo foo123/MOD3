@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Noise demo and CubicVR.js</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+    body
+    {
+     background-color:#121212;
+    }
+    </style>
+    <script type="text/javascript" src="./CubicVR.min.js"></script>
+    <script type="text/javascript" src="../../build/MOD3.min.js"></script>
+    <script type="text/javascript" src="../js/Tween.js"></script>
+    <script type="text/javascript" src="../js/RequestAnimationFrame.js"></script>
+    </head>
+    <body>
+        <script>
+      function webGLStart() {
+        // by default generate a full screen canvas with automatic resize
+        var gl = CubicVR.init();
+        var canvas = CubicVR.getCanvas();
+        
+        if (!gl) {
+          alert("Sorry, no WebGL support.");
+          return;
+        }
+        
+        // New scene with our canvas dimensions and default camera with FOV 80
+        var scene = new CubicVR.Scene(canvas.width, canvas.height, 80);
+        
+        // set initial camera position and target
+        scene.camera.position = [1,1,1];
+        scene.camera.lookat([0,0,0]);
+        
+        // Add our scene to the window resize list
+        CubicVR.addResizeable(scene);
+        
+        // Create a material for the mesh
+        var boxMaterial = new CubicVR.Material({
+          textures: {
+            color: "6583-diffuse.jpg"
+          }
+        });
+        // Add a box to mesh, size 1.0, apply material and UV parameters
+        var boxMesh = new CubicVR.Mesh({
+          primitive: {
+            type: "box",
+            size: [1, 1, 0.05],
+            material: boxMaterial,
+            uvmapper: {
+              projectionMode: "cubic",
+              scale: [1, 1, 1]
+            }
+          },
+          dynamic:true
+        });
+        // apply regular subdivision, 2 levels
+        boxMesh.subdivide(2,false);
+        // apply catmull-clark subdivision, 3 levels
+        boxMesh.subdivide(2);
+        // prep for rendering and clean data
+        boxMesh.prepare();
+        // SceneObject container for the mesh
+        var boxObject = new CubicVR.SceneObject({ mesh: boxMesh });
+        // A simple Motion representing a translation on X, Y that repeats forever
+        // and an X, Z rotation that continues on an offset forever
+        boxObject.motion = new CubicVR.Motion({
+            rotation: {                         // Controller ID
+                0.0: { y: 0 },            // Time: { MotionID: value, MotionID: value },
+                1.0: { y: 5 },
+                envelope: {                     // Envelope behavior specific to 'rotation' controller
+                    behavior: "linear"
+                }
+            }
+        });
+        
+        // Add SceneObject containing the mesh to the scene
+        scene.bindSceneObject(boxObject);
+        
+        // add a modifier stack
+        var mstack=new MOD3.ModifierStack(MOD3.LibraryCubicVR, boxObject);
+        var mod=new MOD3.Noise(0.1);
+        mod.constraintAxes(MOD3.ModConstant.X | MOD3.ModConstant.Y);
+        mstack.addModifier(mod);
+        var tobj={force:0};
+        new TWEEN.Tween(tobj).to({force:0.2},5000).onUpdate(function(){
+                        //mod.force=this.force;
+                        mstack.apply();}).start();
+        
+        var time=0;
+        // Start our main drawing loop, it provides a timer and the gl context as parameters
+        CubicVR.MainLoop(function(timer, gl) {
+            TWEEN.update();
+            boxMesh.update();
+            scene.evaluate(time); 
+            scene.render();
+            time+=0.1;
+        });
+      }
+      
+      webGLStart();
+        </script>
+</body></html>

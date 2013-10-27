@@ -1,45 +1,60 @@
-// Range utility class for MOD3 -----------------------------------------------------
-(function(MOD3){
-    MOD3.Range=function(s,e)
+/**
+*
+* MOD3  Range Auxilliary Class
+*
+*
+**/
+(function(MOD3, undef){
+    var 
+        normalize=MOD3.XMath.normalize,
+        toRange=MOD3.XMath.toRange,
+        trim=MOD3.XMath.trim
+    ;
+
+    var Range = MOD3.Range = MOD3.Extends( Object,
     {
-        this.start=0;
-        this.end=1;
-        if (typeof s != 'undefined')
-            this.start=s;
-        if (typeof e != 'undefined')
-            this.end=e;
-    };
-    MOD3.Range.prototype.getSize=function()
-    {
-        return this.end - this.start;
-    };
-    MOD3.Range.prototype.move=function(amount)
-    {
-        this.start += amount;
-        this.end += amount;
-    };
-    MOD3.Range.prototype.isIn=function(n)
-    {
-        return n >= this.start && n <= this.end;
-    };
-    MOD3.Range.prototype.normalize=function(n)
-    {
-        return MOD3.XMath.normalize(this.start, this.end, n);
-    };
-    MOD3.Range.prototype.toRange=function(n)
-    {
-        return MOD3.XMath.toRange(this.start, this.end, n);
-    };
-    MOD3.Range.prototype.trim=function(n)
-    {
-        return MOD3.XMath.trim(this.start, this.end, n);
-    };
-    MOD3.Range.prototype.interpolate=function(n, r)
-    {
-        return this.toRange(r.normalize(n));
-    };
-    MOD3.Range.prototype.toString=function()
-    {
-        return "[" + this.start + " - " + this.end + "]";
-    };
+        constructor : function(s, e)  {
+            this.start=0;
+            this.end=1;
+            if (s !== undef)  this.start=s;
+            if (e !== undef)  this.end=e;
+        },
+        
+        start : 0,
+        end : 1,
+
+        getSize : function()  {
+            return this.end - this.start;
+        },
+
+        move : function(amount)  {
+            this.start += amount;
+            this.end += amount;
+        },
+
+        isIn : function(n) {
+            return (n >= this.start && n <= this.end);
+        },
+
+        normalize : function(n) {
+            return normalize(this.start, this.end, n);
+        },
+
+        toRange : function(n) {
+            return toRange(this.start, this.end, n);
+        },
+
+        trim : function(n) {
+            return trim(this.start, this.end, n);
+        },
+
+        interpolate : function(n, r) {
+            return toRange(this.start, this.end, r.normalize(n));
+        },
+
+        toString : function() {
+            return "[" + this.start + " - " + this.end + "]";
+        }
+    });
+    
 })(MOD3);

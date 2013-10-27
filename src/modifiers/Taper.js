@@ -1,51 +1,68 @@
-// Taper Modifier ---------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.Taper=function(f)
+/**
+*
+* MOD3  Taper Modifier
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var Vector3=MOD3.Vector3,
+        Matrix4=MOD3.Matrix4,
+        Pow=Math.pow
+    ;
+    
+    var Taper = MOD3.Taper = MOD3.Extends ( MOD3.Modifier,
     {
-        this.force=null;
-        this.power=null;
+        constructor : function(f)  {
+            /*this.start = 0;
+            this.end = 1;*/
 
-        this.start = 0;
-        this.end = 1;
-
-        this.vector = new MOD3.Vector3(1, 0, 1);
-        this.vector2 = new MOD3.Vector3(0, 1, 0);
+            this.vector = new Vector3([1, 0, 1]);
+            this.vector2 = new Vector3([0, 1, 0]);
+            
+            this.force = (f!==undef) ? f : 0;
+            this.power = 1;
+        },
         
-        if (typeof f != 'undefined')
-            this.force=f;
-        this.power=1;
-    };
-    MOD3.Taper.prototype=new MOD3.Modifier();
-    MOD3.Taper.prototype.constructor=MOD3.Taper;
-    MOD3.Taper.prototype.setFalloff=function(start, end)
-    {
-        this.start=0;
-        this.end=1;
-        if (typeof start != 'undefined')
-            this.start = start;
-        if (typeof end != 'undefined')
-            this.end = end;
-    }
-    MOD3.Taper.prototype.apply=function()
-    {
-        var vs = this.mod.getVertices(), vc = vs.length,
-            vector = this.vector, vector2 = this.vector2, force = this.force, power = this.power;
-        var v, ar, sc, m, n;
+        force : 0,
+        power : 1,
+        /*start : 0,
+        end : 1,*/
+        vector : null,
+        vector2 : null,
         
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for (var i = 0;i < vc; i++) 
-        {
-            v = vs[vc];
+        /*setFalloff : function(start, end)  {
+            this.start = (start!==undef) ? start : 0;
+            this.end = (end!==undef) ? end : 1;
             
-            ar = v.getRatioVector().multiply(vector2);
-            sc = force * Math.pow(ar.getMagnitude(), power);
+            return this;
+        },*/
+        
+        apply : function() {
+            var vs = this.mod.getVertices(), vc = vs.length,
+                vector = this.vector, 
+                vector2 = this.vector2, 
+                force = this.force, 
+                power = this.power,
+                v, ar, sc, m, n, vxyz;
             
-            m = new MOD3.Matrix4().scaleMatrix(1 + sc * vector.x, 1 + sc * vector.y, 1 + sc * vector.z);
-            n = v.getVector();
+            m = new Matrix4();
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for (var i = 0;i < vc; i++) 
+            {
+                v = vs[vc];
+                
+                ar = v.getRatioVector().multiply(vector2);
+                sc = (power != 1) ? force * Pow(ar.getMagnitude(), power) : force * ar.getMagnitude();
+                vxyz = vector.xyz;
+                m.reset().scaleMatrix(1 + sc * vxyz[0], 1 + sc * vxyz[1], 1 + sc * vxyz[2]);
+                n = v.getVector();
+                v.setVector( m.multiplyVector(n) );
+            }
             
-            new MOD3.Matrix4().multiplyVector(m, n);
-            v.setVector( n );
+            return this;
         }
-    };
+    });
+    
 })(MOD3);

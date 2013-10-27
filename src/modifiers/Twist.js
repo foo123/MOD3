@@ -1,38 +1,65 @@
-﻿// Twist Modifier ------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.Twist=function(a)
+﻿/**
+*
+* MOD3  Twist Modifier
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var Vector3=MOD3.Vector3,
+        Matrix4=MOD3.Matrix4
+    ;
+    
+    var Twist = MOD3.Twist = MOD3.Extends ( MOD3.Modifier,
     {
-        this.vector = new MOD3.Vector3(0, 1, 0);
-        this.angle = a;
-        this.center = MOD3.Vector3.ZERO();
-    };
-    MOD3.Twist.prototype=new MOD3.Modifier();
-    MOD3.Twist.prototype.constructor=MOD3.Twist;
-    MOD3.Twist.prototype.apply=function()
-    {
-        this.vector.normalize();
-        var mod = this.mod, vs = mod.getVertices(), vc = vs.length,
-            vector = this.vector, angle = this.angle, center = this.center;
-        var dv = new MOD3.Vector3(0.5*mod.maxX, 0.5*mod.maxY, 0.5*mod.maxZ), invdvm = 1.0/dv.getMagnitude(), factor = invdvm*angle;
-        var d = -MOD3.Vector3.dot(vector, center);
-        var vertex, dd;
+        constructor : function(a) {
+            this.vector = new Vector3([0, 1, 0]);
+            this.angle = (a !== undef) ? a : 0;
+            this.center = Vector3.ZERO();
+            this.mat1 = new Matrix4();
+            this.mat2 = new Matrix4();
+        },
+        
+        vector : null,
+        angle : 0,
+        center : null,
+        mat1 : null,
+        mat2 : null,
+        
+        apply : function() {
+            
+            var mod = this.mod, vs = mod.getVertices(), vc = vs.length,
+                vector = this.vector.normalizeSelf(), 
+                angle = this.angle, 
+                center = this.center,
+                dv = new Vector3([0.5*mod.maxX, 0.5*mod.maxY, 0.5*mod.maxZ]), 
+                invdvm = 1.0/dv.getMagnitude(), 
+                factor = invdvm*angle,
+                d = -Vector3.dot(vector, center),
+                v, dd, vec
+            ;
 
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for(var i = 0;i < this.mod.getVertices().length; i++) 
-        {
-            vertex = vs[vc];
-            // unroll dot product, breaks encapsulation and modularity, but is faster
-            dd = vertex.getX()*vector.x + vertex.getY()*vector.y + vertex.getZ()*vector.z + d;
-            this.twistPoint(vertex, dd * factor);
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for(var i = 0;i < this.mod.getVertices().length; i++) 
+            {
+                v = vs[vc];
+                vec = v.getVector();
+                dd = Vector3.dot(vec, vector) + d;
+                v.setVector( this.twistPoint(vec, vector, dd * factor) );
+            }
+            
+            return this;
+        },
+        
+        twistPoint : function(vertexvector, vector, a) {
+            var mat1 = this.mat1.reset().translationMatrixFromVector(vertexvector),
+                mat2 = this.mat2.reset().rotationMatrixFromVector(vector, a)
+            ;   
+            mat2.multiply(mat1);
+            
+            return new Vector3([mat2.n14, mat2.n24, mat2.n34]);
         }
-    };
-    MOD3.Twist.prototype.twistPoint=function(v, a)
-    {
-        var mat = new MOD3.Matrix4().translationMatrix(v.getX(), v.getY(), v.getZ());   
-        mat = new MOD3.Matrix4().multiply(new MOD3.Matrix4().rotationMatrix(this.vector.x, this.vector.y, this.vector.z, a), mat);  
-        v.setX(mat.n14);
-        v.setY(mat.n24);
-        v.setZ(mat.n34);
-    };
+    });
+    
 })(MOD3);

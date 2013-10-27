@@ -1,46 +1,68 @@
-﻿// Bloat Modifier --------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.Bloat=function()
+/**
+*
+* MOD3  Bloat Modifier
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var Vector3=MOD3.Vector3, 
+        Max=Math.max, Exp=Math.exp
+    ;
+    
+    var Bloat = MOD3.Bloat = MOD3.Extends ( MOD3.Modifier,
     {
-        this.center = MOD3.Vector3.ZERO();
-        this.radius = 0;
-        this.a = 0.01;
-        this.u=MOD3.Vector3.ZERO();
-    };
-    MOD3.Bloat.prototype=new MOD3.Modifier();
-    MOD3.Bloat.prototype.constructor=MOD3.Bloat;
-    MOD3.Bloat.prototype.setRadius=function(v)
-    {
-        this.radius = Math.max (0, v); 
-    };
-    MOD3.Bloat.prototype.setA=function(v)
-    {
-        this.a = Math.max (0, v); 
-    };
-    MOD3.Bloat.prototype.apply=function()
-    {
-        var vs = this.mod.getVertices(), vc = vs.length, 
-            center = this.center, radius = this.radius, a = this.a;
-        var v, magn;
+        constructor : function() {
+            this.radius = 0;
+            this.a = 0.01;
+            this.center = Vector3.ZERO();
+            //this.u = Vector3.ZERO();
+        },
         
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for (var i=0;i<vc;i++) 
-        {
-            v=vs[vc];
-            // get a vector towards vertex
-            this.u.x = v.getX() - center.x;
-            this.u.y = v.getY() - center.y;
-            this.u.z = v.getZ() - center.z;
+        center : null,
+        radius : 0,
+        a : 0.01,
+        //u : null,
+        
+        setRadius : function(v)  {
+            this.radius = Max (0, v); 
+            
+            return this;
+        },
+        
+        setA : function(v)  {
+            this.a = Max (0, v); 
+            
+            return this;
+        },
+        
+        apply : function()  {
+            var vs = this.mod.getVertices(), vc = vs.length, 
+                center = this.center, radius = this.radius, a = this.a;
+            var v, magn, uu; //=Vector3.ZERO();
 
-            // change norm to norm + r * exp (-a * norm)
-            magn = this.u.getMagnitude();
-            this.u.setMagnitude(magn + radius * Math.exp ( - magn * a));
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for (var i=0;i<vc;i++) 
+            {
+                v=vs[vc];
+                
+                // get a vector towards vertex
+                uu = v.getVector().subtractSelf(center);
+                
+                // change norm to norm + r * exp (-a * norm)
+                magn = uu.getMagnitude();
+                uu.setMagnitude(magn + radius * Exp ( - magn * a));
 
-            // move vertex accordingly
-            v.setX(this.u.x + center.x);
-            v.setY(this.u.y + center.y);
-            v.setZ(this.u.z + center.z);
+                // move vertex accordingly
+                v.setVector( uu.addSelf(center) );
+                
+                // ?? needed??
+                //this.u=uu;
+            }
+            
+            return this;
         }
-    };
+    });
+    
 })(MOD3);

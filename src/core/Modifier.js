@@ -1,16 +1,33 @@
-// Base Modifier class -------------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.Modifier=function()
+/**
+*
+* MOD3  Modifier Super Class
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var Modifier = MOD3.Modifier = MOD3.Extends( Object,
     {
-        this.mod=null;
-    };
-    MOD3.Modifier.prototype.setModifiable=function(mod)
-    {
-        this.mod = mod;
-    };
-    MOD3.Modifier.prototype.getVertices=function()
-    {
-        return this.mod.getVertices();
-    };
-    MOD3.Modifier.prototype.apply=function(){};
+        constructor : function(mod) {
+            this.mod = mod || null;
+        },
+        
+        mod : null,
+
+        setModifiable : function(mod) {
+            this.mod = mod;
+            
+            return this;
+        },
+
+        getVertices : function() {
+            return this.mod.getVertices();
+        },
+
+        apply : function(){
+            // override
+            return this;
+        }
+    });
+    
 })(MOD3);

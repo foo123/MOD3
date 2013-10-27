@@ -1,11 +1,13 @@
 /**
 *
+* MOD3 3D Modifier Library for JavaScript
+* port of AS3DMod ActionScript3 library (http://code.google.com/p/as3dmod/)
+*
 * http://github.com/foo123/MOD3
 *
-* MOD3 3D Modifier Library (port of actionscript AS3Mod to javascript)
-* supports: THREE.js, J3D, Copperlicht, CubicVR, Pre3D
+* @support Three.js, J3D, Copperlicht, CubicVR.js, Pre3D
 *
 * @author Nikos M. http://nikos-web-development.netai.net/
 *
 **/
-var MOD3=MOD3 || {};
+var MOD3=MOD3 || { VERSION: "0.3" };

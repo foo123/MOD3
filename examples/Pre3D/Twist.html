@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Twist demo and Pre3D</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+    body
+    {
+     background-color:#121212;
+    }
+    </style>
+    <script src="./pre3d.js"></script>
+    <script src="./pre3d_shape_utils.js"></script>
+    <script src="./demo_utils.js"></script>
+    <!--<script src="js/colorscube.js"></script>-->
+    <script type="text/javascript" src="../../build/MOD3.min.js"></script>
+    <script type="text/javascript" src="../js/Tween.js"></script>
+    <script type="text/javascript" src="../js/RequestAnimationFrame.js"></script>
+    </head>
+    <body>
+        <div id="container" style="position:relative;margin:0 auto;padding:0;z-index:0;cursor:pointer;width:100%;height:600px">
+        <canvas id="canvas" width="100%" height="100%">
+        </canvas>
+        </div>
+        <script>
+
+            var cube;
+            var screen_canvas;
+            var renderer;
+
+            var targetRotationY = 0;
+            var targetRotationOnMouseDownY = 0;
+            var targetRotationX = 0;
+            var targetRotationOnMouseDownX = 0;
+            var rad=500;
+            var mouse={x:0,y:0};
+            var mouseX = 0;
+            var mouseXOnMouseDown = 0;
+            var mouseY = 0;
+            var mouseYOnMouseDown = 0;
+            var mstack,mod;
+            var windowHalfX = window.innerWidth / 2;
+            var windowHalfY = window.innerHeight / 2;
+            var w,h,w2,h2;
+            
+            init();
+            animate();
+            
+            
+              function draw() {
+                renderer.fill_rgba = cube.color;
+                renderer.transform = cube.trans;
+                renderer.bufferShape(cube.shape);
+
+                renderer.ctx.setFillColor(0, 0, 0, 1);
+                renderer.drawBackground();
+
+                renderer.drawBuffer();
+                renderer.emptyBuffer();
+              }
+            
+            function init() {
+
+              var cubebox = Pre3d.ShapeUtils.makeBox(2,2,0.01);
+             //subdivide faces of shape an number of times
+             Pre3d.ShapeUtils.linearSubdivide(cubebox);
+             Pre3d.ShapeUtils.linearSubdivide(cubebox);
+             Pre3d.ShapeUtils.linearSubdivide(cubebox);
+             var transform = new Pre3d.Transform();
+              transform.translate(0, 0, 0);
+              cube={
+                shape: cubebox,
+                color: new Pre3d.RGBA(1, 1, 1, 1),
+                trans: transform};
+                
+                screen_canvas = document.getElementById('canvas');
+                w=window.innerWidth;
+                h=window.innerHeight;
+                w2=w/2;
+                h2=h/2;
+                screen_canvas.style.width=w+"px";
+                screen_canvas.style.height=h+"px";
+                renderer = new Pre3d.Renderer(screen_canvas);
+                renderer.camera.focal_length = 2.5;
+                  
+                  // Have the engine handle mouse / camera movement for us.
+                  DemoUtils.autoCamera(renderer, 0, 0, -8, 0.40, -1.06, 0, draw);
+                
+                mstack=new MOD3.ModifierStack(MOD3.LibraryPre3D,cube.shape);
+                mod=new MOD3.Twist(0);
+                mod.angle=0;
+                mstack.addModifier(mod);
+                var tobj={angle:0};
+                new TWEEN.Tween(tobj).to({angle:Math.PI/4},5000).onUpdate(function(){
+                                mod.angle=this.angle;
+                                mstack.apply();}).start();
+            }
+            
+            function onDocumentMouseDown( event ) {
+                event.preventDefault();
+                mouseX=(( event.clientX / w ) * 2 - 1);
+                targetRotationY=mouseX;
+                mouseY=(( event.clientY / h ) * 2 - 1);
+                targetRotationX=mouseY;
+                container.addEventListener( 'mousemove', onDocumentMouseMove, false );
+                container.addEventListener( 'mouseup', onDocumentMouseUp, false );
+                container.addEventListener( 'mouseout', onDocumentMouseOut, false );
+            }
+
+            
+            function onDocumentMouseMove( event ) {
+
+                /*mouseX = event.clientX - w2;
+                mouseY = event.clientY - h2;
+
+                targetRotationY = targetRotationOnMouseDownY + ( mouseX - mouseXOnMouseDown ) * 0.02;
+                targetRotationX = targetRotationOnMouseDownX + ( mouseY - mouseYOnMouseDown ) * 0.02;*/
+                //var target=
+                //mouse_path.push(e.seenas.ray);
+                mouseX=(( event.clientX / w ) * 2 - 1);
+                targetRotationY=mouseX;
+                mouseY=(( event.clientY / h ) * 2 - 1);
+                targetRotationX=mouseY;
+            }
+
+            function onDocumentMouseUp( event ) {
+                container.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+                container.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+                container.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+            }
+            
+
+            function onDocumentMouseOut( event ) {
+
+                container.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+                container.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+                container.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+            }
+            //
+
+            function animate() {
+
+                requestAnimationFrame( animate );
+                draw();
+                TWEEN.update();
+            }
+            
+        </script>
+</body></html>

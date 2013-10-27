@@ -1,47 +1,57 @@
-// Break Modifier ----------------------------------------------------------------
-(function(MOD3){
-    MOD3.Break=function(o,a)
+/**
+*
+* MOD3  Break Modifier
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var Vector3=MOD3.Vector3, Range=MOD3.Range,
+        Matrix4=MOD3.Matrix4
+    ;
+    
+    var Break = MOD3.Break = MOD3.Extends ( MOD3.Modifier,
     {
-        this.bv = new MOD3.Vector3(0, 1, 0);
-        this.offset=0;
-        this.angle=0;
-        if (typeof o != 'undefined')
-            this.offset=o;
-        if (typeof a != 'undefined')
-            this.angle=a;
-        this.range = new MOD3.Range(0,1);
-    };
-    MOD3.Break.prototype=new MOD3.Modifier();
-    MOD3.Break.prototype.constructor=MOD3.Break;
-    MOD3.Break.prototype.apply=function()
-    {
-        var mod = this.mod, vs = mod.getVertices(), vc = vs.length,
-            offset = this.offset, range = this.range, angle = this.angle, bv = this.bv;
-        var pv, npv, v, c, rm;
-        
-        pv = new MOD3.Vector3(0, 0, -(mod.minZ + mod.depth * offset));
-        npv = pv.negate();
-        rm = new MOD3.Matrix4().rotationMatrix(bv.x, bv.y, bv.z, angle);
-        
-
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for (var i = 0;i < vc; i++) 
-        {
-            v = vs[vc];
-            c = v.getVector();
-            c = c.add(pv);
-
-            if(c.z >= 0 && range.isIn(v.ratioY)) 
-            {
-                new MOD3.Matrix4().multiplyVector(rm, c);
-            }
+        constructor : function(o, a) {
+            this.bv = new Vector3([0, 1, 0]);
+            this.range = new Range(0,1);
             
-            c = c.add(npv);
+            this.offset = (o!==undef) ? o : 0;
+            this.angle = (a!==undef) ? a : 0;
+        },
         
-            v.setX(c.x);
-            v.setY(c.y);
-            v.setZ(c.z);
-        }
-    };
+        bv : null,
+        range : null,
+        offset : 0,
+        angle : 0,
+        
+        apply : function() {
+            var mod = this.mod, vs = mod.getVertices(), vc = vs.length,
+                offset = this.offset, range = this.range, angle = this.angle, bv = this.bv, bvxyz=bv.xyz;
+            var pv, npv, v, c, rm;
+
+            pv = new Vector3([0, 0, -(mod.minZ + mod.depth * offset)]);
+            npv = pv.negate();
+            rm = new Matrix4().rotationMatrix(bvxyz[0], bvxyz[1], bvxyz[2], angle);
+
+
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for (var i = 0;i < vc; i++) 
+            {
+                v = vs[vc];
+                c = v.getVector().addSelf( pv );
+
+                if( c.xyz[2] >= 0 && range.isIn( v.ratio[1] ) ) 
+                {
+                    rm.multiplyVector( c );
+                }
+                
+                v.setVector( c.addSelf( npv ) );
+            }
+             
+            return this;
+       }
+    });
+    
 })(MOD3);

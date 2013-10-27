@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <script type="text/javascript" src="./copperlicht.js"></script>
+    <script type="text/javascript" src="../../build/MOD3.min.js"></script>
+    <script type="text/javascript" src="../js/Tween.js"></script>
+<title>Bend demo and copperlicht.js</title>
+</head>
+<body>
+    <div align="center">
+        <b>Bend demo with copperlicht.js</b><br/>
+        <canvas id="3darea" width="640" height="480" style="background-color:#000000">
+        </canvas>
+    </div>
+    <script type="text/javascript">
+    <!--
+    main = function()
+    {
+        // create the 3d engine
+        var engine = new CL3D.CopperLicht('3darea');
+        
+        if (!engine.initRenderer())
+            return; // this browser doesn't support WebGL
+            
+        // add a new 3d scene
+        
+        var scene = new CL3D.Scene();
+        engine.addScene(scene);
+        
+        scene.setBackgroundColor(CL3D.createColor(1, 0, 0, 64));
+        
+        // add our own scene node
+        var cubenode = new CL3D.CubeSceneNode();
+        scene.getRootSceneNode().addChild(cubenode);
+
+        // set material texture of the cube:
+        cubenode.getMaterial(0).Tex1 = 
+           engine.getTextureManager().getTexture("test.jpg", true);
+                cubenode.addAnimator(new CL3D.AnimatorRotation(new CL3D.Vect3d(0, 0.6, 0.8)));
+        
+        // add a user controlled camera with a first person shooter style camera controller
+        var cam = new CL3D.CameraSceneNode();
+        cam.Pos.X = 50;
+        cam.Pos.Y = 20;
+        
+        var animator = new CL3D.AnimatorCameraFPS(cam, engine);                                     
+        cam.addAnimator(animator);                                      
+        animator.lookAt(new CL3D.Vect3d(0,20,0));           
+        
+        scene.getRootSceneNode().addChild(cam);
+        scene.setActiveCamera(cam);                 
+        
+        var mstack=new MOD3.ModifierStack(MOD3.LibraryCopperlicht,cubenode);
+        var bend=new MOD3.Bend();
+        bend.setAngle(0);
+        bend.force=0;
+        bend.offset=0.5;
+        bend.switchAxes=true;
+        bend.constraint=MOD3.ModConstant.LEFT;
+        mstack.addModifier(bend);
+        var tobj={angle:Math.PI/8,force:0.8};
+        new TWEEN.Tween(tobj).to({force:-0.8},5000).onUpdate(function(){
+                        bend.setAngle(this.angle);
+                        bend.force=this.force;
+                        mstack.apply();}).start();
+    
+    setInterval("TWEEN.update()",1000/30);
+    }
+    
+    
+    main();
+    -->
+    </script>
+</body>
+</html>

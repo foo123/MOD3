@@ -1,196 +1,253 @@
-// Mesh Proxy Class -------------------------------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.MeshProxy=function()
+/**
+*
+* MOD3  MeshProxy Super Class
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var ModConstant=MOD3.ModConstant,
+        X=ModConstant.X, Y=ModConstant.Y, Z=ModConstant.Z,
+        Min=Math.min, Max=Math.max
+    ;
+
+    var MeshProxy = MOD3.MeshProxy = MOD3.Extends( Object, 
     {
-        this.maxX=null;
-        this.maxY=null;
-        this.maxZ=null;
+        constructor : function(mesh) {
+            this.maxX = null;
+            this.maxY = null;
+            this.maxZ = null;
+
+            this.minX = null;
+            this.minY = null;
+            this.minZ = null;
+
+            this.maxAxis = null;
+            this.midAxis = null;
+            this.minAxis = null;
+
+            this.width = null;
+            this.height = null;
+            this.depth = null;
+
+            this.vertices = [];
+            this.faces = [];
+            this.mesh = null;
+            if ( mesh ) this.setMesh(mesh);
+        },
         
-        this.minX=null;
-        this.minY=null;
-        this.minZ=null;
+        maxX : null,
+        maxY : null,
+        maxZ : null,
+        minX : null,
+        minY : null,
+        minZ : null,
         
-        this.maxAxis=null;
-        this.midAxis=null;
-        this.minAxis=null;
+        maxAxis : null,
+        midAxis : null,
+        minAxis : null,
         
-        this.width=null;
-        this.height=null;
-        this.depth=null;
+        widht : null,
+        height : null,
+        depth : null,
         
-        this.vertices = [];
-        this.faces = [];
-        
-        this.mesh=null;
-    };
-    MOD3.MeshProxy.prototype.getVertices=function()
-    {
-        return this.vertices;
-    };
-    MOD3.MeshProxy.prototype.getFaces=function()
-    {
-        return this.faces;
-    };
-    MOD3.MeshProxy.prototype.analyzeGeometry=function()
-    {
-        // cache
-        var vertices=this.getVertices(), vc = vertices.length, i=vc;
-        var v, x, y, z, minX, maxX, minY, maxY, minZ, maxZ, width, height, firstPass=true;
-        var Mathmin=Math.min, Mathmax=Math.max;
-        
-        // optimize loop using while counting down instead of up
-        while (--i >= 0)
-        //for (i = 0; i < vc; i++) 
-        {
+        vertices : null,
+        faces : null,
+        mesh : null,
+
+        setMesh : function(mesh) {
+            this.mesh = mesh;
+            this.vertices = [];
+            // not used
+            //this.faces = [];
+            
+            return this;
+        },
+
+        getVertices : function() {
+            return this.vertices;
+        },
+
+        getFaces : function() {
+            return this.faces;
+        },
+
+        analyzeGeometry : function() {
             // cache
-            v = vertices[i];
-            x = v.getX();
-            y = v.getY();
-            z = v.getZ();
-            if (firstPass) 
+            var vertices=this.vertices, vc = vertices.length, i=vc,
+            v, xyz, x, y, z, minX, maxX, minY, maxY, minZ, maxZ, width, height
+            ;
+
+            // get initial values
+            if (vc)
             {
+                v = vertices[0];
+                xyz = v.getXYZ();
+                x = xyz[0]; y = xyz[1]; z = xyz[2];
                 minX = maxX = x;
                 minY = maxY = y;
                 minZ = maxZ = z;
-                firstPass=false;
-            } 
-            else  
+            }
+            // optimize loop using while counting down instead of up
+            while (--i >= 0)
+            //for (i = 0; i < vc; i++) 
             {
-                minX = Mathmin(minX, x);
-                minY = Mathmin(minY, y);
-                minZ = Mathmin(minZ, z);
+                // cache
+                v = vertices[i];
+                xyz = v.getXYZ();
+                x = xyz[0]; y = xyz[1]; z = xyz[2];
+                v.setOriginalPosition(x, y, z);
                 
-                maxX = Mathmax(maxX, x); 
-                maxY = Mathmax(maxY, y); 
-                maxZ = Mathmax(maxZ, z); 
+                minX = Min(minX, x);
+                minY = Min(minY, y);
+                minZ = Min(minZ, z);
+
+                maxX = Max(maxX, x); 
+                maxY = Max(maxY, y); 
+                maxZ = Max(maxZ, z); 
+            }
+
+            width = maxX - minX;
+            height = maxY - minY;
+            depth = maxZ - minZ;
+            
+            this.width = width;
+            this.height = height;
+            this.depth = depth;
+            this.minX = minX;
+            this.maxX = maxX;
+            this.minY = minY;
+            this.maxY = maxY;
+            this.minZ = minZ;
+            this.maxZ = maxZ;
+
+            var maxe = Max(width, height, depth);
+            var mine = Min(width, height, depth);
+
+            if (maxe == width && mine == height) 
+            {
+                this.minAxis = Y;
+                this.midAxis = Z;
+                this.maxAxis = X;
+            } 
+            else if (maxe == width && mine == depth) 
+            {
+                this.minAxis = Z;
+                this.midAxis = Y;
+                this.maxAxis = X;
+            } 
+            else if (maxe == height && mine == width) 
+            {
+                this.minAxis = X;
+                this.midAxis = Z;
+                this.maxAxis = Y;
+            } 
+            else if (maxe == height && mine == depth) 
+            {
+                this.minAxis = Z;
+                this.midAxis = X;
+                this.maxAxis = Y;
+            } 
+            else if (maxe == depth && mine == width) 
+            {
+                this.minAxis = X;
+                this.midAxis = Y;
+                this.maxAxis = Z;
+            } 
+            else if (maxe == depth && mine == height) 
+            {
+                this.minAxis = Y;
+                this.midAxis = X;
+                this.maxAxis = Z;
+            }
+
+            i = vc;
+            // optimize loop using while counting down instead of up
+            while (--i >= 0)
+            //for (i = 0; i < vc; i++) 
+            {
+                v = vertices[i];
+                xyz = v.getXYZ();
+                v.setRatios((xyz[0] - minX) / width, (xyz[1] - minY) / height, (xyz[2] - minZ) / depth);
             }
             
-            v.setOriginalPosition(x, y, z);
+            return this;
+        },
+
+        resetGeometry : function() {
+            var vertices=this.vertices, vc = vertices.length;
+            
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for (var i = 0; i < vc; i++) 
+            {
+                vertices[vc].reset();
+            }
+            this.update();
+            
+            return this;
+        },
+
+        collapseGeometry : function() {
+            var vertices=this.vertices, vc = vertices.length;
+            
+            // optimize loop using while counting down instead of up
+            while (--vc >= 0)
+            //for (var i = 0; i < vc; i++) 
+            {
+                vertices[vc].collapse();
+            }
+            this.update();
+            
+            this.analyzeGeometry();
+            
+            return this;
+        },
+
+        getMin : function(axis) {
+            switch(axis) 
+            {
+                case X: return this.minX;
+                case Y: return this.minY;
+                case Z: return this.minZ;
+            }
+            return -1;
+        },
+
+        getMax : function(axis) {
+            switch(axis) 
+            {
+                case X: return this.maxX;
+                case Y: return this.maxY;
+                case Z: return this.maxZ;
+            }
+            return -1;
+        },
+
+        getSize : function(axis) {
+            switch(axis) 
+            {
+                case X: return this.width;
+                case Y: return this.height;
+                case Z: return this.depth;
+            }
+            return -1;
+        },
+
+        update : function()  {
+            // do nothing
+            return this;
+        },
+
+        postApply : function()  {
+            // do nothing
+            return this;
+        },
+
+        updateMeshPosition : function(p) {
+            // do nothing
+            return this;
         }
-        
-        width = maxX - minX;
-        height = maxY - minY;
-        depth = maxZ - minZ;
-        this.width = width;
-        this.height = height;
-        this.depth = depth;
-        this.minX = minX;
-        this.maxX = maxX;
-        this.minY = minY;
-        this.maxY = maxY;
-        this.minZ = minZ;
-        this.maxZ = maxZ;
-        
-        var maxe = Mathmax(width, Mathmax(height, depth));
-        var mine = Mathmin(width, Mathmin(height, depth));
-        
-        if (maxe == width && mine == height) 
-        {
-            this.minAxis = MOD3.ModConstant.Y;
-            this.midAxis = MOD3.ModConstant.Z;
-            this.maxAxis = MOD3.ModConstant.X;
-        } 
-        else if (maxe == width && mine == depth) 
-        {
-            this.minAxis = MOD3.ModConstant.Z;
-            this.midAxis = MOD3.ModConstant.Y;
-            this.maxAxis = MOD3.ModConstant.X;
-        } 
-        else if (maxe == height && mine == width) 
-        {
-            this.minAxis = MOD3.ModConstant.X;
-            this.midAxis = MOD3.ModConstant.Z;
-            this.maxAxis = MOD3.ModConstant.Y;
-        } 
-        else if (maxe == height && mine == depth) 
-        {
-            this.minAxis = MOD3.ModConstant.Z;
-            this.midAxis = MOD3.ModConstant.X;
-            this.maxAxis = MOD3.ModConstant.Y;
-        } 
-        else if (maxe == depth && mine == width) 
-        {
-            this.minAxis = MOD3.ModConstant.X;
-            this.midAxis = MOD3.ModConstant.Y;
-            this.maxAxis = MOD3.ModConstant.Z;
-        } 
-        else if (maxe == depth && mine == height) 
-        {
-            this.minAxis = MOD3.ModConstant.Y;
-            this.midAxis = MOD3.ModConstant.X;
-            this.maxAxis = MOD3.ModConstant.Z;
-        }
-        
-        i=vc;
-        // optimize loop using while counting down instead of up
-        while (--i >= 0)
-        //for (i = 0; i < vc; i++) 
-        {
-            v = vertices[i];
-            v.setRatios((v.getX() - minX) / width, (v.getY() - minY) / height, (v.getZ() - minZ) / depth);
-        }
-    };
-    MOD3.MeshProxy.prototype.resetGeometry=function()
-    {
-        var vertices=this.getVertices(), vc = vertices.length;
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for (var i = 0; i < vc; i++) 
-        {
-            vertices[vc].reset();
-        }
-    };
-    MOD3.MeshProxy.prototype.collapseGeometry=function()
-    {
-        var vertices=this.getVertices(), vc = vertices.length;
-        // optimize loop using while counting down instead of up
-        while (--vc >= 0)
-        //for (var i = 0; i < vc; i++) 
-        {
-            vertices[vc].collapse();
-        }
-        this.analyzeGeometry();
-    };
-    MOD3.MeshProxy.prototype.getMin=function(axis)
-    {
-        switch(axis) {
-            case MOD3.ModConstant.X: return this.minX;
-            case MOD3.ModConstant.Y: return this.minY;
-            case MOD3.ModConstant.Z: return this.minZ;
-        }
-        return -1;
-    };
-    MOD3.MeshProxy.prototype.getMax=function(axis)
-    {
-        switch(axis) {
-            case MOD3.ModConstant.X: return this.maxX;
-            case MOD3.ModConstant.Y: return this.maxY;
-            case MOD3.ModConstant.Z: return this.maxZ;
-        }
-        return -1;
-    };
-    MOD3.MeshProxy.prototype.getSize=function(axis)
-    {
-        switch(axis) {
-            case MOD3.ModConstant.X: return this.width;
-            case MOD3.ModConstant.Y: return this.height;
-            case MOD3.ModConstant.Z: return this.depth;
-        }
-        return -1;
-    };
-    MOD3.MeshProxy.prototype.setMesh=function(mesh)
-    {
-        this.mesh = mesh;
-        // it seems to work correctly only by resetting the values, else previous values are kept
-        this.vertices=[];
-        this.faces=[];
-    };
-    MOD3.MeshProxy.prototype.postApply=function()
-    {
-    // do nothing
-    };
-    MOD3.MeshProxy.prototype.updateMeshPosition=function(p)
-    {
-    // do nothing
-    };
+    });
+    
 })(MOD3);

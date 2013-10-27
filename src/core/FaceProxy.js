@@ -1,15 +1,26 @@
-// Face Proxy class ----------------------------------------------------------------------------------------------------------------------
-(function(MOD3){
-    MOD3.FaceProxy=function()
+/**
+*
+* MOD3  FaceProxy Super Class
+*
+*
+**/
+(function(MOD3, undef){
+    
+    var FaceProxy = MOD3.FaceProxy = MOD3.Extends( Object,
     {
-        this.vertices=[];
-    };
-    MOD3.FaceProxy.prototype.addVertex=function(v)
-    {
-        this.vertices.push(v);
-    };
-    MOD3.FaceProxy.prototype.getVertices=function()
-    {
-        return this.vertices;
-    };
+        constructor : function() {
+            this.vertices=[];
+        },
+        
+        vertices : null,
+
+        addVertex : function(v)  {
+            this.vertices.push(v);
+        },
+
+        getVertices : function() {
+            return this.vertices;
+        }
+    });
+    
 })(MOD3);
