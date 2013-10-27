@@ -10,7 +10,7 @@ This is a port of the [AS3dMod Modifier Library for ActionScript 3](http://code.
 __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*
 
 
-[![MOD3.js](/examples/flipbook3/assets/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
+[![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
 It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
 
