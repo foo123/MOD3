@@ -5,81 +5,99 @@
 #
 ###################################################
 
-@DEPENDENCIES
+# A '#' represents a comment and everything after it is skipped
+# Lines starting with # or blank lines are skipped
+# Lines starting with @ are blocks/directives and describe how the build is going to be processed
+# One line for each setting, no multiple settings on same line, line indentation does not matter
+# Blocks with =[] define LISTS (arrays)
+# Blocks with ={} define MAPS (hashmaps)
+# Blocks with = or nothing define VALUES (single value)
+# A key and/or value can be quoted (with ", ' or `, quotes) or unquoted
+# Lines with one or multiple '@'s define the end of that many previous blocks
 
-# core
-./src/MOD3.js
-./src/util/ModConstant.js
-./src/util/XMath.js
-./src/util/Range.js
-./src/util/Phase.js
-./src/core/Point.js
-./src/core/Matrix.js
-./src/core/Vector3.js
-./src/core/Matrix4.js
-./src/core/VertexProxy.js
-./src/core/FaceProxy.js
-./src/core/MeshProxy.js
-./src/core/Modifier.js
-./src/plugins/Library3d.js
-./src/plugins/PluginFactory.js
-./src/ModifierStack.js
+@DEPENDENCIES =[]
 
-# modifiers
-./src/modifiers/Pivot.js
-./src/modifiers/Bend.js
-./src/modifiers/Bloat.js
-./src/modifiers/Twist.js
-./src/modifiers/Skew.js
-./src/modifiers/Taper.js
-./src/modifiers/Wheel.js
-./src/modifiers/Break.js
-./src/modifiers/Noise.js
+    # core
+    ./src/MOD3.js
+    ./src/util/ModConstant.js
+    ./src/util/XMath.js
+    ./src/util/Range.js
+    ./src/util/Phase.js
+    ./src/core/Point.js
+    ./src/core/Matrix.js
+    ./src/core/Vector3.js
+    ./src/core/Matrix4.js
+    ./src/core/VertexProxy.js
+    ./src/core/FaceProxy.js
+    ./src/core/MeshProxy.js
+    ./src/core/Modifier.js
+    ./src/plugins/Library3d.js
+    ./src/plugins/PluginFactory.js
+    ./src/ModifierStack.js
 
-# Support for Three.js
-./src/plugins/Three/Vertex.js
-./src/plugins/Three/Mesh.js
-./src/plugins/Three/Library.js
+    # modifiers
+    ./src/modifiers/Pivot.js
+    ./src/modifiers/Bend.js
+    ./src/modifiers/Bloat.js
+    ./src/modifiers/Twist.js
+    ./src/modifiers/Skew.js
+    ./src/modifiers/Taper.js
+    ./src/modifiers/Wheel.js
+    ./src/modifiers/Break.js
+    ./src/modifiers/Noise.js
 
-# Support for J3D
-./src/plugins/J3D/Vertex.js
-./src/plugins/J3D/Mesh.js
-./src/plugins/J3D/Library.js
+    # Support for Three.js
+    ./src/plugins/Three/Vertex.js
+    ./src/plugins/Three/Mesh.js
+    ./src/plugins/Three/Library.js
 
-# Support for Copperlicht
-./src/plugins/Copperlicht/Vertex.js
-./src/plugins/Copperlicht/Mesh.js
-./src/plugins/Copperlicht/Library.js
+    # Support for J3D
+    ./src/plugins/J3D/Vertex.js
+    ./src/plugins/J3D/Mesh.js
+    ./src/plugins/J3D/Library.js
 
-# Support for CubicVR.js
-./src/plugins/CubicVR/Vertex.js
-./src/plugins/CubicVR/Mesh.js
-./src/plugins/CubicVR/Library.js
+    # Support for Copperlicht
+    ./src/plugins/Copperlicht/Vertex.js
+    ./src/plugins/Copperlicht/Mesh.js
+    ./src/plugins/Copperlicht/Library.js
 
-# Support for Pre3D
-./src/plugins/Pre3D/Vertex.js
-./src/plugins/Pre3D/Mesh.js
-./src/plugins/Pre3D/Library.js
+    # Support for CubicVR.js
+    ./src/plugins/CubicVR/Vertex.js
+    ./src/plugins/CubicVR/Mesh.js
+    ./src/plugins/CubicVR/Library.js
+
+    # Support for Pre3D
+    ./src/plugins/Pre3D/Vertex.js
+    ./src/plugins/Pre3D/Mesh.js
+    ./src/plugins/Pre3D/Library.js
+
+@ # end block
 
 # TODO, allow some pre-process to take place
 #@PREPROCESS
 
-@MINIFY
-# Minify the Package
-@UGLIFY
-# Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
--m -c
-@CLOSURE
-# Options for Java Closure Compiler (if used)
---language_in=ECMASCRIPT5_STRICT
-@YUI
-# Options for Java YUI Compressor Compiler (if used)
---preserve-semi
+# Minify the Package (map of lists)
+@MINIFY ={}
+    
+    # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
+    "UGLIFY" =[]
+        -m -c
+    @ # end block
+    
+    # Options for Java Closure Compiler (if used)
+    "CLOSURE" =[]
+        --language_in=ECMASCRIPT5_STRICT
+    @ # end block
+    
+    # Options for Java YUI Compressor Compiler (if used)
+    "YUI" =[]
+        --preserve-semi
+    @ # end block
 
-@ # dummy separator between blocks, it can be useful
+@ # end block
 
 # TODO, allow some post-process to take place
 #@POSTPROCESS
 
-@OUT
+@OUT =
 ./build/MOD3.min.js
