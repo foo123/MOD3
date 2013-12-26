@@ -8,6 +8,7 @@
 
     // 3D Flip Book -------------------------------------------------------------------------------------------
     var self={}, 
+        Class = root.Classy.Class,
         THREE=root.THREE, 
         TWEEN=root.TWEEN, 
         MOD3=root.MOD3,
@@ -18,10 +19,10 @@
     
     
     // Book  Class-------------------------------------------------------------------------------------------
-    Book = self.Book = MOD3.Extends( THREE.Object3D,
+    Book = self.Book = Class( THREE.Object3D,
     {
         constructor : function() {
-            this.superCall("constructor");
+            this.$super("constructor");
             
             this.pages = null;
             this.pageWidth = 0;
@@ -66,7 +67,7 @@
     });
     
     // Page Class -------------------------------------------------------------------------------------------
-    Page = self.Page = MOD3.Extends( THREE.Mesh,
+    Page = self.Page = Class( THREE.Mesh,
     {
         constructor : function(book, i, matf, matb, hard, col)  {
             this.book = book;
@@ -124,7 +125,7 @@
             }
             // call super
             // Three.js has made materials added to FaceMaterial instead of CubeGeometry
-            THREE.Mesh.call(this, new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1 ), new THREE.MeshFaceMaterial(this.mats));
+            this.$super("constructor", new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1 ), new THREE.MeshFaceMaterial(this.mats));
             //this.superCall("constructor", new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1 ), new THREE.MeshFaceMaterial(this.mats));
             this.overdraw = true;
             this.position.x = this.pW*0.5;

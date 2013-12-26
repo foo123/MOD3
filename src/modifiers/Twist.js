@@ -4,13 +4,22 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Twist modifier 
+ *
+ * Twist mesh along an axis
+ * Adapted from the Twist modifier for PV3D
+ * 
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var Vector3=MOD3.Vector3,
         Matrix4=MOD3.Matrix4
     ;
     
-    var Twist = MOD3.Twist = MOD3.Extends ( MOD3.Modifier,
+    var Twist = MOD3.Twist = Class ( MOD3.Modifier,
     {
         constructor : function(a) {
             this.vector = new Vector3([0, 1, 0]);

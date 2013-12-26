@@ -11,11 +11,11 @@
         Vector3=MOD3.Vector3, A=MOD3.VecArray
     ;
     
-    var VertexCubicVR = MOD3.VertexCubicVR = MOD3.Extends( MOD3.VertexProxy,
+    var VertexCubicVR = MOD3.VertexCubicVR = Class( MOD3.VertexProxy,
     {
         constructor : function(sceneObject, vertex) {
             this.sceneObject = sceneObject;
-            this.superCall('constructor', vertex );
+            this.$super('constructor', vertex );
         },
         
         sceneObject : null,

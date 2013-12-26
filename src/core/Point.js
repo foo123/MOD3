@@ -6,7 +6,7 @@
 **/
 (function(MOD3, undef){
     
-    var Point = MOD3.Point = MOD3.Extends( Object,
+    var Point = MOD3.Point = Class( Object,
     {
         constructor : function(x, y) {
             this.x = (x===undef) ? 0 : x;

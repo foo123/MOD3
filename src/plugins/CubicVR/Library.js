@@ -6,7 +6,7 @@
 **/
 (function(MOD3, undef){
     
-    var LibraryCubicVR = MOD3.Extends( MOD3.Library3d,
+    var LibraryCubicVR = Class( MOD3.Library3d,
     {
         constructor : function() {
             this.id = "CubicVR.js";

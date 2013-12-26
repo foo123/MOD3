@@ -9,7 +9,7 @@
         calculateMultiply, multiplyVector
     ;
 
-    var Matrix4 = MOD3.Matrix4 = MOD3.Extends( Object, 
+    var Matrix4 = MOD3.Matrix4 = Class( Object, 
     {
         constructor :function(n11, n12, n13, n14,
                                 n21, n22, n23, n24,

@@ -8,7 +8,7 @@
     var Sin=Math.sin, Abs=Math.abs
     ;
     
-    var Phase = MOD3.Phase = MOD3.Extends( Object,
+    var Phase = MOD3.Phase = Class( Object,
     {
         constructor : function(v) {
             this.value=0;

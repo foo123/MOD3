@@ -24,6 +24,7 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 * [Live Examples](#live-examples)
 * [3D Engines Support](#support-for-3d-javascript-engines)
 * [3D Modifiers Support](#modifiers-supported-up-to-present)
+* [API Reference](/api-reference.md)
 * [Todo](#todo)
 * [How to debug](#how-to-debug)
 * [ChangeLog](#changelog)
@@ -71,6 +72,7 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 
 
 ###Changelog
+* ver 0.3.1  update buildtools, api-reference, use classy.js for OOP
 * ver 0.3  code refactoring, extension framework, various optimizations, tidy up repo, new build scripts, project stopped
 * added support for CubicVR.js 3D Engine, minor optimizations for all engines
 * added support for Three.js revision (r58)

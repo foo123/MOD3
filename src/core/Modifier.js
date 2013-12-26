@@ -6,7 +6,7 @@
 **/
 (function(MOD3, undef){
     
-    var Modifier = MOD3.Modifier = MOD3.Extends( Object,
+    var Modifier = MOD3.Modifier = Class( Object,
     {
         constructor : function(mod) {
             this.mod = mod || null;

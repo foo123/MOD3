@@ -6,7 +6,7 @@
 **/
 (function(MOD3, undef){
     
-    var LibraryThree = MOD3.Extends( MOD3.Library3d,
+    var LibraryThree = Class( MOD3.Library3d,
     {
         constructor : function() {
             this.id = "Three.js";

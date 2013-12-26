@@ -4,6 +4,16 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Taper modifier 
+ *
+ * The taper modifier displaces the vertices on two axes proportionally to their position on the third axis.
+ *
+ * @author Bartek Drozdz
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var Vector3=MOD3.Vector3,
@@ -11,7 +21,7 @@
         Pow=Math.pow
     ;
     
-    var Taper = MOD3.Taper = MOD3.Extends ( MOD3.Modifier,
+    var Taper = MOD3.Taper = Class ( MOD3.Modifier,
     {
         constructor : function(f)  {
             /*this.start = 0;

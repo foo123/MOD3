@@ -13,7 +13,7 @@
         Floor=Math.florr, Ceil=Math.ceil, Trim
     ;
 
-    var XMath=MOD3.XMath={
+    var XMath = MOD3.XMath = {
 
         normalize : function(start, end, val) {
             var range = end - start, normal;

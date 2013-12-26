@@ -4,12 +4,22 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Pivot modifier 
+ *
+ * Allows to move the pivot point of a 3D mesh.
+ *
+ * @author Bartek Drozdz
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var Vector3=MOD3.Vector3
     ;
     
-    var Pivot = MOD3.Pivot = MOD3.Extends ( MOD3.Modifier,
+    var Pivot = MOD3.Pivot = Class ( MOD3.Modifier,
     {
         constructor : function(x, y, z) {
             this.pivot = new Vector3([x, y, z]);

@@ -4,13 +4,23 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Break modifier 
+ *
+ * Allow to break a mesh
+ *
+ * @author Bartek Drozdz
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var Vector3=MOD3.Vector3, Range=MOD3.Range,
         Matrix4=MOD3.Matrix4
     ;
     
-    var Break = MOD3.Break = MOD3.Extends ( MOD3.Modifier,
+    var Break = MOD3.Break = Class ( MOD3.Modifier,
     {
         constructor : function(o, a) {
             this.bv = new Vector3([0, 1, 0]);

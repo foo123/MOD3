@@ -10,7 +10,7 @@
         A=MOD3.VecArray
     ;
 
-    var Vector3 = MOD3.Vector3 = MOD3.Extends( Object,
+    var Vector3 = MOD3.Vector3 = Class( Object,
     {
         constructor : function(x, y, z) {
             // use an internal typed-array for speed

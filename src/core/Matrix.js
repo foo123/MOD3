@@ -10,7 +10,7 @@
         Point=MOD3.Point
     ;
 
-    var Matrix = MOD3.Matrix = MOD3.Extends( Object,
+    var Matrix = MOD3.Matrix = Class( Object,
     {
         constructor : function(m11, m12, m21, m22) {
             this.m11 = (m11===undef) ? 1 : m11;

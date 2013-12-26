@@ -73,8 +73,17 @@
 
 @ # end block
 
-# TODO, allow some pre-process to take place
-#@PREPROCESS
+@REPLACE ={}
+    "@@VERSION@@" = "0.3.1"
+@ # end block
+
+# extract documentation
+@DOC ={}
+    "STARTDOC" = "/**[DOC_MD]"
+    "ENDDOC" = "[/DOC_MD]**/"
+    "TRIMX" = "\\s*\\*\\s?"
+    "OUTPUT" = ".\api-reference.md"
+@ # end block
 
 # Minify the Package (map of lists)
 @MINIFY ={}
@@ -96,8 +105,5 @@
 
 @ # end block
 
-# TODO, allow some post-process to take place
-#@POSTPROCESS
-
 @OUT =
-./build/MOD3.min.js
+./build/mod3.packaged.js

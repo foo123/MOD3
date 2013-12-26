@@ -10,14 +10,14 @@
         FaceProxy=MOD3.FaceProxy
     ;
     
-    var MeshPre3D = MOD3.MeshPre3D = MOD3.Extends( MOD3.MeshProxy,
+    var MeshPre3D = MOD3.MeshPre3D = Class( MOD3.MeshProxy,
     {
         constructor : function(mesh) { 
-            this.superCall('constructor', mesh );
+            this.$super('constructor', mesh );
         },
         
         setMesh : function(mesh) {
-            this.superCall('setMesh', mesh );
+            this.$super('setMesh', mesh );
             
             var /*lookUp = [],*/ i,
                 vs = this.mesh.vertices,

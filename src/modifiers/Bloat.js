@@ -4,13 +4,23 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Bloat modifier 
+ *
+ * Bloats a mesh by forcing vertices out of specified sphere
+ *
+ * @author makc
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var Vector3=MOD3.Vector3, 
         Max=Math.max, Exp=Math.exp
     ;
     
-    var Bloat = MOD3.Bloat = MOD3.Extends ( MOD3.Modifier,
+    var Bloat = MOD3.Bloat = Class ( MOD3.Modifier,
     {
         constructor : function() {
             this.radius = 0;

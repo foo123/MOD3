@@ -11,10 +11,10 @@
         Vector3=MOD3.Vector3, A=MOD3.VecArray
     ;
     
-    var VertexPre3D = MOD3.VertexPre3D = MOD3.Extends( MOD3.VertexProxy,
+    var VertexPre3D = MOD3.VertexPre3D = Class( MOD3.VertexProxy,
     {
         constructor : function(vertex) {
-            this.superCall('constructor', vertex );
+            this.$super('constructor', vertex );
         },
         
         setVertex : function(vertex) {

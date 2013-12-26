@@ -4,6 +4,16 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Skew modifier 
+ *
+ * Skew mesh along an axis
+ *
+ * @author Bartek Drozdz
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var Abs=Math.abs, Pow=Math.pow,
@@ -14,7 +24,7 @@
         X=ModConstant.X, Y=ModConstant.Y, Z=ModConstant.Z
     ;
     
-    var Skew = MOD3.Skew = MOD3.Extends ( MOD3.Modifier,
+    var Skew = MOD3.Skew = Class ( MOD3.Modifier,
     {
         constructor : function(f) {
             this.force = (f!==undef) ? f : 0;
@@ -39,7 +49,7 @@
         swapAxes : false,
         
         setModifiable : function(mod) {
-            this.superCall("setModifiable", mod)
+            this.$super("setModifiable", mod)
             this.skewAxis = this.skewAxis || this.mod.maxAxis;
             
             return this;

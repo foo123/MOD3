@@ -11,12 +11,12 @@
         Vector3=MOD3.Vector3, A=MOD3.VecArray
     ;
     
-    var VertexCopperlicht = MOD3.VertexCopperlicht = MOD3.Extends( MOD3.VertexProxy,
+    var VertexCopperlicht = MOD3.VertexCopperlicht = Class( MOD3.VertexProxy,
     {
         constructor : function(node, buffer, vertex) {
             this.node = node;
             this.buffer = buffer;
-            this.superCall('constructor', vertex );
+            this.$super('constructor', vertex );
         },
         
         node : null,

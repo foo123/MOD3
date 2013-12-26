@@ -10,14 +10,14 @@
         FaceProxy=MOD3.FaceProxy
     ;
     
-    var MeshCopperlicht = MOD3.MeshCopperlicht = MOD3.Extends( MOD3.MeshProxy,
+    var MeshCopperlicht = MOD3.MeshCopperlicht = Class( MOD3.MeshProxy,
     {
         constructor : function(mesh) { 
-            this.superCall('constructor', mesh );
+            this.$super('constructor', mesh );
         },
         
         setMesh : function(mesh) {
-            this.superCall('setMesh', mesh );
+            this.$super('setMesh', mesh );
             
             var i, b, bl,
                 buffers = this.mesh.getMesh().GetMeshBuffers(),

@@ -10,14 +10,14 @@
         FaceProxy=MOD3.FaceProxy
     ;
     
-    var MeshCubicVR = MOD3.MeshCubicVR = MOD3.Extends( MOD3.MeshProxy,
+    var MeshCubicVR = MOD3.MeshCubicVR = Class( MOD3.MeshProxy,
     {
         constructor : function(mesh) { 
-            this.superCall('constructor', mesh );
+            this.$super('constructor', mesh );
         },
         
         setMesh : function(sceneObject)  {
-            this.superCall('setMesh', sceneObject/*.obj*/ );
+            this.$super('setMesh', sceneObject/*.obj*/ );
             
             var /*lookUp = [],*/ i =0,
                 vs = sceneObject.obj.points, vc = vs.length,

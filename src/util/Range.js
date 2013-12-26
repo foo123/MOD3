@@ -11,7 +11,7 @@
         trim=MOD3.XMath.trim
     ;
 
-    var Range = MOD3.Range = MOD3.Extends( Object,
+    var Range = MOD3.Range = Class( Object,
     {
         constructor : function(s, e)  {
             this.start=0;

@@ -6,7 +6,7 @@
 **/
 (function(MOD3, undef){
     
-    var LibraryCopperlicht = MOD3.Extends( MOD3.Library3d,
+    var LibraryCopperlicht = Class( MOD3.Library3d,
     {
         constructor : function() {
             this.id = "Copperlicht";

@@ -11,7 +11,7 @@
         Min=Math.min, Max=Math.max
     ;
 
-    var MeshProxy = MOD3.MeshProxy = MOD3.Extends( Object, 
+    var MeshProxy = MOD3.MeshProxy = Class( Object, 
     {
         constructor : function(mesh) {
             this.maxX = null;

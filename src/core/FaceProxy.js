@@ -6,7 +6,7 @@
 **/
 (function(MOD3, undef){
     
-    var FaceProxy = MOD3.FaceProxy = MOD3.Extends( Object,
+    var FaceProxy = MOD3.FaceProxy = Class( Object,
     {
         constructor : function() {
             this.vertices=[];

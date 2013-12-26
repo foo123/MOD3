@@ -11,12 +11,12 @@
         Vector3=MOD3.Vector3, A=MOD3.VecArray
     ;
     
-    var VertexJ3D = MOD3.VertexJ3D = MOD3.Extends( MOD3.VertexProxy,
+    var VertexJ3D = MOD3.VertexJ3D = Class( MOD3.VertexProxy,
     {
         constructor : function(geometry, vertex) {
             this.geometry = geometry;
             this.VERTEX_POSITION = J3D.Mesh.VERTEX_POSITION;
-            this.superCall('constructor', vertex );
+            this.$super('constructor', vertex );
         },
         
         geometry : null,

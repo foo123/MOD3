@@ -4,6 +4,16 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Bend modifier 
+ *
+ * Bends an object along an axis. 
+ *
+ * @author Bartek Drozdz
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var NONE=MOD3.ModConstant.NONE,
@@ -15,7 +25,7 @@
         Point=MOD3.Point
     ;
     
-    var Bend = MOD3.Bend = MOD3.Extends ( MOD3.Modifier,
+    var Bend = MOD3.Bend = Class ( MOD3.Modifier,
     {
         constructor : function(f, o, a) {
             this.constraint = NONE;
@@ -60,7 +70,7 @@
         },
         
         setModifiable : function(mod) {
-            this.superCall("setModifiable", mod);
+            this.$super("setModifiable", mod);
             
             this.max = (this.switchAxes) ? this.mod.midAxis : this.mod.maxAxis;
             this.min = this.mod.minAxis;

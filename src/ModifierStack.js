@@ -9,7 +9,7 @@
     var getMeshProxy=MOD3.PluginFactory.getMeshProxy
     ;
     
-    var ModifierStack = MOD3.ModifierStack = MOD3.Extends( Object,
+    var ModifierStack = MOD3.ModifierStack = Class( Object,
     {
         constructor : function(lib3d, mesh) {
             this.baseMesh=null;

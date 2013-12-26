@@ -4,6 +4,15 @@
 *
 *
 **/
+
+/**[DOC_MD]
+ * ###Noise modifier 
+ *
+ * Randomly displaces each vertex in all 3 axes
+ *
+ *  
+[/DOC_MD]**/
+
 (function(MOD3, undef){
     
     var NONE=MOD3.ModConstant.NONE,
@@ -14,7 +23,7 @@
         Rand=Math.random
     ;
     
-    var Noise = MOD3.Noise = MOD3.Extends ( MOD3.Modifier,
+    var Noise = MOD3.Noise = Class ( MOD3.Modifier,
     {
         constructor : function(f) {
             this.axc = NONE;

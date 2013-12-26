@@ -11,7 +11,7 @@
         Vector3=MOD3.Vector3, A=MOD3.VecArray
     ;
     
-    var VertexProxy = MOD3.VertexProxy = MOD3.Extends( Object,
+    var VertexProxy = MOD3.VertexProxy = Class( Object,
     {
         constructor : function(vertex) {
             // use internal typed-arrays for speed

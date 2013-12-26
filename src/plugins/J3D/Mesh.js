@@ -10,17 +10,17 @@
         FaceProxy=MOD3.FaceProxy, A=MOD3.VecArray
     ;
     
-    var MeshJ3D = MOD3.MeshJ3D = MOD3.Extends( MOD3.MeshProxy,
+    var MeshJ3D = MOD3.MeshJ3D = Class( MOD3.MeshProxy,
     {
         constructor : function(mesh) { 
             this.VERTEX_POSITION = J3D.Mesh.VERTEX_POSITION;
-            this.superCall('constructor', mesh );
+            this.$super('constructor', mesh );
         },
         
         VERTEX_POSITION : null,
         
         setMesh : function(transformObject) {
-            this.superCall('setMesh', transformObject );
+            this.$super('setMesh', transformObject );
             
             var i =0, 
                 geometry = transformObject.geometry,
