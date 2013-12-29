@@ -11,6 +11,7 @@
 # One line for each setting, no multiple settings on same line, line indentation does not matter
 # Blocks with =[] define LISTS (arrays)
 # Blocks with ={} define MAPS (hashmaps)
+# Blocks with =[{}] define ORDEREDMAPS (array of hashmaps)
 # Blocks with = or nothing define VALUES (single value)
 # A key and/or value can be quoted (with ", ' or `, quotes) or unquoted
 # Lines with one or multiple '@'s define the end of that many previous blocks
