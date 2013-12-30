@@ -18,6 +18,8 @@
 
 @SRC =[]
 
+    !tpl:umd-header.tpl.js  # include a umd-header template
+    
     # core
     ./src/MOD3.js
     ./src/util/ModConstant.js
@@ -71,11 +73,25 @@
     ./src/plugins/Pre3D/Vertex.js
     ./src/plugins/Pre3D/Mesh.js
     ./src/plugins/Pre3D/Library.js
+    
+    !tpl:umd-footer.tpl.js  # include a umd-footer template
 
 @ # end block
 
 @REPLACE =[{}]
-    "@@VERSION@@" = "0.3.1"
+
+    "@@VERSION@@" = "0.3.2"
+    
+    "@@MODULE_NAME@@" = "MOD3"
+    
+    "@@MODULE_DESC@@" = "MOD3 3D Modifier Library for JavaScript, port of AS3DMod ActionScript3 library (http://code.google.com/p/as3dmod/)"
+    
+    "@@REPO_URL@@" = "https://github.com/foo123/MOD3"
+    
+    "@@MODULE_DEPENDENCIES@@" = "[ ['Classy', './classy'] ]"
+    
+    "@@MODULE_ARGUMENTS@@"  = "Classy"
+    
 @ # end block
 
 # extract documentation
