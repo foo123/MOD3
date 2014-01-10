@@ -1,6 +1,6 @@
 #MOD3 
 
-## Further development on this project has stopped!!
+### Further development on this project has stopped!!
 
 
 __3D Modifier Library for JavaScript__
