@@ -78,15 +78,15 @@
 
 @ # end block
 
+# extract header from this file
+@HEADER = 
+./src/MOD3.js
+
 @REPLACE =[{}]
 
     "@@VERSION@@" = "0.3.2"
     
     "@@MODULE_NAME@@" = "MOD3"
-    
-    "@@MODULE_DESC@@" = "MOD3 3D Modifier Library for JavaScript, port of AS3DMod ActionScript3 library (http://code.google.com/p/as3dmod/)"
-    
-    "@@REPO_URL@@" = "https://github.com/foo123/MOD3"
     
     "@@MODULE_DEPENDENCIES@@" = "[ ['Classy', './classy'] ]"
     
