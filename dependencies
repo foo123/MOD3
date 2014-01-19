@@ -18,7 +18,7 @@
 
 @SRC =[]
 
-    !tpl:umd-header.tpl.js  # include a umd-header template
+    !tpl:umd-header-no-worker.tpl.js  # include a umd-header template
     
     # core
     ./src/MOD3.js
