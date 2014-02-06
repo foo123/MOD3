@@ -7,7 +7,6 @@
 
 # A '#' represents a comment and everything after it is skipped
 # Lines starting with # or blank lines are skipped
-# Lines starting with @ are blocks/directives and describe how the build is going to be processed
 # One line for each setting, no multiple settings on same line, line indentation does not matter
 # Blocks with =[] define LISTS (arrays)
 # Blocks with ={} define MAPS (hashmaps)
@@ -16,7 +15,7 @@
 # A key and/or value can be quoted (with ", ' or `, quotes) or unquoted
 # Lines with one or multiple '@'s define the end of that many previous blocks
 
-@SRC =[]
+SRC =[]
 
     !tpl:umd-header-no-worker.tpl.js  # include a umd-header template
     
@@ -79,10 +78,10 @@
 @ # end block
 
 # extract header from this file
-@HEADER = 
+HEADER = 
 ./src/MOD3.js
 
-@REPLACE =[{}]
+REPLACE =[{}]
 
     "@@VERSION@@" = "0.3.2"
     
@@ -95,7 +94,7 @@
 @ # end block
 
 # extract documentation
-@DOC ={}
+DOC ={}
     "STARTDOC" = "/**[DOC_MD]"
     "ENDDOC" = "[/DOC_MD]**/"
     "TRIMX" = "\\s*\\*\\s?"
@@ -103,7 +102,7 @@
 @ # end block
 
 # Minify the Package (map of lists)
-@MINIFY ={}
+MINIFY ={}
     
     # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
     "UGLIFY" =[]
@@ -122,5 +121,5 @@
 
 @ # end block
 
-@OUT =
+OUT =
 ./build/mod3.packaged.js
