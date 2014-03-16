@@ -28,6 +28,8 @@
     var Bend = MOD3.Bend = Class ( MOD3.Modifier,
     {
         constructor : function(f, o, a) {
+            this.$super('constructor');
+            this.name = 'Bend';
             this.constraint = NONE;
             this.max = 0;
             this.min = 0;
@@ -60,6 +62,28 @@
         m1 : null,
         m2 : null,
         switchAxes : false,
+        
+        dispose : function() {
+            this.force = null;
+            this.offset = null;
+            this.angle = null;
+            this.diagAngle = null;
+            this.constraint = null;
+            this.max = null;
+            this.min = null;
+            this.mid = null;
+            this.width = null;
+            this.height = null;
+            this.origin = null;
+            this.m1 && this.m1.dispose();
+            this.m2 && this.m2.dispose();
+            this.m1 = null;
+            this.m2 = null;
+            this.switchAxes = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         setAngle : function(a) { 
             this.angle = a; 

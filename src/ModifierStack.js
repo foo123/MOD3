@@ -25,6 +25,19 @@
         baseMesh : null,
         stack : null,
 
+        dispose : function(andModifiers) {
+            this.lib3d = null;
+            this.baseMesh.dispose();
+            this.baseMesh = null;
+            if ( andModifiers )
+            {
+                while ( this.stack.length ) this.stack.pop().dispose();
+            }
+            this.stack = null;
+            
+            return this;
+        },
+        
         addModifier : function(modifier) {
             modifier.setModifiable( this.baseMesh );
             this.stack.push( modifier );
@@ -40,9 +53,9 @@
             
             // optimize loop using while
             while (i < sl)
-            //for (var i = 0; i < this.stack.length; i++) 
             {
-                stack[i++].apply();
+                stack[i].enabled && stack[i].apply();
+                i++;
                 // update the mesh after each modifier apply
                 // avoid to update with each vertex change, 
                 // if possible update the mesh all at once

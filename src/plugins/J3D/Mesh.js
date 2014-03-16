@@ -19,6 +19,13 @@
         
         VERTEX_POSITION : null,
         
+        dispose : function() {
+            this.VERTEX_POSITION = null;
+            this.$super('dispose');
+            
+            return this;
+        },
+        
         setMesh : function(transformObject) {
             this.$super('setMesh', transformObject );
             

@@ -16,6 +16,13 @@
         x : 0,
         y : 0,
 
+        dispose : function() {
+            this.x = null;
+            this.y = null;
+            
+            return this;
+        },
+        
         clone : function() {
             return new Point(this.x, this.y);
         }

@@ -31,6 +31,12 @@
         
         xyz : null,
         
+        dispose : function() {
+            this.xyz = null;
+            
+            return this;
+        },
+        
         getXYZ : function() {
            // copy it
            return new A( this.xyz );

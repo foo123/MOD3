@@ -17,6 +17,12 @@
         
         value : 0,
         
+        dispose : function() {
+            this.value = null;
+            
+            return this;
+        },
+        
         getPhasedValue : function()  {
             return Sin(this.value);
         },

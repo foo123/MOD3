@@ -20,6 +20,13 @@
         
         mesh : null,
         
+        dispose : function() {
+            this.mesh = null;
+            this.$super('dispose');
+            
+            return this;
+        },
+        
         setVertex : function(vt) {
             /* Three js uses vector3 now instead of vertex */
             this.vertex = vt;

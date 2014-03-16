@@ -23,6 +23,8 @@
     var Bloat = MOD3.Bloat = Class ( MOD3.Modifier,
     {
         constructor : function() {
+            this.$super('constructor');
+            this.name = 'Bloat';
             this.radius = 0;
             this.a = 0.01;
             this.center = Vector3.ZERO();
@@ -33,6 +35,16 @@
         radius : 0,
         a : 0.01,
         //u : null,
+        
+        dispose : function() {
+            this.center.dispose();
+            this.center = null;
+            this.radius = null;
+            this.a = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         setRadius : function(v)  {
             this.radius = Max (0, v); 

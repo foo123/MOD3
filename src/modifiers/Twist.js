@@ -22,6 +22,8 @@
     var Twist = MOD3.Twist = Class ( MOD3.Modifier,
     {
         constructor : function(a) {
+            this.$super('constructor');
+            this.name = 'Twist';
             this.vector = new Vector3([0, 1, 0]);
             this.angle = (a !== undef) ? a : 0;
             this.center = Vector3.ZERO();
@@ -34,6 +36,21 @@
         center : null,
         mat1 : null,
         mat2 : null,
+        
+        dispose : function() {
+            this.vector.dispose();
+            this.vector = null;
+            this.angle = null;
+            this.center.dispose();
+            this.center = null;
+            this.mat1.dispose();
+            this.mat2.dispose();
+            this.mat1 = null;
+            this.mat2 = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         apply : function() {
             

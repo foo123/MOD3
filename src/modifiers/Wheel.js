@@ -55,6 +55,8 @@
     var Wheel = MOD3.Wheel = Class( MOD3.Modifier,
     {
        constructor : function() {
+            this.$super('constructor');
+            this.name = 'Wheel';
             this.speed = 0;
             this.turn = 0;
             this.roll = 0;
@@ -69,6 +71,20 @@
         radius : 0,
         steerVector : null,
         rollVector : null,
+        
+        dispose : function() {
+            this.speed = null;
+            this.turn = null;
+            this.roll = null;
+            this.radius = null;
+            this.steerVector.dispose();
+            this.rollVector.dispose();
+            this.steerVector = null;
+            this.rollVector = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         setModifiable : function(mod) {
             this.$super("setModifiable", mod);

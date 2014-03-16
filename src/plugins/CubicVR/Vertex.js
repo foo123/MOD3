@@ -20,6 +20,13 @@
         
         sceneObject : null,
         
+        dispose : function() {
+            this.sceneObject = null;
+            this.$super('dispose');
+            
+            return this;
+        },
+        
         setVertex : function(vertex) {
             this.vertex = vertex;
             this.original = new A( vertex );

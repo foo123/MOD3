@@ -26,6 +26,8 @@
     var Noise = MOD3.Noise = Class ( MOD3.Modifier,
     {
         constructor : function(f) {
+            this.$super('constructor');
+            this.name = 'Noise';
             this.axc = NONE;
             this.start = 0;
             this.end = 0; //1;
@@ -37,6 +39,16 @@
         axc : NONE,
         start : 0,
         end : 1,
+        
+        dispose : function() {
+            this.force = null;
+            this.axc = null;
+            this.start = null;
+            this.end = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         constraintAxes : function(c) {
             this.axc = c;

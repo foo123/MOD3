@@ -27,6 +27,8 @@
     var Skew = MOD3.Skew = Class ( MOD3.Modifier,
     {
         constructor : function(f) {
+            this.$super('constructor');
+            this.name = 'Skew';
             this.force = (f!==undef) ? f : 0;
             this.offset = 0.5;
             this.constraint = NONE;
@@ -47,6 +49,21 @@
         inverseFalloff : false,
         oneSide : false,
         swapAxes : false,
+        
+        dispose : function() {
+            this.force = null;
+            this.skewAxis = null;
+            this.offset = null;
+            this.constraint = null;
+            this.power = null;
+            this.falloff = null;
+            this.inverseFalloff = null;
+            this.oneSide = null;
+            this.swapAxes = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         setModifiable : function(mod) {
             this.$super("setModifiable", mod)

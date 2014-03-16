@@ -37,7 +37,7 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 
 
 ###Support for 3D JavaScript engines
-* [Three.js](https://github.com/mrdoob/three.js/) with examples (r58)
+* [Three.js](https://github.com/mrdoob/three.js/) with examples (r66)
 * [J3D](https://github.com/drojdjou/J3D) with examples (Build 51)
 * [Copperlicht](https://github.com/Sebmaster/copperlicht) with examples
 * [CubicVR](https://github.com/cjcliffe/CubicVR.js/) with examples
@@ -62,6 +62,7 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 * add custom modifiers except the defaults found in AS3dMod library
 * make easier to apply modifiers to complex meshes/objects (which consist of submeshes) (recursion??)
 * port the modifiers that use Perlin Noise (using instead the simpler and faster Simplex Noise routine for JavaScript, [noisejs](https://github.com/josephg/noisejs) , or [simplex-noise.js](https://github.com/jwagner/simplex-noise.js))
+* possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
 * keep up with JavaScript 3D Engines updates (will try)
 
 

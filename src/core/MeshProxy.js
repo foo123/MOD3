@@ -55,6 +55,40 @@
         faces : null,
         mesh : null,
 
+        dispose : function() {
+            this.maxX = null;
+            this.maxY = null;
+            this.maxZ = null;
+            this.minX = null;
+            this.minY = null;
+            this.minZ = null;
+            
+            this.maxAxis = null;
+            this.midAxis = null;
+            this.minAxis = null;
+            
+            this.widht = null;
+            this.height = null;
+            this.depth = null;
+            
+            var i, l;
+            if ( this.faces )
+            {
+                l = this.faces.length;
+                for (i=0; i<l; i++) this.faces[ i ].dispose( );
+            }
+            this.faces = null;
+            if ( this.vertices )
+            {
+                l = this.vertices.length;
+                for (i=0; i<l; i++) this.vertices[ i ].dispose( );
+            }
+            this.vertices = null;
+            this.mesh = null;
+            
+            return this;
+        },
+        
         setMesh : function(mesh) {
             this.mesh = mesh;
             this.vertices = [];

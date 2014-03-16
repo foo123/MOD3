@@ -24,6 +24,15 @@
         m21 : 0,
         m22 : 1,
 
+        dispose : function() {
+            this.m11 = null;
+            this.m12 = null;
+            this.m21 = null;
+            this.m22 = null;
+            
+            return this;
+        },
+        
         reset : function() {
             this.m11 = 1;
             this.m12 = 0;

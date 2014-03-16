@@ -22,6 +22,14 @@
         node : null,
         buffer : null,
         
+        dispose : function() {
+            this.node = null;
+            this.buffer = null;
+            this.$super('dispose');
+            
+            return this;
+        },
+        
         setVertex : function(vertex) {
             var vt = vertex.Pos;
             this.vertex = vertex;

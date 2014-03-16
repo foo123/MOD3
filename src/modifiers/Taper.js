@@ -24,6 +24,8 @@
     var Taper = MOD3.Taper = Class ( MOD3.Modifier,
     {
         constructor : function(f)  {
+            this.$super('constructor');
+            this.name = 'Taper';
             /*this.start = 0;
             this.end = 1;*/
 
@@ -47,6 +49,18 @@
             
             return this;
         },*/
+        
+        dispose : function() {
+            this.vector.dispose();
+            this.vector2.dispose();
+            this.vector = null;
+            this.vector2 = null;
+            this.force = null;
+            this.power = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         apply : function() {
             var vs = this.mod.getVertices(), vc = vs.length,

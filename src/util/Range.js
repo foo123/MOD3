@@ -23,6 +23,13 @@
         start : 0,
         end : 1,
 
+        dispose : function() {
+            this.start = null;
+            this.end = null;
+            
+            return this;
+        },
+        
         getSize : function()  {
             return this.end - this.start;
         },

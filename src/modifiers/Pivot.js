@@ -22,10 +22,20 @@
     var Pivot = MOD3.Pivot = Class ( MOD3.Modifier,
     {
         constructor : function(x, y, z) {
+            this.$super('constructor');
+            this.name = 'Pivot';
             this.pivot = new Vector3([x, y, z]);
         },
         
         pivot : null,
+        
+        dispose : function() {
+            this.pivot.dispose();
+            this.pivot = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         setMeshCenter : function() {
             // cache

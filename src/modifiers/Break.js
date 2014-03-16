@@ -23,6 +23,8 @@
     var Break = MOD3.Break = Class ( MOD3.Modifier,
     {
         constructor : function(o, a) {
+            this.$super('constructor');
+            this.name = 'Break';
             this.bv = new Vector3([0, 1, 0]);
             this.range = new Range(0,1);
             
@@ -34,6 +36,18 @@
         range : null,
         offset : 0,
         angle : 0,
+        
+        dispose : function() {
+            this.bv.dispose();
+            this.bv = null;
+            this.range.dispose();
+            this.range = null;
+            this.offset = null;
+            this.angle = null;
+            this.$super('dispose');
+            
+            return this;
+        },
         
         apply : function() {
             var mod = this.mod, vs = mod.getVertices(), vc = vs.length,

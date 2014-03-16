@@ -52,26 +52,6 @@ SRC =[]
     ./src/plugins/Three/Vertex.js
     ./src/plugins/Three/Mesh.js
     ./src/plugins/Three/Library.js
-
-    # Support for J3D
-    ./src/plugins/J3D/Vertex.js
-    ./src/plugins/J3D/Mesh.js
-    ./src/plugins/J3D/Library.js
-
-    # Support for Copperlicht
-    ./src/plugins/Copperlicht/Vertex.js
-    ./src/plugins/Copperlicht/Mesh.js
-    ./src/plugins/Copperlicht/Library.js
-
-    # Support for CubicVR.js
-    ./src/plugins/CubicVR/Vertex.js
-    ./src/plugins/CubicVR/Mesh.js
-    ./src/plugins/CubicVR/Library.js
-
-    # Support for Pre3D
-    ./src/plugins/Pre3D/Vertex.js
-    ./src/plugins/Pre3D/Mesh.js
-    ./src/plugins/Pre3D/Library.js
     
     !tpl:umd-footer.tpl.js  # include a umd-footer template
 
@@ -91,14 +71,6 @@ REPLACE =[{}]
     
     "@@MODULE_ARGUMENTS@@"  = "Classy"
     
-@ # end block
-
-# extract documentation
-DOC ={}
-    "STARTDOC" = "/**[DOC_MD]"
-    "ENDDOC" = "[/DOC_MD]**/"
-    "TRIMX" = "\\s*\\*\\s?"
-    "OUTPUT" = ".\api-reference.md"
 @ # end block
 
 # Minify the Package (map of lists)
@@ -122,4 +94,4 @@ MINIFY ={}
 @ # end block
 
 OUT =
-./build/mod3.min.js
+./build/mod3.three.min.js

@@ -22,6 +22,14 @@
         geometry : null,
         VERTEX_POSITION : null,
         
+        dispose : function() {
+            this.VERTEX_POSITION = null;
+            this.geometry = null;
+            this.$super('dispose');
+            
+            return this;
+        },
+        
         setVertex : function(vertex)  {
             var geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],

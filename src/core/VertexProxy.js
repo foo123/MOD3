@@ -32,6 +32,15 @@
         original : null,
         ratio : null,
         
+        dispose : function() {
+            this.vertex = null;
+            this.xyz = null;
+            this.original = null;
+            this.ratio = null;
+            
+            return this;
+        },
+        
         setVertex : function(vertex)  { 
             // override
             this.vertex = vertex;

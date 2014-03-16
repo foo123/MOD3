@@ -19,10 +19,10 @@ BUNDLE =[]
 
     # bundle-in external dependencies
     ./build/classy.js
-    ./build/mod3.packaged.js
+    ./build/mod3.min.js
     
 @ # end block
 
 
 OUT =
-./build/mod3.min.js
+./build/mod3.bundle.js

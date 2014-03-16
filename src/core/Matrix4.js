@@ -54,6 +54,27 @@
         n43 : 0,
         n44 : 1,
 
+        dispose : function() {
+            this.n11=null;
+            this.n12=null;
+            this.n13=null;
+            this.n14=null;
+            this.n21=null;
+            this.n22=null;
+            this.n23=null;
+            this.n24=null;
+            this.n31=null;
+            this.n32=null;
+            this.n33=null;
+            this.n34=null;
+            this.n41=null;
+            this.n42=null;
+            this.n43=null;
+            this.n44=null;
+            
+            return this;
+        },
+        
         reset : function() {
             this.n11=1;
             this.n12=0;
