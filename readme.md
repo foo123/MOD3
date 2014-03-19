@@ -59,11 +59,11 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 
 
 ###TODO
-* optimize (math ops, caching, modifier chain calls etc..) [DONE partially]
+* possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
 * add custom modifiers except the defaults found in AS3dMod library
 * make easier to apply modifiers to complex meshes/objects (which consist of submeshes) (recursion??)
+* optimize (math ops, caching, modifier chain calls etc..) [DONE partially]
 * port the modifiers that use Perlin Noise (using instead the simpler and faster Simplex Noise routine for JavaScript, [noisejs](https://github.com/josephg/noisejs) , or [simplex-noise.js](https://github.com/jwagner/simplex-noise.js)) [DONE partially]
-* possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
 * keep up with JavaScript 3D Engines updates (will try)
 
 
@@ -74,6 +74,8 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 
 
 ###Changelog
+* 0.3.4  update classy.js, code refactor / optimizations, Perlin modifier added
+* 0.3.2-0.3.3  update buildtools, api-reference, classy.js, Three.js revision (r66)
 * ver 0.3.1  update buildtools, api-reference, use classy.js for OOP
 * ver 0.3  code refactoring, extension framework, various optimizations, tidy up repo, new build scripts, project stopped
 * added support for CubicVR.js 3D Engine, minor optimizations for all engines
