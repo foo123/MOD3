@@ -6,17 +6,17 @@
 **/
 (function(MOD3){
     
-    var VertexCopperlicht=MOD3.VertexCopperlicht,
-        FaceProxy=MOD3.FaceProxy
+    var VertexCopperlicht = MOD3.VertexCopperlicht,
+        FaceProxy = MOD3.FaceProxy
     ;
     
-    var MeshCopperlicht = MOD3.MeshCopperlicht = Class( MOD3.MeshProxy,
-    {
-        constructor : function(mesh) { 
+    var MeshCopperlicht = MOD3.MeshCopperlicht = MOD3.Class( MOD3.MeshProxy, {
+        
+        constructor: function( mesh ) { 
             this.$super('constructor', mesh );
         },
         
-        setMesh : function(mesh) {
+        setMesh: function( mesh ) {
             this.$super('setMesh', mesh );
             
             var i, b, bl,
@@ -29,8 +29,8 @@
                 vs = buffers[b].Vertices;
                 for (i = 0, vc = vs.length; i < vc; i++) 
                 {
-                    nv = new VertexCopperlicht(this.mesh, buffers[b], vs[i]);
-                    vertices.push(nv);
+                    nv = new VertexCopperlicht( this.mesh, buffers[b], vs[i] );
+                    vertices.push( nv );
                 }
             }
             this.faces = null;
@@ -39,20 +39,20 @@
         },
         
         // use a batch update, instead of update vertex by vertex (faster??)
-        update : function()  {
-            var buffers=this.mesh.getMesh().GetMeshBuffers(), 
-                l=buffers.length, i=0;
+        update: function( )  {
+            var buffers = this.mesh.getMesh().GetMeshBuffers(), 
+                l = buffers.length, i = 0;
             
-            while (i<l)
+            while ( i < l )
             {
-                buffers[i].update(true);
+                buffers[ i ].update( true );
                 i++;
             }
             
             return this;
         },
 
-        updateMeshPosition : function(p) {
+        updateMeshPosition: function( p ) {
             var Pos = this.mesh.Pos, xyz = p.xyz;
             Pos.X += xyz[0];
             Pos.Y += xyz[1];

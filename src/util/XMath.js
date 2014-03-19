@@ -7,18 +7,18 @@
 (function(MOD3, undef){
     // cache constants
     var 
-        toRad=MOD3.Constants.toRad, toDeg=MOD3.Constants.toDeg,
-        Min=Math.min, Max=Math.max,
-        Pow=Math.pow, Round=Math.round,
-        Floor=Math.florr, Ceil=Math.ceil, Trim
+        toRad = MOD3.Constants.toRad, toDeg = MOD3.Constants.toDeg,
+        Min = Math.min, Max = Math.max,
+        Pow = Math.pow, Round = Math.round,
+        Floor = Math.florr, Ceil = Math.ceil, Trim
     ;
 
-    var XMath = MOD3.XMath = {
+    var XMath = MOD3.XMath = MOD3.StaticClass({
 
-        normalize : function(start, end, val) {
+        normalize: function( start, end, val ) {
             var range = end - start, normal;
 
-            if (0 == range) 
+            if ( 0 === range ) 
             {
                 normal = 1;
             } 
@@ -30,10 +30,10 @@
             return normal;
         },
 
-        toRange : function(start, end, normalized) {
+        toRange: function( start, end, normalized ) {
             var range = end - start, val;
 
-            if (0 == range) 
+            if ( 0 === range ) 
             {
                 val = 0;
             } 
@@ -45,44 +45,44 @@
             return val;
         },
 
-        inRange : function(start, end, value, excluding) {
-            if (excluding===undef) excluding=false;
+        inRange: function( start, end, value, excluding ) {
+            if (excluding===undef) excluding = false;
             return (excluding) ? (value >= start && value <= end) : (value > start && value < end);
         },
 
-        sign : function(val, ifZero) {
-            if (ifZero===undef) ifZero=0;
+        sign: function( val, ifZero ) {
+            if (ifZero===undef) ifZero = 0;
             return (0 == val) ? ifZero : (val > 0) ? 1 : -1;
         },
 
-        trim : function(start, end, value) {
-            return Min(end, Max(start, value));
+        trim: function( start, end, value ) {
+            return Min( end, Max( start, value ) );
         },
 
-        wrap : function(start, end, value) {
-            var r=end-start;
+        wrap: function( start, end, value ) {
+            var r = end-start;
             if (value < start) return value + r;
             else if (value >= end) return value - r;
             else return value;
         },
 
-        degToRad : function(deg) {
+        degToRad: function( deg ) {
             return deg * toRad;
         },
 
-        radToDeg : function(rad)  {
+        radToDeg: function( rad )  {
             return rad * toDeg;
         },
 
-        presicion : function(number, precision) {
-            var r = Pow(10, precision);
-            return Round(number * r) / r;
+        presicion: function( number, precision ) {
+            var r = Pow( 10, precision );
+            return Round( number * r ) / r;
         },
 
-        uceil : function(val) {
+        uceil: function( val ) {
             return (val < 0) ? Floor(val) : Ceil(val);
         }
-    };
+    });
     // alias
     Trim = XMath.clamp = XMath.trim;
 

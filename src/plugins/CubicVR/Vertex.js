@@ -6,28 +6,28 @@
 **/
 (function(MOD3, undef){
     
-    var ModConstant=MOD3.ModConstant,
-        X=ModConstant.X, Y=ModConstant.Y, Z=ModConstant.Z,
-        Vector3=MOD3.Vector3, A=MOD3.VecArray
+    var ModConstant = MOD3.ModConstant,
+        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
+        Vector3 = MOD3.Vector3, A = MOD3.VecArray
     ;
     
-    var VertexCubicVR = MOD3.VertexCubicVR = Class( MOD3.VertexProxy,
-    {
-        constructor : function(sceneObject, vertex) {
+    var VertexCubicVR = MOD3.VertexCubicVR = MOD3.Class( MOD3.VertexProxy, {
+        
+        constructor: function( sceneObject, vertex ) {
             this.sceneObject = sceneObject;
             this.$super('constructor', vertex );
         },
         
-        sceneObject : null,
+        sceneObject: null,
         
-        dispose : function() {
+        dispose: function( ) {
             this.sceneObject = null;
             this.$super('dispose');
             
             return this;
         },
         
-        setVertex : function(vertex) {
+        setVertex: function( vertex ) {
             this.vertex = vertex;
             this.original = new A( vertex );
             this.xyz = new A( vertex );
@@ -35,23 +35,23 @@
             return this;
         },
         
-        getXYZ : function(){
+        getXYZ: function( ) {
             return new A( this.vertex );
         },
         
-        getX : function(){
+        getX: function( ) {
             return this.vertex[0];
         },
         
-        getY : function(){
+        getY: function( ) {
             return this.vertex[1];
         },
         
-        getZ : function(){  
+        getZ: function( ) {  
             return this.vertex[2];
         },
         
-        setXYZ : function(xyz) {
+        setXYZ: function( xyz ) {
             var vt = this.vertex;
             
             vt[0] = xyz[0];
@@ -62,7 +62,7 @@
             return this;
         },
         
-        setX : function(v) {
+        setX: function( v ) {
             var vt = this.vertex, _update = false;
             
             //if ( v != vt[0] ) _update = true;
@@ -77,7 +77,7 @@
             return this;
         },
         
-        setY : function(v) {
+        setY: function( v ) {
             var vt = this.vertex, _update = false;
             
             //if ( v != vt[1] ) _update = true;
@@ -92,7 +92,7 @@
             return this;
         },
         
-        setZ : function(v) {
+        setZ: function( v ) {
             var vt = this.vertex, _update = false;
             
             //if ( v != vt[2] ) _update = true;
@@ -107,7 +107,7 @@
             return this;
         },
         
-        reset : function() {
+        reset: function( ) {
             var vt = this.vertex, xyz = this.original;
             
             vt[0] = xyz[0];
@@ -118,15 +118,15 @@
             return this;
         },
 
-        collapse : function() {
+        collapse: function( ) {
             this.original = new A( this.vertex );
             
             return this;
         },
 
-        getValue : function(axis)  {
-            var vt=this.vertex;
-            switch(axis) 
+        getValue: function( axis )  {
+            var vt = this.vertex;
+            switch( axis ) 
             {
                 case X: return vt[0];
                 case Y: return vt[1];
@@ -135,9 +135,9 @@
             return 0;
         },
 
-        setValue : function(axis, v) {
+        setValue: function( axis, v ) {
             var vt = this.vertex, _update = false;
-            switch(axis) 
+            switch( axis ) 
             {
                 case X: vt[0] = v; _update = true; break;
                 case Y: vt[1] = v; _update = true; break;
@@ -150,8 +150,8 @@
             return this;
        },
        
-        setVector : function(v) {
-            var vt=this.vertex, xyz=v.xyz;
+       setVector: function( v ) {
+            var vt = this.vertex, xyz = v.xyz;
             
             vt[0] = xyz[0];
             vt[1] = xyz[1];
@@ -161,7 +161,7 @@
             return this;
         },
 
-        getVector : function() {
+        getVector: function( ) {
             return new Vector3( this.vertex );
         }
     });

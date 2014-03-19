@@ -106,3 +106,17 @@ Allow to break a mesh
 Randomly displaces each vertex in all 3 axes
 
  
+
+
+
+###Perlin modifier 
+
+ Displaces vertices based on a perlin/simplex noise source.
+
+ Generates perlin/simplex noise source and displaces vertices 
+ based on the value of each point of the noise map.
+ 
+ @author Bartek Drozdz
+
+ @uses: https://github.com/josephg/noisejs for JavaScript
+ 

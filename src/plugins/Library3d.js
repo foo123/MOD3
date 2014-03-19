@@ -6,17 +6,17 @@
 **/
 (function(MOD3, undef){
     
-    var Library3d = MOD3.Library3d = Class( Object,
-    {
-        constructor : function() {
+    var Library3d = MOD3.Library3d = MOD3.Class( Object, {
+        
+        constructor: function( ) {
             this.id = '';
             this.meshClass = null;
             this.vertexClass = null;
         },
         
-        id : '',
-        meshClass : null,
-        vertexClass : null
+        id: '',
+        meshClass: null,
+        vertexClass: null
     });
     
 })(MOD3);

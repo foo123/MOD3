@@ -6,14 +6,14 @@
 **/
 (function(MOD3, undef){
     
-    var ModConstant=MOD3.ModConstant,
-        X=ModConstant.X, Y=ModConstant.Y, Z=ModConstant.Z,
-        Vector3=MOD3.Vector3, A=MOD3.VecArray
+    var ModConstant = MOD3.ModConstant,
+        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
+        Vector3 = MOD3.Vector3, A = MOD3.VecArray
     ;
     
-    var VertexProxy = MOD3.VertexProxy = Class( Object,
-    {
-        constructor : function(vertex) {
+    var VertexProxy = MOD3.VertexProxy = MOD3.Class( Object, {
+        
+        constructor: function( vertex ) {
             // use internal typed-arrays for speed
             this.xyz = new A( [0,0,0] );
             this.original = new A( [0,0,0] );
@@ -27,12 +27,12 @@
             )  this.setVertex( vertex );
         },
         
-        vertex : null,
-        xyz : null,
-        original : null,
-        ratio : null,
+        vertex: null,
+        xyz: null,
+        original: null,
+        ratio: null,
         
-        dispose : function() {
+        dispose: function( ) {
             this.vertex = null;
             this.xyz = null;
             this.original = null;
@@ -41,19 +41,19 @@
             return this;
         },
         
-        setVertex : function(vertex)  { 
+        setVertex: function( vertex )  { 
             // override
             this.vertex = vertex;
             
             return this;
         },
 
-        getRatioVector : function() {
+        getRatioVector: function( ) {
             return new Vector3( this.ratio );
         },
 
-        getRatio : function(axis) {
-            switch(axis) 
+        getRatio: function( axis ) {
+            switch( axis ) 
             {
                 case X: return this.ratio[0];
                 case Y: return this.ratio[1];
@@ -62,8 +62,8 @@
             return -1;
         },
 
-        getOriginalValue : function(axis) {
-            switch(axis) 
+        getOriginalValue: function( axis ) {
+            switch( axis ) 
             {
                 case X: return this.original[0];
                 case Y: return this.original[1];
@@ -72,7 +72,7 @@
             return 0;
         },
 
-        setRatios : function(rx, ry, rz) {
+        setRatios: function( rx, ry, rz ) {
             rx = (rx===undef) ? 0 : rx;
             ry = (ry===undef) ? 0 : ry;
             rz = (rz===undef) ? 0 : rz;
@@ -81,7 +81,7 @@
             return this;
         },
 
-        setOriginalPosition : function(ox, oy, oz) {
+        setOriginalPosition: function( ox, oy, oz ) {
             ox = (ox===undef) ? 0 : ox;
             oy = (oy===undef) ? 0 : oy;
             oz = (oz===undef) ? 0 : oz;
@@ -90,75 +90,75 @@
             return this;
         },
 
-        getXYZ : function() {
+        getXYZ: function( ) {
             // override
             return new A( this.xyz );
         },
         
-        getXYZRef : function() {
+        getXYZRef: function( ) {
             // override
             return this.xyz;
         },
         
-        getX : function() {
+        getX: function( ) {
             // override
             return this.xyz[0];
         },
 
-        getY : function() {
+        getY: function( ) {
             // override
             return this.xyz[1];
         },
 
-        getZ : function() {
+        getZ: function( ) {
             // override
             return this.xyz[2];
         },
 
-        setXYZ : function(xyz) {
+        setXYZ: function( xyz ) {
             // override
             this,xyz = new A( xyz );
             return this;
         },
         
-        setXYZRef : function(xyz) {
+        setXYZRef: function( xyz ) {
             // override
             this,xyz = xyz;
             return this;
         },
         
-        setX : function(v) {
+        setX: function( v ) {
             // override
-            this.xyz[0]=v;
+            this.xyz[0] = v;
             return this;
         },
 
-        setY : function(v) {
+        setY: function( v ) {
             // override
-            this.xyz[1]=v;
+            this.xyz[1] = v;
             return this;
         },
 
-        setZ : function(v) {
+        setZ: function( v ) {
             // override
-            this.xyz[2]=v;
+            this.xyz[2] = v;
             return this;
         },
 
-        getValue : function(axis)  {
+        getValue: function( axis )  {
             // override
-            switch(axis) 
+            switch( axis ) 
             {
-                case X: return this.getX();
-                case Y: return this.getY();
-                case Z: return this.getZ();
+                case X: return this.getX( );
+                case Y: return this.getY( );
+                case Z: return this.getZ( );
             }
             return 0;
         },
 
-        setValue : function(axis, v) {
+        setValue: function( axis, v ) {
             // override
-            switch(axis) 
+            switch( axis ) 
             {
                 case X: this.setX( v ); break;
                 case Y: this.setY( v ); break;
@@ -167,24 +167,24 @@
             return this;
         },
 
-        reset : function() {
+        reset: function( ) {
             // override ??
             this.setXYZ( this.original );
             return this;
         },
 
-        collapse : function() {
+        collapse: function( ) {
             // override ??
-            this.original = this.getXYZ();
+            this.original = this.getXYZ( );
             return this;
         },
 
-        getVector : function() {
+        getVector: function( ) {
             // override
-            return new Vector3( this.getXYZ() );
+            return new Vector3( this.getXYZ( ) );
         },
 
-        setVector : function(v) {
+        setVector: function( v ) {
             // override
             this.setXYZ( v.xyz );
         }

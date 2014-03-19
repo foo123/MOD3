@@ -6,11 +6,12 @@
 **/
 (function(MOD3, undef){
     
-    var modCount = 0;
-    var Modifier = MOD3.Modifier = Class( Object,
-    {
-        constructor : function(mod) {
-            this.id = ++modCount;
+    var _modCount = 0;
+    
+    var Modifier = MOD3.Modifier = MOD3.Class( Object, {
+        
+        constructor: function( mod ) {
+            this.id = ++_modCount;
             this.name = 'Generic Modifier';
             this.mod = mod || null;
             this.enabled = true;
@@ -21,13 +22,13 @@
         mod : null,
         enabled: true,
 
-        dispose : function() {
+        dispose: function( ) {
             this.mod = null;
             this.name = null;
             return this;
         },
         
-        enable : function(enabled) {
+        enable: function( enabled ) {
             if ( undef !== enabled )
             {
                 this.enabled = !!enabled;
@@ -36,17 +37,17 @@
             return this.enabled;
         },
         
-        setModifiable : function(mod) {
+        setModifiable: function( mod ) {
             this.mod = mod;
             
             return this;
         },
 
-        getVertices : function() {
+        getVertices: function( ) {
             return this.mod.getVertices();
         },
 
-        apply : function(){
+        apply: function( ) {
             // override
             return this;
         }

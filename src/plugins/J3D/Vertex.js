@@ -6,23 +6,23 @@
 **/
 (function(MOD3, undef){
     
-    var ModConstant=MOD3.ModConstant,
-        X=ModConstant.X, Y=ModConstant.Y, Z=ModConstant.Z,
-        Vector3=MOD3.Vector3, A=MOD3.VecArray
+    var ModConstant = MOD3.ModConstant,
+        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
+        Vector3 = MOD3.Vector3, A = MOD3.VecArray
     ;
     
-    var VertexJ3D = MOD3.VertexJ3D = Class( MOD3.VertexProxy,
-    {
-        constructor : function(geometry, vertex) {
+    var VertexJ3D = MOD3.VertexJ3D = MOD3.Class( MOD3.VertexProxy, {
+        
+        constructor: function( geometry, vertex ) {
             this.geometry = geometry;
             this.VERTEX_POSITION = J3D.Mesh.VERTEX_POSITION;
             this.$super('constructor', vertex );
         },
         
-        geometry : null,
-        VERTEX_POSITION : null,
+        geometry: null,
+        VERTEX_POSITION: null,
         
-        dispose : function() {
+        dispose: function( ) {
             this.VERTEX_POSITION = null;
             this.geometry = null;
             this.$super('dispose');
@@ -30,7 +30,7 @@
             return this;
         },
         
-        setVertex : function(vertex)  {
+        setVertex: function( vertex )  {
             var geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
                 data = vbo.data
@@ -42,7 +42,7 @@
             return this;
         },
         
-        getXYZ : function(){
+        getXYZ: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -51,7 +51,7 @@
             return new A( [data[vt], data[vt+1], data[vt+2]] );
         },
         
-        getX : function(){
+        getX: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -60,7 +60,7 @@
             return data[vt];
         },
         
-        getY : function(){
+        getY: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -69,7 +69,7 @@
             return data[vt+1];
         },
         
-        getZ : function(){
+        getZ: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -78,7 +78,7 @@
             return data[vt+2];
         },
         
-        setXYZ : function(xyz) {
+        setXYZ: function( xyz ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -93,7 +93,7 @@
             return this;
         },
         
-        setX : function(v) {
+        setX: function( v ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -113,7 +113,7 @@
             return this;
         },
         
-        setY : function(v) {
+        setY: function( v ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -133,7 +133,7 @@
             return this;
         },
         
-        setZ : function(v) {
+        setZ: function( v ) {
             var vt = this.vertex, 
                 geometry = this.geometry,
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -153,7 +153,7 @@
             return this;
         },
         
-        reset : function() {
+        reset: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry, 
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -169,7 +169,7 @@
             return this;
         },
 
-        collapse : function() {
+        collapse: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry, 
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -179,13 +179,13 @@
             return this;
         },
 
-        getValue : function(axis)  {
+        getValue: function( axis )  {
             var vt = this.vertex, 
                 geometry = this.geometry, 
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
                 data = vbo.data
             ;
-            switch(axis) 
+            switch( axis ) 
             {
                 case X: return data[vt];
                 case Y: return data[vt+1];
@@ -194,7 +194,7 @@
             return 0;
         },
 
-        setValue : function(axis, v) {
+        setValue: function( axis, v ) {
             var vt = this.vertex, 
                 geometry = this.geometry, 
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -214,7 +214,7 @@
             return this;
        },
        
-        setVector : function(v) {
+       setVector: function( v ) {
             var vt = this.vertex, 
                 geometry = this.geometry, 
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],
@@ -229,7 +229,7 @@
             return this;
         },
 
-        getVector : function() {
+        getVector: function( ) {
             var vt = this.vertex, 
                 geometry = this.geometry, 
                 vbo = geometry.arraysByName[this.VERTEX_POSITION],

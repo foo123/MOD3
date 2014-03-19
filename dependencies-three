@@ -37,6 +37,10 @@ SRC =[]
     ./src/plugins/PluginFactory.js
     ./src/ModifierStack.js
 
+    # 3rd-party
+    # https://github.com/josephg/noisejs
+    ./src/3rd-party/perlin.js
+    
     # modifiers
     ./src/modifiers/Pivot.js
     ./src/modifiers/Bend.js
@@ -47,6 +51,7 @@ SRC =[]
     ./src/modifiers/Wheel.js
     ./src/modifiers/Break.js
     ./src/modifiers/Noise.js
+    ./src/modifiers/Perlin.js
 
     # Support for Three.js
     ./src/plugins/Three/Vertex.js
@@ -63,7 +68,9 @@ HEADER =
 
 REPLACE =[{}]
 
-    "@@VERSION@@" = "0.3.3"
+    "@@VERSION@@" = "0.3.4"
+    
+    "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
     
     "@@MODULE_NAME@@" = "MOD3"
     

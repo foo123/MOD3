@@ -6,24 +6,24 @@
 **/
 (function(MOD3, undef){
     
-    var Point = MOD3.Point = Class( Object,
-    {
-        constructor : function(x, y) {
+    var Point = MOD3.Point = MOD3.Class( Object, {
+        
+        constructor: function( x, y ) {
             this.x = (x===undef) ? 0 : x;
             this.y = (y===undef) ? 0 : y;
         },
 
-        x : 0,
-        y : 0,
+        x: 0,
+        y: 0,
 
-        dispose : function() {
+        dispose: function( ) {
             this.x = null;
             this.y = null;
             
             return this;
         },
         
-        clone : function() {
+        clone: function( ) {
             return new Point(this.x, this.y);
         }
     });

@@ -10,21 +10,40 @@
     //
     // Constants
     MOD3.Constants = {
+        
         // cache math constants for reference and optimization
         PI : Math.PI,
+        
         invPI : 1.0 / Math.PI,
+        
         halfPI : 0.5 * Math.PI,
+        
         doublePI : 2 * Math.PI,
+        
         toRad : Math.PI / 180,// 1.0 / 180 * Math.PI,
+        
         toDeg : 180 / Math.PI //1.0 / 180 * Math.PI
     };
+    
     MOD3.ModConstant = {
+        
         LEFT : -1, 
+        
         RIGHT : 1, 
+        
         NONE : 0, 
+        
         X : 1, 
+        
         Y : 2, 
-        Z : 4
+        
+        Z : 4,
+        
+        XC : 0, 
+        
+        YC : 1, 
+        
+        ZC : 2
     };
     
     //

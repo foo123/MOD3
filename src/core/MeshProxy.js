@@ -6,14 +6,14 @@
 **/
 (function(MOD3, undef){
     
-    var ModConstant=MOD3.ModConstant,
-        X=ModConstant.X, Y=ModConstant.Y, Z=ModConstant.Z,
-        Min=Math.min, Max=Math.max
+    var ModConstant = MOD3.ModConstant,
+        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
+        Min = Math.min, Max = Math.max
     ;
 
-    var MeshProxy = MOD3.MeshProxy = Class( Object, 
-    {
-        constructor : function(mesh) {
+    var MeshProxy = MOD3.MeshProxy = MOD3.Class( Object, {
+        
+        constructor: function( mesh ) {
             this.maxX = null;
             this.maxY = null;
             this.maxZ = null;
@@ -33,7 +33,7 @@
             this.vertices = [];
             this.faces = [];
             this.mesh = null;
-            if ( mesh ) this.setMesh(mesh);
+            if ( undef !== mesh ) this.setMesh( mesh );
         },
         
         maxX : null,
@@ -55,7 +55,7 @@
         faces : null,
         mesh : null,
 
-        dispose : function() {
+        dispose: function( ) {
             this.maxX = null;
             this.maxY = null;
             this.maxZ = null;
@@ -89,56 +89,55 @@
             return this;
         },
         
-        setMesh : function(mesh) {
+        setMesh: function( mesh ) {
             this.mesh = mesh;
-            this.vertices = [];
+            this.vertices = [ ];
             // not used
             //this.faces = [];
             
             return this;
         },
 
-        getVertices : function() {
+        getVertices: function( ) {
             return this.vertices;
         },
 
-        getFaces : function() {
+        getFaces: function( ) {
             return this.faces;
         },
 
-        analyzeGeometry : function() {
+        analyzeGeometry: function( ) {
             // cache
-            var vertices=this.vertices, vc = vertices.length, i=vc,
-            v, xyz, x, y, z, minX, maxX, minY, maxY, minZ, maxZ, width, height
+            var vertices = this.vertices, vc = vertices.length, i = vc,
+                v, xyz, x, y, z, minX, maxX, minY, maxY, minZ, maxZ, width, height
             ;
 
             // get initial values
-            if (vc)
+            if ( vc )
             {
-                v = vertices[0];
-                xyz = v.getXYZ();
-                x = xyz[0]; y = xyz[1]; z = xyz[2];
+                v = vertices[ 0 ];
+                xyz = v.getXYZ( );
+                x = xyz[ 0 ]; y = xyz[ 1 ]; z = xyz[ 2 ];
                 minX = maxX = x;
                 minY = maxY = y;
                 minZ = maxZ = z;
             }
             // optimize loop using while counting down instead of up
-            while (--i >= 0)
-            //for (i = 0; i < vc; i++) 
+            while ( --i >= 0 )
             {
                 // cache
-                v = vertices[i];
-                xyz = v.getXYZ();
-                x = xyz[0]; y = xyz[1]; z = xyz[2];
-                v.setOriginalPosition(x, y, z);
+                v = vertices[ i ];
+                xyz = v.getXYZ( );
+                x = xyz[ 0 ]; y = xyz[ 1 ]; z = xyz[ 2 ];
+                v.setOriginalPosition( x, y, z );
                 
-                minX = Min(minX, x);
-                minY = Min(minY, y);
-                minZ = Min(minZ, z);
+                minX = Min( minX, x );
+                minY = Min( minY, y );
+                minZ = Min( minZ, z );
 
-                maxX = Max(maxX, x); 
-                maxY = Max(maxY, y); 
-                maxZ = Max(maxZ, z); 
+                maxX = Max( maxX, x ); 
+                maxY = Max( maxY, y ); 
+                maxZ = Max( maxZ, z ); 
             }
 
             width = maxX - minX;
@@ -155,40 +154,40 @@
             this.minZ = minZ;
             this.maxZ = maxZ;
 
-            var maxe = Max(width, height, depth);
-            var mine = Min(width, height, depth);
+            var maxe = Max( width, height, depth );
+            var mine = Min( width, height, depth );
 
-            if (maxe == width && mine == height) 
+            if ( maxe == width && mine == height ) 
             {
                 this.minAxis = Y;
                 this.midAxis = Z;
                 this.maxAxis = X;
             } 
-            else if (maxe == width && mine == depth) 
+            else if ( maxe == width && mine == depth ) 
             {
                 this.minAxis = Z;
                 this.midAxis = Y;
                 this.maxAxis = X;
             } 
-            else if (maxe == height && mine == width) 
+            else if ( maxe == height && mine == width ) 
             {
                 this.minAxis = X;
                 this.midAxis = Z;
                 this.maxAxis = Y;
             } 
-            else if (maxe == height && mine == depth) 
+            else if ( maxe == height && mine == depth ) 
             {
                 this.minAxis = Z;
                 this.midAxis = X;
                 this.maxAxis = Y;
             } 
-            else if (maxe == depth && mine == width) 
+            else if ( maxe == depth && mine == width ) 
             {
                 this.minAxis = X;
                 this.midAxis = Y;
                 this.maxAxis = Z;
             } 
-            else if (maxe == depth && mine == height) 
+            else if ( maxe == depth && mine == height ) 
             {
                 this.minAxis = Y;
                 this.midAxis = X;
@@ -197,49 +196,40 @@
 
             i = vc;
             // optimize loop using while counting down instead of up
-            while (--i >= 0)
-            //for (i = 0; i < vc; i++) 
+            while ( --i >= 0 )
             {
-                v = vertices[i];
-                xyz = v.getXYZ();
-                v.setRatios((xyz[0] - minX) / width, (xyz[1] - minY) / height, (xyz[2] - minZ) / depth);
+                v = vertices[ i ];
+                xyz = v.getXYZ( );
+                v.setRatios((xyz[ 0 ] - minX) / width, (xyz[ 1 ] - minY) / height, (xyz[ 2 ] - minZ) / depth);
             }
             
             return this;
         },
 
-        resetGeometry : function() {
-            var vertices=this.vertices, vc = vertices.length;
+        resetGeometry: function( ) {
+            var vertices = this.vertices, vc = vertices.length;
             
             // optimize loop using while counting down instead of up
-            while (--vc >= 0)
-            //for (var i = 0; i < vc; i++) 
-            {
-                vertices[vc].reset();
-            }
-            this.update();
+            while ( --vc >= 0 ) vertices[ vc ].reset( );
+            this.update( );
             
             return this;
         },
 
-        collapseGeometry : function() {
-            var vertices=this.vertices, vc = vertices.length;
+        collapseGeometry: function( ) {
+            var vertices = this.vertices, vc = vertices.length;
             
             // optimize loop using while counting down instead of up
-            while (--vc >= 0)
-            //for (var i = 0; i < vc; i++) 
-            {
-                vertices[vc].collapse();
-            }
-            this.update();
+            while ( --vc >= 0 ) vertices[ vc ].collapse( );
+            this.update( );
             
-            this.analyzeGeometry();
+            this.analyzeGeometry( );
             
             return this;
         },
 
-        getMin : function(axis) {
-            switch(axis) 
+        getMin: function( axis ) {
+            switch( axis ) 
             {
                 case X: return this.minX;
                 case Y: return this.minY;
@@ -248,8 +238,8 @@
             return -1;
         },
 
-        getMax : function(axis) {
-            switch(axis) 
+        getMax: function( axis ) {
+            switch( axis ) 
             {
                 case X: return this.maxX;
                 case Y: return this.maxY;
@@ -258,8 +248,8 @@
             return -1;
         },
 
-        getSize : function(axis) {
-            switch(axis) 
+        getSize: function( axis ) {
+            switch( axis ) 
             {
                 case X: return this.width;
                 case Y: return this.height;
@@ -268,17 +258,17 @@
             return -1;
         },
 
-        update : function()  {
+        update: function( )  {
             // do nothing
             return this;
         },
 
-        postApply : function()  {
+        postApply: function( )  {
             // do nothing
             return this;
         },
 
-        updateMeshPosition : function(p) {
+        updateMeshPosition: function( p ) {
             // do nothing
             return this;
         }

@@ -6,12 +6,12 @@
 **/
 (function(MOD3, undef){
     
-    var PluginFactory = MOD3.PluginFactory = {
+    var PluginFactory = MOD3.PluginFactory = MOD3.StaticClass({
         
-        getMeshProxy : function(lib3d) {
+        getMeshProxy: function( lib3d ) {
             var MeshProxyClass = lib3d.meshClass;
-            return (MeshProxyClass) ? new MeshProxyClass() : null;
+            return (MeshProxyClass) ? new MeshProxyClass( ) : null;
         }
-    };
+    });
     
 })(MOD3);

@@ -16,18 +16,18 @@
 
 (function(MOD3, undef){
     
-    var NONE=MOD3.ModConstant.NONE,
-        LEFT=MOD3.ModConstant.LEFT,
-        RIGHT=MOD3.ModConstant.RIGHT,
-        Matrix=MOD3.Matrix, 
-        Atan=Math.atan, Atan2=Math.atan2, Sin=Math.sin, Cos=Math.cos,
-        PI=MOD3.Constants.PI, halfPI=MOD3.Constants.halfPI, doublePI=MOD3.Constants.doublePI,
-        Point=MOD3.Point
+    var NONE = MOD3.ModConstant.NONE,
+        LEFT = MOD3.ModConstant.LEFT,
+        RIGHT = MOD3.ModConstant.RIGHT,
+        Matrix = MOD3.Matrix, 
+        Atan = Math.atan, Atan2 = Math.atan2, Sin = Math.sin, Cos = Math.cos,
+        PI = MOD3.Constants.PI, halfPI = MOD3.Constants.halfPI, doublePI = MOD3.Constants.doublePI,
+        Point = MOD3.Point
     ;
     
-    var Bend = MOD3.Bend = Class ( MOD3.Modifier,
-    {
-        constructor : function(f, o, a) {
+    var Bend = MOD3.Bend = MOD3.Class ( MOD3.Modifier, {
+        
+        constructor: function( f, o, a ) {
             this.$super('constructor');
             this.name = 'Bend';
             this.constraint = NONE;
@@ -44,26 +44,26 @@
 
             this.force = (f!==undef) ? f : 0;
             this.offset = (o!==undef) ? o : 0;
-            if (a!==undef) this.setAngle(a);
-            else this.setAngle(0);
+            if (a!==undef) this.setAngle( a );
+            else this.setAngle( 0 );
         },
     
-        force : 0,
-        offset : 0,
-        angle : 0,
-        diagAngle : 0,
-        constraint : NONE,
-        max : 0,
-        min : 0,
-        mid : 0,
-        width : 0,
-        height : 0,
-        origin : 0,
-        m1 : null,
-        m2 : null,
-        switchAxes : false,
+        force: 0,
+        offset: 0,
+        angle: 0,
+        diagAngle: 0,
+        constraint: NONE,
+        max: 0,
+        min: 0,
+        mid: 0,
+        width: 0,
+        height: 0,
+        origin: 0,
+        m1: null,
+        m2: null,
+        switchAxes: false,
         
-        dispose : function() {
+        dispose: function( ) {
             this.force = null;
             this.offset = null;
             this.angle = null;
@@ -75,8 +75,8 @@
             this.width = null;
             this.height = null;
             this.origin = null;
-            this.m1 && this.m1.dispose();
-            this.m2 && this.m2.dispose();
+            this.m1 && this.m1.dispose( );
+            this.m2 && this.m2.dispose( );
             this.m1 = null;
             this.m2 = null;
             this.switchAxes = null;
@@ -85,34 +85,34 @@
             return this;
         },
         
-        setAngle : function(a) { 
+        setAngle: function( a ) { 
             this.angle = a; 
-            this.m1 = new Matrix().rotate(a);
-            this.m2 = new Matrix().rotate(-a);
+            this.m1 = new Matrix( ).rotate( a );
+            this.m2 = new Matrix( ).rotate( -a );
             
             return this;
         },
         
-        setModifiable : function(mod) {
+        setModifiable: function( mod ) {
             this.$super("setModifiable", mod);
             
             this.max = (this.switchAxes) ? this.mod.midAxis : this.mod.maxAxis;
             this.min = this.mod.minAxis;
             this.mid = (this.switchAxes) ? this.mod.maxAxis : this.mod.midAxis;
                 
-            this.width = this.mod.getSize(this.max);    
-            this.height = this.mod.getSize(this.mid);
-            this.origin = this.mod.getMin(this.max);
+            this.width = this.mod.getSize( this.max );    
+            this.height = this.mod.getSize( this.mid );
+            this.origin = this.mod.getMin( this.max );
             
-            this.diagAngle = Atan(this.width / this.height);
+            this.diagAngle = Atan( this.width / this.height );
             
             return this;
         },
         
-        apply : function() {   
+        apply: function( ) {   
             if ( !this.force ) return  this;
 
-            var vs = this.mod.getVertices(), vc = vs.length,
+            var vs = this.mod.vertices, vc = vs.length,
                 constraint = this.constraint,
                 width = this.width, 
                 offset = this.offset, 
@@ -132,16 +132,15 @@
                 ;
             
             // optimize loop using while counting down instead of up
-            while (--vc >= 0)
-            //for (var i = 0; i < vc; i++) 
+            while ( --vc >= 0 )
             {
-                v = vs[vc];
+                v = vs[ vc ];
                 
-                vmax = v.getValue(max);
-                vmid = v.getValue(mid);
-                vmin = v.getValue(min);
+                vmax = v.getValue( max );
+                vmid = v.getValue( mid );
+                vmin = v.getValue( min );
 
-                np = m1.transformPointSelf( new Point(vmax, vmid) );
+                np = m1.transformPointSelf( new Point( vmax, vmid ) );
                 vmax = np.x;
                 vmid = np.y;
 
@@ -163,16 +162,17 @@
                     vmax = distance - ow;
                 }
 
-                np2 = m2.transformPointSelf( new Point(vmax, vmid) );
+                np2 = m2.transformPointSelf( new Point( vmax, vmid ) );
                 vmax = np2.x;
                 vmid = np2.y;
                 
-                v.setValue(max, vmax);
-                v.setValue(mid, vmid);
-                v.setValue(min, vmin);
+                v.setValue( max, vmax );
+                v.setValue( mid, vmid );
+                v.setValue( min, vmin );
             }
             
             return this;
         }
     });
+    
 })(MOD3);

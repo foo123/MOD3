@@ -16,28 +16,27 @@
 
 (function(MOD3, undef){
     
-    var Vector3=MOD3.Vector3
-    ;
+    var Vector3 = MOD3.Vector3;
     
-    var Pivot = MOD3.Pivot = Class ( MOD3.Modifier,
-    {
-        constructor : function(x, y, z) {
+    var Pivot = MOD3.Pivot = MOD3.Class ( MOD3.Modifier, {
+        
+        constructor: function( x, y, z ) {
             this.$super('constructor');
             this.name = 'Pivot';
             this.pivot = new Vector3([x, y, z]);
         },
         
-        pivot : null,
+        pivot: null,
         
-        dispose : function() {
-            this.pivot.dispose();
+        dispose: function( ) {
+            this.pivot.dispose( );
             this.pivot = null;
             this.$super('dispose');
             
             return this;
         },
         
-        setMeshCenter : function() {
+        setMeshCenter: function( ) {
             // cache
             var mod = this.mod;
             
@@ -50,20 +49,19 @@
             return this;
         },
         
-        apply : function() {
-            var vs = this.mod.getVertices(), vc=vs.length, 
+        apply: function( ) {
+            var vs = this.mod.vertices, vc = vs.length, 
                 pivot = this.pivot, 
                 v, vv;
 
             // optimize loop using while counting down instead of up
-            while (--vc >= 0)
-            //for (var i = 0; i < vc; i++) 
+            while ( --vc >= 0 )
             {
-                v = vs[vc];
-                v.setVector( v.getVector().addSelf( pivot ) );
+                v = vs[ vc ];
+                v.setVector( v.getVector( ).addSelf( pivot ) );
             }
 
-            this.mod.updateMeshPosition( pivot.negate() );
+            this.mod.updateMeshPosition( pivot.negate( ) );
             
             return this;
         }

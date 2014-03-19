@@ -6,25 +6,25 @@
 **/
 (function(MOD3, undef){
     
-    var FaceProxy = MOD3.FaceProxy = Class( Object,
-    {
-        constructor : function() {
-            this.vertices = [];
+    var FaceProxy = MOD3.FaceProxy = MOD3.Class( Object, {
+        
+        constructor: function( ) {
+            this.vertices = [ ];
         },
         
-        vertices : null,
+        vertices: null,
 
-        dispose : function() {
+        dispose: function( ) {
             this.vertices = null;
             
             return this;
         },
         
-        addVertex : function(v)  {
-            this.vertices.push(v);
+        addVertex: function( v )  {
+            this.vertices.push( v );
         },
 
-        getVertices : function() {
+        getVertices: function( ) {
             return this.vertices;
         }
     });
