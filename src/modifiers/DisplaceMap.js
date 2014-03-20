@@ -6,18 +6,18 @@
 **/
 
 /**[DOC_MD]
- *  ###DisplaceMap (BitmapDisplacement) Modifier 
+ * ###DisplaceMap (BitmapDisplacement) Modifier 
  *
- *  Displaces vertices based on RGB values of bitmapData pixels. 
- *  
- *  BitmapDisplacement is inspired by both the AS3 built-in DisplacementMapFilter. It allows
- *  to use color values for each channels of a bitmap to modify the position of vertices in a mesh.
- *  
- *  The displacement takes place along the cardinal axes, and each axis is mapped to a 
- *  channel in the bitmap: X for Red, Y for Green and Z for Blue.
- *  
- *  @author Bartek Drozdz
- *  
+ * Displaces vertices based on RGB values of bitmapData pixels. 
+ * 
+ * BitmapDisplacement is inspired by both the AS3 built-in DisplacementMapFilter. It allows
+ * to use color values for each channels of a bitmap to modify the position of vertices in a mesh.
+ * 
+ * The displacement takes place along the cardinal axes, and each axis is mapped to a 
+ * channel in the bitmap: X for Red, Y for Green and Z for Blue.
+ * 
+ * @author Bartek Drozdz
+ * 
 [/DOC_MD]**/
 
 (function(MOD3, undef){
