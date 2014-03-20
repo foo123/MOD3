@@ -20,7 +20,7 @@
     
     var Taper = MOD3.Taper = MOD3.Class ( MOD3.Modifier, {
         
-        constructor: function( f )  {
+        constructor: function( f, p )  {
             this.$super('constructor');
             this.name = 'Taper';
             /*this.start = 0;
@@ -29,8 +29,8 @@
             this.vector = new Vector3([1, 0, 1]);
             this.vector2 = new Vector3([0, 1, 0]);
             
-            this.force = (f!==undef) ? f : 0;
-            this.power = 1;
+            this.force = (f !== undef) ? f : 0;
+            this.power = (p !== undef) ? p : 1;
         },
         
         force: 0,
@@ -68,15 +68,16 @@
                 v, ar, sc, m, n, vxyz;
             
             m = new Matrix4( );
+            
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )
             {
                 v = vs[ vc ];
                 
                 ar = v.getRatioVector( ).multiply( vector2 );
-                sc = (power != 1) ? force * Pow(ar.getMagnitude( ), power) : force * ar.getMagnitude( );
+                sc = (1 !== power) ? force * Pow(ar.getMagnitude( ), power) : force * ar.getMagnitude( );
                 vxyz = vector.xyz;
-                m.reset( ).scaleMatrix( 1 + sc * vxyz[0], 1 + sc * vxyz[1], 1 + sc * vxyz[2] );
+                m.reset( ).scaleMatrix( 1 + sc * vxyz[ 0 ], 1 + sc * vxyz[ 1 ], 1 + sc * vxyz[ 2 ] );
                 n = v.getVector( );
                 v.setVector( m.multiplyVector( n ) );
             }

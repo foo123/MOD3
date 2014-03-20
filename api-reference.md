@@ -56,8 +56,9 @@ The taper modifier displaces the vertices on two axes proportionally to their po
 
 Use it with vehicle models for wheels.
 
-     The usual problem with a 3d wheel in a vahicle is that if it is 
-     supposed to turn (steer) and roll in the same time. So, this code:
+     The usual problem with a 3d wheel in a vahicle is that it is 
+     supposed to turn (steer) and roll in the same time. 
+     So, this code:
      
      ```javascript
      wheel.rotationY = 10; // Steer 10deg to the left
@@ -105,6 +106,21 @@ Allow to break a mesh
 
 Randomly displaces each vertex in all 3 axes
 
+ 
+
+
+
+ ###DisplaceMap (BitmapDisplacement) Modifier 
+
+ Displaces vertices based on RGB values of bitmapData pixels. 
+ 
+ BitmapDisplacement is inspired by both the AS3 built-in DisplacementMapFilter. It allows
+ to use color values for each channels of a bitmap to modify the position of vertices in a mesh.
+ 
+ The displacement takes place along the cardinal axes, and each axis is mapped to a 
+ channel in the bitmap: X for Red, Y for Green and Z for Blue.
+ 
+ @author Bartek Drozdz
  
 
 

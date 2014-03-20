@@ -22,7 +22,7 @@
         constructor: function( a ) {
             this.$super('constructor');
             this.name = 'Twist';
-            this.vector = new Vector3([0, 1, 0]);
+            this.vector = new Vector3([0, 1, 0]).normalizeSelf( );
             this.angle = (a !== undef) ? a : 0;
             this.center = Vector3.ZERO( );
             this.mat1 = new Matrix4( );
@@ -51,14 +51,11 @@
         },
         
         apply: function( ) {
-            
             var mod = this.mod, vs = mod.vertices, vc = vs.length,
-                vector = this.vector.normalizeSelf( ), 
-                angle = this.angle, 
-                center = this.center,
+                vector = this.vector, angle = this.angle, center = this.center,
                 dv = new Vector3([0.5*mod.maxX, 0.5*mod.maxY, 0.5*mod.maxZ]), 
-                invdvm = 1.0/dv.getMagnitude( ), 
-                factor = invdvm*angle,
+                invdvm = 1.0 / dv.getMagnitude( ), 
+                factor = invdvm * angle,
                 d = -Vector3.dot( vector, center ),
                 v, dd, vec
             ;

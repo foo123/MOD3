@@ -16,11 +16,8 @@
 (function(MOD3, undef){
     
     var NONE = MOD3.ModConstant.NONE,
-        X = MOD3.ModConstant.X,
-        Y = MOD3.ModConstant.Y,
-        Z = MOD3.ModConstant.Z,
-        A = MOD3.VecArray,
-        Rand = Math.random
+        X = MOD3.ModConstant.X, Y = MOD3.ModConstant.Y, Z = MOD3.ModConstant.Z,
+        A = MOD3.VecArray, Rand = Math.random
     ;
     
     var Noise = MOD3.Noise = MOD3.Class ( MOD3.Modifier, {
@@ -28,21 +25,18 @@
         constructor: function( f ) {
             this.$super('constructor');
             this.name = 'Noise';
-            this.axc = NONE;
+            this.axes = NONE;
             this.start = 0;
             this.end = 0; //1;
-
-            this.force = (f!==undef) ? f : 0;
+            this.force = (f !== undef) ? f : 0;
         },
         
         force: 0,
-        axc: NONE,
         start: 0,
         end: 1,
         
         dispose: function( ) {
             this.force = null;
-            this.axc = null;
             this.start = null;
             this.end = null;
             this.$super('dispose');
@@ -50,20 +44,15 @@
             return this;
         },
         
-        constraintAxes: function( c ) {
-            this.axc = c;
-            return this;
-        },
-        
         setFalloff: function( start, end ) {
-            this.start = (start!==undef) ? start : 0;
-            this.end = (end!==undef) ? end : 1;
+            this.start = (start !== undef) ? start : 0;
+            this.end = (end !== undef) ? end : 1;
             
             return this;
         },
         
         apply: function( ) {
-            var mod = this.mod, axc = this.axc, start = this.start, end = this.end, 
+            var mod = this.mod, axes = this.axes, start = this.start, end = this.end, 
                 vs = mod.vertices, vc = vs.length, force = this.force, halfforce = 0.5*force,
                 maxAxis = mod.maxAxis, v, r, p, rp, xyz;
 
@@ -93,9 +82,9 @@
                 rp = r * p;
                 xyz = v.getXYZ( );
                 v.setXYZ( [ 
-                    xyz[0] + (( !(axc & X) ) ? rp : 0), 
-                    xyz[1] + (( !(axc & Y) ) ? rp : 0), 
-                    xyz[2] + (( !(axc & Z) ) ? rp : 0) 
+                    xyz[ 0 ] + (( !(axes & X) ) ? rp : 0), 
+                    xyz[ 1 ] + (( !(axes & Y) ) ? rp : 0), 
+                    xyz[ 2 ] + (( !(axes & Z) ) ? rp : 0) 
                 ] );
             }
             

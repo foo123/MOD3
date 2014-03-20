@@ -19,8 +19,7 @@
     var Abs = Math.abs, Pow = Math.pow,
         Sign = MOD3.XMath.sign,
         ModConstant = MOD3.ModConstant,
-        NONE = ModConstant.NONE,
-        LEFT = ModConstant.LEFT, RIGHT = ModConstant.RIGHT,
+        NONE = ModConstant.NONE, LEFT = ModConstant.LEFT, RIGHT = ModConstant.RIGHT,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
     ;
     
@@ -43,7 +42,6 @@
         force: 0,
         skewAxis: 0,
         offset: 0.5,
-        constraint: NONE,
         power: 1,
         falloff:  1,
         inverseFalloff: false,
@@ -54,7 +52,6 @@
             this.force = null;
             this.skewAxis = null;
             this.offset = null;
-            this.constraint = null;
             this.power = null;
             this.falloff = null;
             this.inverseFalloff = null;
@@ -91,8 +88,8 @@
             {
                 v = vs[ vc ];
                 vRatio = v.getRatio( skewAxis );
-                if ( constraint == LEFT && vRatio <= offset ) continue;
-                if ( constraint == RIGHT && vRatio > offset ) continue;
+                if ( LEFT === constraint && vRatio <= offset ) continue;
+                if ( RIGHT === constraint && vRatio > offset ) continue;
 
                 r = vRatio - offset;
                 if ( oneSide ) r = Abs( r );
@@ -102,7 +99,7 @@
 
                 f = falloff + dr * mirrorfalloff;
 
-                sign = (0>r) ? -1 : 1;
+                sign = (0 > r) ? -1 : 1;
                 p = Pow( Abs( r ), power ) * sign /*Sign(r, 1)*/;
                 vl = v.getValue( displaceAxis ) + force * p * f;
                 v.setValue( displaceAxis, vl );

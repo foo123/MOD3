@@ -51,6 +51,7 @@ SRC =[]
     ./src/modifiers/Wheel.js
     ./src/modifiers/Break.js
     ./src/modifiers/Noise.js
+    ./src/modifiers/DisplaceMap.js
     ./src/modifiers/Perlin.js
 
     # Support for Three.js
@@ -88,7 +89,7 @@ HEADER =
 
 REPLACE =[{}]
 
-    "@@VERSION@@" = "0.3.4"
+    "@@VERSION@@" = "0.3.5"
     
     "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
     

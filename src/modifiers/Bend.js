@@ -16,11 +16,8 @@
 
 (function(MOD3, undef){
     
-    var NONE = MOD3.ModConstant.NONE,
-        LEFT = MOD3.ModConstant.LEFT,
-        RIGHT = MOD3.ModConstant.RIGHT,
-        Matrix = MOD3.Matrix, 
-        Atan = Math.atan, Atan2 = Math.atan2, Sin = Math.sin, Cos = Math.cos,
+    var NONE = MOD3.ModConstant.NONE, LEFT = MOD3.ModConstant.LEFT,  RIGHT = MOD3.ModConstant.RIGHT,
+        Matrix = MOD3.Matrix,  Atan = Math.atan, Atan2 = Math.atan2, Sin = Math.sin, Cos = Math.cos,
         PI = MOD3.Constants.PI, halfPI = MOD3.Constants.halfPI, doublePI = MOD3.Constants.doublePI,
         Point = MOD3.Point
     ;
@@ -52,7 +49,6 @@
         offset: 0,
         angle: 0,
         diagAngle: 0,
-        constraint: NONE,
         max: 0,
         min: 0,
         mid: 0,
@@ -68,7 +64,6 @@
             this.offset = null;
             this.angle = null;
             this.diagAngle = null;
-            this.constraint = null;
             this.max = null;
             this.min = null;
             this.mid = null;
@@ -147,8 +142,8 @@
                 p = (vmax - origin) * invwidth;
 
                 if (
-                    ( (constraint == LEFT) && (p <= offset) ) || 
-                    ( (constraint == RIGHT) && (p >= offset) )
+                    ( (LEFT === constraint) && (p <= offset) ) || 
+                    ( (RIGHT === constraint) && (p >= offset) )
                 ) 
                 {  
                     /* do nothing */ 

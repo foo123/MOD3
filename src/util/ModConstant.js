@@ -27,23 +27,11 @@
     
     MOD3.ModConstant = {
         
-        LEFT : -1, 
+        NONE : 0,  LEFT : -1, RIGHT : 1,
         
-        RIGHT : 1, 
+        X : 1, Y : 2, Z : 4,
         
-        NONE : 0, 
-        
-        X : 1, 
-        
-        Y : 2, 
-        
-        Z : 4,
-        
-        XC : 0, 
-        
-        YC : 1, 
-        
-        ZC : 2
+        Xi : 0, Yi : 1, Zi : 2
     };
     
     //

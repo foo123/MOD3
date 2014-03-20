@@ -21,11 +21,10 @@
 
 (function(MOD3, undef){
     
-    var Vector3 = MOD3.Vector3, round = Math.round, clamp = MOD3.XMath.clamp,
+    var Vector3 = MOD3.Vector3, round = Math.round, //clamp = MOD3.XMath.clamp,
         A = MOD3.VecArray,
         ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
-        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
-        XCoord = ModConstant.XC, YCoord = ModConstant.YC, ZCoord = ModConstant.ZC
+        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
     ;
 
     var PerlinNoise = MOD3.PerlinNoise = MOD3.Class(Object, {
@@ -98,24 +97,19 @@
         source: null,
         force: 1,
         offset: 0,
-        axes: NONE,
         autoRun: true,
         
         dispose: function( ) {
             this.source = null;
             this.force = null;
+            this.offset = null;
             this.autoRun = null;
             this.$super('dispose');
             
             return this;
         },
         
-        constraintAxes: function( axes ) {
-            this.axes = axes;
-            return this;
-        },
-        
-        getUVPixel: function( u, v ) {
+        getUVValue: function( u, v ) {
             var w = this.source.width, h = this.source.height,
                 x = round( (w - 1) * u ),
                 y = round( (h - 1) * v )
@@ -136,11 +130,11 @@
             {
                 v = vs[ vc ];
                 xyz = v.getXYZ( );
-                uv = this.getUVPixel( v.ratio[XCoord], v.ratio[ZCoord] );
-
-                if (axes & X) xyz[XCoord] += ((uv) - offset) * force;
-                if (axes & Y) xyz[YCoord] += ((uv) - offset) * force;
-                if (axes & Z) xyz[ZCoord] += ((uv) - offset) * force;
+                uv = this.getUVValue( v.ratio[ 0 ]/* X */, v.ratio[ 2 ]/* Z */ );
+                uv = (uv - offset) * force;
+                if ( axes & X ) xyz[ 0 ] += uv;
+                if ( axes & Y ) xyz[ 1 ] += uv;
+                if ( axes & Z ) xyz[ 2 ] += uv;
                 
                 v.setXYZ( xyz );
             }

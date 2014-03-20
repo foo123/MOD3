@@ -71,7 +71,7 @@
                 
                 // change norm to norm + r * exp (-a * norm)
                 magn = uu.getMagnitude( );
-                uu.setMagnitude( magn + radius * Exp ( - magn * a) );
+                uu.setMagnitude( magn + radius * Exp ( - magn * a ) );
 
                 // move vertex accordingly
                 v.setVector( uu.addSelf( center ) );

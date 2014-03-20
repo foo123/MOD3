@@ -12,11 +12,10 @@ __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*
 
 [![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
-It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
+    It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
 
-    It is a complete port (up to limitations between the 2 frameworks)  
-    Not all Modifiers of AS3DMod can be ported but most can.  
-    However the structure is ready for more modifiers to be added (even custom ones)
+    It is a (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
+    Also the API architecture is setup for more modifiers to be added (even custom ones).
 
 
 ###Contents
@@ -56,6 +55,7 @@ It is named *MOD3* to signify that it has support for [Three.js](https://github.
 * Bloat
 * Break
 * Perlin ( MOD3 v.0.3.4 )
+* DisplaceMap ( MOD3 v.0.3.5, in progress )
 
 
 ###TODO

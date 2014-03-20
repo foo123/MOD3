@@ -51,8 +51,7 @@
         
         apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, 
-                pivot = this.pivot, 
-                v, vv;
+                pivot = this.pivot, v, vv;
 
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )

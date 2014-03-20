@@ -117,13 +117,13 @@
 
         setXYZ: function( xyz ) {
             // override
-            this,xyz = new A( xyz );
+            this.xyz = new A( xyz );
             return this;
         },
         
         setXYZRef: function( xyz ) {
             // override
-            this,xyz = xyz;
+            this.xyz = xyz;
             return this;
         },
         

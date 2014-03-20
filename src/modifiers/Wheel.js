@@ -10,8 +10,9 @@
  *
  * Use it with vehicle models for wheels.
  *
- *      The usual problem with a 3d wheel in a vahicle is that if it is 
- *      supposed to turn (steer) and roll in the same time. So, this code:
+ *      The usual problem with a 3d wheel in a vahicle is that it is 
+ *      supposed to turn (steer) and roll in the same time. 
+ *      So, this code:
  *      
  *      ```javascript
  *      wheel.rotationY = 10; // Steer 10deg to the left
@@ -121,7 +122,7 @@
                 v = vs[ vc ];
                 c = v.getVector( );
                 
-                if ( mt )  mt.multiplyVector( c );
+                if ( mt ) mt.multiplyVector( c );
                 
                 v.setVector( ms.multiplyVector( c ) );
             }

@@ -24,10 +24,10 @@
             this.$super('constructor');
             this.name = 'Break';
             this.bv = new Vector3([0, 1, 0]);
-            this.range = new Range( 0,1 );
+            this.range = new Range(0, 1);
             
-            this.offset = (o!==undef) ? o : 0;
-            this.angle = (a!==undef) ? a : 0;
+            this.offset = (o !== undef) ? o : 0;
+            this.angle = (a !== undef) ? a : 0;
         },
         
         bv: null,
@@ -54,7 +54,7 @@
 
             pv = new Vector3([0, 0, -(mod.minZ + mod.depth * offset)]);
             npv = pv.negate( );
-            rm = new Matrix4( ).rotationMatrix( bvxyz[0], bvxyz[1], bvxyz[2], angle );
+            rm = new Matrix4( ).rotationMatrix( bvxyz[ 0 ], bvxyz[ 1 ], bvxyz[ 2 ], angle );
 
 
             // optimize loop using while counting down instead of up
@@ -63,7 +63,7 @@
                 v = vs[ vc ];
                 c = v.getVector( ).addSelf( pv );
 
-                if( c.xyz[2] >= 0 && range.isIn( v.ratio[1] ) ) 
+                if( c.xyz[ 2 ] >= 0 && range.isIn( v.ratio[ 1 ] ) ) 
                 {
                     rm.multiplyVector( c );
                 }
