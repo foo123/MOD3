@@ -12,10 +12,13 @@ __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*
 
 [![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
-    It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
 
-    It is a (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
-    Also the API architecture is setup for more modifiers to be added (even custom ones).
+It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
+
+
+It is a (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
+Also the API architecture is setup for more modifiers to be added (even custom ones).
+
 
 
 ###Contents
