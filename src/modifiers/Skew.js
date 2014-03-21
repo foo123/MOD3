@@ -81,7 +81,8 @@
                 power = this.power, 
                 force = this.force, 
                 displaceAxis = this.getDisplaceAxis( ),
-                v, r, dr, f, p, vl, vRatio, sign;
+                v, r, dr, f, p, vl, vRatio, sign
+            ;
 
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )

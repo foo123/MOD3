@@ -49,8 +49,8 @@
         
         apply: function( ) {
             var mod = this.mod, vs = mod.vertices, vc = vs.length,
-                offset = this.offset, range = this.range, angle = this.angle, bv = this.bv, bvxyz=bv.xyz;
-            var pv, npv, v, c, rm;
+                offset = this.offset, range = this.range, angle = this.angle, bv = this.bv, bvxyz = bv.xyz,
+                pv, npv, v, c, rm;
 
             pv = new Vector3([0, 0, -(mod.minZ + mod.depth * offset)]);
             npv = pv.negate( );

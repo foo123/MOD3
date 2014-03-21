@@ -22,30 +22,36 @@
 
 (function(MOD3, undef){
     
-    var round = Math.round, ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
+    var ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
     ;
 
-    // IN PROGRESS
     var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
         
-        constructor: function( b, w, h, f ) {
+        constructor: function( bmp, w, h, f ) {
             this.$super('constructor');
             this.name = 'DisplaceMap';
-            this.setBitmap( b, w, h );
-            this.force = f || 1;
-            this.offset = 0x80;
+            if ( arguments.length >= 3 )
+            {
+                this.setBitmap( bmp, w, h );
+                this.force = f || 1;
+            }
+            else
+            {
+                this.force = bmp || 1;
+            }
+            this.offset = 0x7F;
             this.axes = X | Y | Z;
         },
         
         width: null,
         height: null,
-        bitmap: null,
+        bitmapData: null,
         force: 1,
-        offset: 0x80,
+        offset: 0x7F,
         
         dispose: function( ) {
-            this.bitmap = null;
+            this.bitmapData = null;
             this.width = null;
             this.height = null;
             this.force = null;
@@ -55,35 +61,33 @@
             return this;
         },
         
-        setBitmap: function( b, w, h ) {
-            this.bitmap = b || null;
+        setBitmap: function( bmpData, w, h ) {
+            this.bitmapData = bmpData || null;
             this.width = w || 0;
             this.height = h || 0;
             return this;
         },
         
-        getUVPixel: function( u, v ) {
-            var w = this.width, h = this.height,
-                x = round( (w - 1) * u ),
-                y = round( (h - 1) * v )
-            ;
-            return this.bitmap[ (y % h)*w + x % w ];
-        },
-
         apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, axes = this.axes,
-                force = this.force, offset = this.offset, v, uv, xyz;
+                w = this.width, h = this.height, bmp = this.bitmapData,
+                force = this.force, offset = this.offset, v, uv, x, y, xyz;
 
+            if ( !axes || !bmp ) return this;
+            
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )
             {
                 v = vs[ vc ];
                 xyz = v.getXYZ( );
-                uv = this.getUVPixel( v.ratio[ 0 ]/* X */, v.ratio[ 2 ]/* Z */ );
                 
-                if ( axes & X ) xyz[ 0 ] += ((uv >> 16 & 0xff) - offset) * force;
-                if ( axes & Y ) xyz[ 1 ] += ((uv >> 8 & 0xff) - offset) * force;
-                if ( axes & Z ) xyz[ 2 ] += ((uv & 0xff) - offset) * force;
+                x = ~~( (w - 1) * v.ratio[ 0 ]/* X */ );
+                y = ~~( (h - 1) * v.ratio[ 2 ]/* Z */ );
+                uv = ( y * w + x ) << 2;
+                
+                if ( axes & X ) xyz[ 0 ] += ((bmp[ uv ] >> 16 & 0xff) - offset) * force;
+                if ( axes & Y ) xyz[ 1 ] += ((bmp[ uv+1 ] >> 8 & 0xff) - offset) * force;
+                if ( axes & Z ) xyz[ 2 ] += ((bmp[ uv+2 ] & 0xff) - offset) * force;
                 
                 v.setXYZ( xyz );
             }

@@ -65,7 +65,8 @@
                 vector2 = this.vector2, 
                 force = this.force, 
                 power = this.power,
-                v, ar, sc, m, n, vxyz;
+                v, ar, sc, m, n, vxyz
+            ;
             
             m = new Matrix4( );
             

@@ -58,7 +58,7 @@ Also the API architecture is setup for more modifiers to be added (even custom o
 * Bloat
 * Break
 * Perlin ( MOD3 v.0.3.4 )
-* DisplaceMap ( MOD3 v.0.3.5, in progress )
+* DisplaceMap ( MOD3 v.0.3.5 )
 
 
 ###TODO
@@ -77,6 +77,7 @@ Also the API architecture is setup for more modifiers to be added (even custom o
 
 
 ###Changelog
+* 0.3.5  DisplaceMap modifier added, edits / optimizations
 * 0.3.4  update classy.js, code refactor / optimizations, Perlin modifier added
 * 0.3.2-0.3.3  update buildtools, api-reference, classy.js, Three.js revision (r66)
 * ver 0.3.1  update buildtools, api-reference, use classy.js for OOP

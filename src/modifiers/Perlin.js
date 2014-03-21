@@ -21,7 +21,7 @@
 
 (function(MOD3, undef){
     
-    var Vector3 = MOD3.Vector3, round = Math.round, //clamp = MOD3.XMath.clamp,
+    var Vector3 = MOD3.Vector3, round = Math.round,
         A = MOD3.VecArray,
         ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
@@ -44,37 +44,55 @@
             return this;
         },
         
+        uvIndex: function( u, v ) {
+            var w = this.width, h = this.height,
+                x = ~~( (w - 1) * u ), y = ~~( (h - 1) * v )
+            ;
+            return ( x + y * w );
+        },
+
         generate: function( ) {
-            var w = this.width, h = this.height, size = w*h, a = new A( size ), i, j, index;
+            var w = this.width, h = this.height, size = w*h, a = new A( size ), i, j, index, v;
             i = 0; j = 0;
-            for (index=0; index<size; index++,j++)
+            for (index=0; index<size; index++,i++)
             {
-                if ( j >= h )
+                if ( i >= w )
                 {
-                    j = 0;
-                    i++;
+                    i = 0;
+                    j++;
                 }
+                //v = noise.simplex2( i/w, j/h );
                 a[ index ] = noise.simplex2( i/w, j/h );
+                //a[ index+1 ] = noise.simplex2( i/w, j/h );
+                //a[ index+2 ] = noise.simplex2( i/w, j/h );
             }
             this.data = a;
             return this;
         },
         
         move: function( dX, dY ) {
-            var w = this.width, h = this.height, size = w*h, a = this.data, b = new A( size ), i, j, index;
-            dX = round( dX );
-            dY = round( dY );
+            var w = this.width, h = this.height, size = w*h, 
+                a = this.data, b = new A( size ), 
+                i, j, i2, j2, index, index2
+            ;
             if ( dX < 0 ) dX += w;
             if ( dY < 0 ) dY += h;
+            dX = ~~dX;
+            dY = ~~dY;
             i = 0; j = 0;
-            for (index=0; i<size; index++,j++)
+            for (index=0; index<size; index++,i++)
             {
-                if ( j >= h )
+                if ( i >= w )
                 {
-                    j = 0;
-                    i++;
+                    i = 0;
+                    j++;
                 }
-                b[ index ] = a[ ((i + dX)%w)*h + (j + dY)%h ];
+                i2 = (i + dX) % w;
+                j2 = (j + dY) % h;
+                index2 = ( i2 + j2 * w );
+                b[ index ] = a[ index2 ];
+                //b[ index+1 ] = a[ index2+1 ];
+                //b[ index+2 ] = a[ index2+2 ];
             }
             this.data = b;
             return this;
@@ -101,6 +119,8 @@
         
         dispose: function( ) {
             this.source = null;
+            this.speedX = null;
+            this.speedY = null;
             this.force = null;
             this.offset = null;
             this.autoRun = null;
@@ -109,32 +129,31 @@
             return this;
         },
         
-        getUVValue: function( u, v ) {
-            var w = this.source.width, h = this.source.height,
-                x = round( (w - 1) * u ),
-                y = round( (h - 1) * v )
-            ;
-            //if ( x < 0 ) x += w;
-            //if ( y < 0 ) y += h;
-            return this.source.data[ (x % w)*h + y % h ];
+        setSpeed: function( dX, dY ) {
+            this.speedX = dX;
+            this.speedY = dY;
+            return this;
         },
-
+        
         apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, axes = this.axes,
-                force = this.force, offset = this.offset, v, uv, xyz;
+                force = this.force, offset = this.offset, 
+                src = this.source, nsv, v, uv;
 
-            if ( this.autoRun ) this.source.move( this.speedX, this.speedY );
+            if ( !axes || !src ) return this;
+            if ( this.autoRun ) src.move( this.speedX, this.speedY );
             
+            nsv = src.data;
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )
             {
                 v = vs[ vc ];
                 xyz = v.getXYZ( );
-                uv = this.getUVValue( v.ratio[ 0 ]/* X */, v.ratio[ 2 ]/* Z */ );
-                uv = (uv - offset) * force;
-                if ( axes & X ) xyz[ 0 ] += uv;
-                if ( axes & Y ) xyz[ 1 ] += uv;
-                if ( axes & Z ) xyz[ 2 ] += uv;
+                uv = src.uvIndex( v.ratio[ 0 ]/* X */, v.ratio[ 2 ]/* Z */ );
+                
+                if ( axes & X ) xyz[ 0 ] += (nsv[ uv ] - offset) * force;
+                if ( axes & Y ) xyz[ 1 ] += (nsv[ uv/*+1*/ ] - offset) * force;
+                if ( axes & Z ) xyz[ 2 ] += (nsv[ uv/*+2*/ ] - offset) * force;
                 
                 v.setXYZ( xyz );
             }

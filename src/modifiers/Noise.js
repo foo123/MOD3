@@ -56,6 +56,7 @@
                 vs = mod.vertices, vc = vs.length, force = this.force, halfforce = 0.5*force,
                 maxAxis = mod.maxAxis, v, r, p, rp, xyz;
 
+            if ( !axes || !force ) return this;
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )
             {

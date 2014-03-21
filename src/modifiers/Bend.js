@@ -117,14 +117,14 @@
                 min = this.min, 
                 mid = this.mid, 
                 m1 = this.m1, 
-                m2 = this.m2;
+                m2 = this.m2,
             
-            var distance = origin + width * offset,
+                distance = origin + width * offset,
                 radius = width / PI / force,
                 bendAngle = doublePI * (width / (radius * doublePI)),
                 v, vmax, vmid, vmin, np, p, fa, op, ow, np2,
                 invwidth = 1.0/width
-                ;
+            ;
             
             // optimize loop using while counting down instead of up
             while ( --vc >= 0 )
