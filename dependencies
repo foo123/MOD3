@@ -22,6 +22,7 @@ SRC =[]
     # core
     ./src/MOD3.js
     ./src/util/ModConstant.js
+    ./src/core/WorkerInterface.js
     ./src/util/XMath.js
     ./src/util/Range.js
     ./src/util/Phase.js
@@ -34,7 +35,6 @@ SRC =[]
     ./src/core/MeshProxy.js
     ./src/core/Modifier.js
     ./src/plugins/Library3d.js
-    ./src/plugins/PluginFactory.js
     ./src/ModifierStack.js
 
     # 3rd-party
@@ -89,9 +89,11 @@ HEADER =
 
 REPLACE =[{}]
 
-    "@@VERSION@@" = "0.3.5"
+    "@@VERSION@@" = "0.4"
     
     "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
+    
+    "@@USE_STRICT@@" = '"use strict";'
     
     "@@MODULE_NAME@@" = "MOD3"
     
@@ -110,24 +112,24 @@ DOC ={}
 @ # end block
 
 # Minify the Package (map of lists)
-MINIFY ={}
-    
-    # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
-    "UGLIFY" =[]
-        -m -c
-    @ # end block
-    
-    # Options for Java Closure Compiler (if used)
-    "CLOSURE" =[]
-        --language_in=ECMASCRIPT5_STRICT
-    @ # end block
-    
-    # Options for Java YUI Compressor Compiler (if used)
-    "YUI" =[]
-        --preserve-semi
-    @ # end block
-
-@ # end block
+#MINIFY ={}
+#    
+#    # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
+#    "UGLIFY" =[]
+#        -m -c
+#    @ # end block
+#    
+#    # Options for Java Closure Compiler (if used)
+#    "CLOSURE" =[]
+#        --language_in=ECMASCRIPT5_STRICT
+#    @ # end block
+#    
+#    # Options for Java YUI Compressor Compiler (if used)
+#    "YUI" =[]
+#        --preserve-semi
+#    @ # end block
+#
+#@ # end block
 
 OUT =
 ./build/mod3.min.js

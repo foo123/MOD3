@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var LibraryJ3D = MOD3.Class( MOD3.Library3d, {
         
@@ -18,4 +20,4 @@
     // export it, singleton
     MOD3.LibraryJ3D = new LibraryJ3D( );
     
-})(MOD3);
+}(MOD3);

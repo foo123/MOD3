@@ -5,6 +5,8 @@
 *
 **/
 (function(MOD3, undef){
+    @@USE_STRICT@@
+    
     var Sin = Math.sin, Abs = Math.abs;
     
     var Phase = MOD3.Phase = MOD3.Class( Object,{

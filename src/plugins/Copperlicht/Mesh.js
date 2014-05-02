@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3){
+!function(MOD3){
+    
+    @@USE_STRICT@@
     
     var VertexCopperlicht = MOD3.VertexCopperlicht,
         FaceProxy = MOD3.FaceProxy
@@ -14,6 +16,7 @@
         
         constructor: function( mesh ) { 
             this.$super('constructor', mesh );
+            this.name = "MeshCopperlicht";
         },
         
         setMesh: function( mesh ) {
@@ -62,4 +65,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

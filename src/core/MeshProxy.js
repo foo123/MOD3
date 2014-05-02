@@ -4,14 +4,16 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
         Min = Math.min, Max = Math.max
     ;
 
-    var MeshProxy = MOD3.MeshProxy = MOD3.Class( Object, {
+    var MeshProxy = MOD3.MeshProxy = MOD3.Class({
         
         constructor: function( mesh ) {
             this.maxX = null;
@@ -35,6 +37,8 @@
             this.mesh = null;
             if ( undef !== mesh ) this.setMesh( mesh );
         },
+        
+        name : "MeshProxy",
         
         maxX : null,
         maxY : null,
@@ -71,6 +75,25 @@
             this.height = null;
             this.depth = null;
             
+            this.disposeFaces( );
+            this.disposeVertices( );
+            this.mesh = null;
+            
+            return this;
+        },
+        
+        disposeVertices: function( ) {
+            var i, l;
+            if ( this.vertices )
+            {
+                l = this.vertices.length;
+                for (i=0; i<l; i++) this.vertices[ i ].dispose( );
+            }
+            this.vertices = null;
+            return this;
+        },
+        
+        disposeFaces: function( ) {
             var i, l;
             if ( this.faces )
             {
@@ -78,14 +101,37 @@
                 for (i=0; i<l; i++) this.faces[ i ].dispose( );
             }
             this.faces = null;
-            if ( this.vertices )
-            {
-                l = this.vertices.length;
-                for (i=0; i<l; i++) this.vertices[ i ].dispose( );
-            }
-            this.vertices = null;
-            this.mesh = null;
+            return this;
+        },
+        
+        serialize: function( ) {
+            var serialize = function( vertex ) {
+                return vertex ? vertex.serialize( ) : vertex;
+            };
+            return { 
+                mesh: this.name, 
+                vertices: this.vertices ? this.vertices.map( serialize ) : null,
+                faces: null //this.faces ? this.faces.map( serialize ) : null
+            };
             
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.mesh )
+            {
+                var unserialize = function( vertex ) {
+                    if ( vertex )
+                    {
+                        if ( vertex.vertex ) return MOD3.VertexProxy.unserialize( vertex );
+                        /*else if ( vertex.face ) return MOD3.FaceProxy.unserialize( vertex );*/
+                    }
+                    return vertex;
+                };
+                this.disposeFaces( );
+                this.disposeVertices( );
+                this.vertices = (json.vertices || [ ]).map( unserialize );
+                this.faces = null; // (json.faces || [ ]).map( unserialize );
+            }
             return this;
         },
         
@@ -109,7 +155,11 @@
         analyzeGeometry: function( ) {
             // cache
             var vertices = this.vertices, vc = vertices.length, i = vc,
-                v, xyz, x, y, z, minX, maxX, minY, maxY, minZ, maxZ, width, height
+                v, xyz, x, y, z, 
+                minX, maxX, 
+                minY, maxY, 
+                minZ, maxZ, 
+                width, height, depth
             ;
 
             // get initial values
@@ -273,5 +323,14 @@
             return this;
         }
     });
+    MeshProxy.unserialize - function( json ) {
+        if ( json && json.mesh && MOD3[ json.mesh ] )
+        {
+            return new MOD3[ json.mesh ]( ).unserialize( json );
+        }
+        // dummy, default
+        return new MeshProxy( );
+    };
+
     
-})(MOD3);
+}(MOD3);

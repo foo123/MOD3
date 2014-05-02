@@ -4,9 +4,11 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
     
-    var Point = MOD3.Point = MOD3.Class( Object, {
+    @@USE_STRICT@@
+    
+    var Point = MOD3.Point = MOD3.Class({
         
         constructor: function( x, y ) {
             this.x = (x===undef) ? 0 : x;
@@ -28,4 +30,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

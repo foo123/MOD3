@@ -4,11 +4,13 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var getMeshProxy = MOD3.PluginFactory.getMeshProxy;
     
-    var ModifierStack = MOD3.ModifierStack = MOD3.Class( Object, {
+    var ModifierStack = MOD3.ModifierStack = MOD3.Class( MOD3.WorkerInterface, {
         
         constructor: function( lib3d, mesh ) {
             this.baseMesh = null;
@@ -20,64 +22,74 @@
             this.baseMesh.analyzeGeometry( );
         },
 
+        name: "ModifierStack",
+        
         lib3d: null,
         baseMesh: null,
         stack: null,
 
-        dispose: function( andModifiers ) {
+        dispose: function( withModifiers ) {
             this.lib3d = null;
-            this.baseMesh.dispose( );
-            this.baseMesh = null;
-            if ( andModifiers )
+            if ( withModifiers && this.stack )
             {
-                while ( this.stack.length ) this.stack.pop( ).dispose( );
+                while ( this.stack.length ) 
+                    this.stack.pop( ).dispose( );
             }
             this.stack = null;
+            if ( this.baseMesh ) this.baseMesh.dispose( );
+            this.baseMesh = null;
             
             return this;
         },
         
         add: function( modifier ) {
-            modifier.setModifiable( this.baseMesh );
-            this.stack.push( modifier );
-            
+            if ( modifier )
+            {
+                modifier.setModifiable( this.baseMesh );
+                this.stack.push( modifier );
+            }
             return this;
         },
 
         apply: function( ) {
-            var stack = this.stack, sl = stack.length, 
-                baseMesh = this.baseMesh, i = 0;
-
-            baseMesh.resetGeometry( );
-            
-            // optimize loop using while
-            while ( i < sl )
+            if ( this.baseMesh && this.stack && this.stack.length )
             {
-                stack[ i ].enabled && stack[ i ].apply( );
-                i++;
-                // update the mesh after each modifier apply
-                // avoid to update with each vertex change, 
-                // if possible update the mesh all at once
-                //baseMesh.update();
+                var stack = this.stack, sl = stack.length, 
+                    baseMesh = this.baseMesh, i = 0;
+
+                baseMesh.resetGeometry( );
+                
+                // optimize loop using while
+                while ( i < sl )
+                {
+                    stack[ i ].enabled && stack[ i ].apply( );
+                    i++;
+                    // update the mesh after each modifier apply
+                    // avoid to update with each vertex change, 
+                    // if possible update the mesh all at once
+                    //baseMesh.update();
+                }
+                baseMesh.update( );
+                
+                // do any post-process if needed
+                //baseMesh.postApply();
             }
-            baseMesh.update( );
-            
-            // do any post-process if needed
-            //baseMesh.postApply();
-            
             return this;
         },
 
         collapse: function( ) {
-            this.apply( );
-            this.baseMesh.collapseGeometry( );
-            this.stack.length = 0;
+            if ( this.baseMesh && this.stack && this.stack.length )
+            {
+                this.apply( );
+                this.baseMesh.collapseGeometry( );
+                this.stack.length = 0;
+            }
             
             return this;
         },
 
         clear: function( ) {
-            this.stack.length = 0;
+            if ( this.stack ) this.stack.length = 0;
             
             return this;
         },
@@ -89,4 +101,4 @@
     // aliases
     ModifierStack.prototype.addModifier = ModifierStack.prototype.add;
     
-})(MOD3);
+}(MOD3);

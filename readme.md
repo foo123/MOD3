@@ -1,7 +1,5 @@
 #MOD3 
 
-<!-- ### Further development on this project has stopped!! -->
-
 
 __3D Modifier Library for JavaScript__
 
@@ -16,8 +14,13 @@ __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*
 It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
 
 
-It is a (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
+It is an (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
 Also the API architecture is setup for more modifiers to be added (even custom ones).
+
+The library has a dependency on [Classy.js](https://github.com/foo123/classy.js) micro Object-Oriented framework.
+
+
+**Version 0.4 supporting parallel workers plus other updates in progress**
 
 
 
@@ -39,6 +42,7 @@ Also the API architecture is setup for more modifiers to be added (even custom o
 
 
 ###Support for 3D JavaScript engines
+
 * [Three.js](https://github.com/mrdoob/three.js/) with examples (r66)
 * [J3D](https://github.com/drojdjou/J3D) with examples (Build 51)
 * [Copperlicht](https://github.com/Sebmaster/copperlicht) with examples
@@ -63,6 +67,7 @@ Also the API architecture is setup for more modifiers to be added (even custom o
 
 ###TODO
 * possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
+* support parallel modifier workers transparently [IN PROGRESS]
 * add custom modifiers except the defaults found in AS3dMod library
 * make easier to apply modifiers to complex meshes/objects (which consist of submeshes) (recursion??)
 * optimize (math ops, caching, modifier chain calls etc..) [DONE partially]

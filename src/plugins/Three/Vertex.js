@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -16,6 +18,7 @@
         constructor: function( mesh, vertex ) {
             this.mesh = mesh;
             this.$super('constructor', vertex );
+            this.name = "VertexThree";
         },
         
         mesh: null,
@@ -209,4 +212,4 @@
     VertexThree.prototype.getXYZRef = VertexThree.prototype.getXYZ;
     VertexThree.prototype.setXYZRef = VertexThree.prototype.setXYZ;
     
-})(MOD3);
+}(MOD3);

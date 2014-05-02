@@ -4,14 +4,16 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
         Vector3 = MOD3.Vector3, A = MOD3.VecArray
     ;
     
-    var VertexProxy = MOD3.VertexProxy = MOD3.Class( Object, {
+    var VertexProxy = MOD3.VertexProxy = MOD3.Class({
         
         constructor: function( vertex ) {
             // use internal typed-arrays for speed
@@ -27,6 +29,8 @@
             )  this.setVertex( vertex );
         },
         
+        name: "VertexProxy",
+        
         vertex: null,
         xyz: null,
         original: null,
@@ -38,6 +42,26 @@
             this.original = null;
             this.ratio = null;
             
+            return this;
+        },
+        
+        serialize: function( ) {
+            return { 
+                vertex: this.name, 
+                xyz: this.getXYZ( ),
+                original: this.original,
+                ratio: this.ratio
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.vertex )
+            {
+                this.xyz = this.setXYZ( json.xyz );
+                this.original = json.original;
+                this.ratio = json.ratio;
+            }
             return this;
         },
         
@@ -189,5 +213,13 @@
             this.setXYZ( v.xyz );
         }
     });
+    VertexProxy.unserialize - function( json ) {
+        if ( json && json.vertex && MOD3[ json.vertex ] )
+        {
+            return new MOD3[ json.vertex ]( ).unserialize( json );
+        }
+        // dummy, default
+        return new VertexProxy( );
+    };
     
-})(MOD3);
+}(MOD3);

@@ -4,11 +4,13 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var Sqrt = Math.sqrt, A = MOD3.VecArray;
 
-    var Vector3 = MOD3.Vector3 = MOD3.Class( Object, {
+    var Vector3 = MOD3.Vector3 = MOD3.Class({
         
         // static
         __static__: {
@@ -246,4 +248,4 @@
     });
     
 
-})(MOD3);
+}(MOD3);

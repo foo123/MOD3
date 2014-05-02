@@ -22,6 +22,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
     ;

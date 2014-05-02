@@ -22,6 +22,7 @@ SRC =[]
     # core
     ./src/MOD3.js
     ./src/util/ModConstant.js
+    ./src/core/WorkerInterface.js
     ./src/util/XMath.js
     ./src/util/Range.js
     ./src/util/Phase.js
@@ -34,7 +35,6 @@ SRC =[]
     ./src/core/MeshProxy.js
     ./src/core/Modifier.js
     ./src/plugins/Library3d.js
-    ./src/plugins/PluginFactory.js
     ./src/ModifierStack.js
 
     # 3rd-party
@@ -69,9 +69,11 @@ HEADER =
 
 REPLACE =[{}]
 
-    "@@VERSION@@" = "0.3.5"
+    "@@VERSION@@" = "0.4"
     
     "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
+    
+    "@@USE_STRICT@@" = '"use strict";'
     
     "@@MODULE_NAME@@" = "MOD3"
     

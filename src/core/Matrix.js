@@ -4,11 +4,13 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var Sin = Math.sin, Cos = Math.cos, Point = MOD3.Point;
 
-    var Matrix = MOD3.Matrix = MOD3.Class( Object, {
+    var Matrix = MOD3.Matrix = MOD3.Class({
         
         constructor: function( m11, m12, m21, m22 ) {
             this.m11 = (m11===undef) ? 1 : m11;
@@ -107,4 +109,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

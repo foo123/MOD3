@@ -4,9 +4,11 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
     
-    var Library3d = MOD3.Library3d = MOD3.Class( Object, {
+    @@USE_STRICT@@
+    
+    var Library3d = MOD3.Library3d = MOD3.Class({
         
         constructor: function( ) {
             this.id = '';
@@ -19,4 +21,12 @@
         vertexClass: null
     });
     
-})(MOD3);
+    var PluginFactory = MOD3.PluginFactory = MOD3.StaticClass({
+        
+        getMeshProxy: function( lib3d ) {
+            var MeshProxyClass = lib3d.meshClass;
+            return (MeshProxyClass) ? new MeshProxyClass( ) : null;
+        }
+    });
+    
+}(MOD3);

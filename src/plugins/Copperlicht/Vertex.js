@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -17,6 +19,7 @@
             this.node = node;
             this.buffer = buffer;
             this.$super('constructor', vertex );
+            this.name = "VertexCopperlicht";
         },
         
         node: null,
@@ -176,4 +179,4 @@
     VertexCopperlicht.prototype.getXYZRef = VertexCopperlicht.prototype.getXYZ;
     VertexCopperlicht.prototype.setXYZRef = VertexCopperlicht.prototype.setXYZ;
     
-})(MOD3);
+}(MOD3);

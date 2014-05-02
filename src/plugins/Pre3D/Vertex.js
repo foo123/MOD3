@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -15,6 +17,7 @@
         
         constructor: function( vertex ) {
             this.$super('constructor', vertex );
+            this.name = "VertexPre3D";
         },
         
         setVertex: function( vertex ) {
@@ -111,4 +114,4 @@
     VertexPre3D.prototype.getXYZRef = VertexPre3D.prototype.getXYZ;
     VertexPre3D.prototype.setXYZRef = VertexPre3D.prototype.setXYZ;
     
-})(MOD3);
+}(MOD3);

@@ -21,6 +21,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var Vector3 = MOD3.Vector3, round = Math.round,
         A = MOD3.VecArray,
         ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
@@ -138,7 +140,7 @@
         apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, axes = this.axes,
                 force = this.force, offset = this.offset, 
-                src = this.source, nsv, v, uv;
+                src = this.source, nsv, v, uv, xyz;
 
             if ( !axes || !src ) return this;
             if ( this.autoRun ) src.move( this.speedX, this.speedY );

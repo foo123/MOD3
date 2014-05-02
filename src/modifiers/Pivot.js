@@ -16,6 +16,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var Vector3 = MOD3.Vector3;
     
     var Pivot = MOD3.Pivot = MOD3.Class ( MOD3.Modifier, {

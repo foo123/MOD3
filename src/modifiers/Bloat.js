@@ -16,6 +16,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var Vector3 = MOD3.Vector3, Max = Math.max, Exp = Math.exp;
     
     var Bloat = MOD3.Bloat = MOD3.Class ( MOD3.Modifier, {

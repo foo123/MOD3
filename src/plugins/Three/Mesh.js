@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var VertexThree = MOD3.VertexThree, FaceProxy = MOD3.FaceProxy;
     
@@ -12,6 +14,7 @@
         
         constructor: function( mesh ) { 
             this.$super('constructor', mesh );
+            this.name = "MeshThree";
         },
         
         setMesh: function( mesh ) {
@@ -58,4 +61,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

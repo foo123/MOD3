@@ -15,6 +15,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4;
     
     var Twist = MOD3.Twist = MOD3.Class ( MOD3.Modifier, {

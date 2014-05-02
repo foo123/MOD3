@@ -16,6 +16,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var Abs = Math.abs, Pow = Math.pow,
         Sign = MOD3.XMath.sign,
         ModConstant = MOD3.ModConstant,

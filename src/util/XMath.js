@@ -5,6 +5,8 @@
 *
 **/
 (function(MOD3, undef){
+    @@USE_STRICT@@
+    
     // cache constants
     var 
         toRad = MOD3.Constants.toRad, toDeg = MOD3.Constants.toDeg,

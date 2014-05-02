@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -16,6 +18,7 @@
         constructor: function( sceneObject, vertex ) {
             this.sceneObject = sceneObject;
             this.$super('constructor', vertex );
+            this.name = "VertexCubicVR";
         },
         
         sceneObject: null,
@@ -169,4 +172,4 @@
     VertexCubicVR.prototype.getXYZRef = VertexCubicVR.prototype.getXYZ;
     VertexCubicVR.prototype.setXYZRef = VertexCubicVR.prototype.setXYZ;
     
-})(MOD3);
+}(MOD3);

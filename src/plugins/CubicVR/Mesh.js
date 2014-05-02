@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var VertexCubicVR = MOD3.VertexCubicVR,
         FaceProxy = MOD3.FaceProxy
@@ -14,6 +16,7 @@
         
         constructor: function( mesh ) { 
             this.$super('constructor', mesh );
+            this.name = "MeshCubicVR";
         },
         
         setMesh: function( sceneObject )  {
@@ -56,4 +59,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

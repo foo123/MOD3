@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var LibraryCubicVR = MOD3.Class( MOD3.Library3d, {
         
@@ -17,4 +19,4 @@
     // export it, singleton
     MOD3.LibraryCubicVR = new LibraryCubicVR( );
     
-})(MOD3);
+}(MOD3);

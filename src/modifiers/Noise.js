@@ -15,6 +15,8 @@
 
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var NONE = MOD3.ModConstant.NONE,
         X = MOD3.ModConstant.X, Y = MOD3.ModConstant.Y, Z = MOD3.ModConstant.Z,
         A = MOD3.VecArray, Rand = Math.random

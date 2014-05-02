@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var VertexJ3D = MOD3.VertexJ3D,
         FaceProxy = MOD3.FaceProxy, A = MOD3.VecArray
@@ -15,6 +17,7 @@
         constructor: function( mesh ) { 
             this.VERTEX_POSITION = J3D.Mesh.VERTEX_POSITION;
             this.$super('constructor', mesh );
+            this.name = "MeshJ3D";
         },
         
         VERTEX_POSITION: null,
@@ -72,4 +75,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

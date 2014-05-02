@@ -5,6 +5,8 @@
 *
 **/
 (function(MOD3, undef){
+    @@USE_STRICT@@
+    
     var 
         normalize = MOD3.XMath.normalize,
         toRange = MOD3.XMath.toRange,

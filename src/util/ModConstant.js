@@ -6,6 +6,8 @@
 **/
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     //
     //
     // Constants

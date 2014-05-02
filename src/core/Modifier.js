@@ -4,15 +4,17 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var _modCount = 0, NONE = MOD3.ModConstant.NONE;
     
-    var Modifier = MOD3.Modifier = MOD3.Class( Object, {
+    var Modifier = MOD3.Modifier = MOD3.Class( MOD3.WorkerInterface, {
         
         constructor: function( mod ) {
             this.id = ++_modCount;
-            this.name = 'Generic';
+            this.name = 'Modifier';
             this.mod = mod || null;
             this.axes = NONE;
             this.constraint = NONE;
@@ -20,22 +22,25 @@
         },
         
         id: null,
-        name: null,
+        name: 'Modifier',
         mod : null,
         axes: null,
         constraint: null,
         enabled: true,
 
-        dispose: function( ) {
+        dispose: function( withModifiable ) {
+            this.disposeWorker( );
+            if ( true === withModifiable && this.mod ) this.mod.dispose( );
             this.mod = null;
             this.name = null;
             this.axes = null;
             this.constraint = null;
+            
             return this;
         },
         
         enable: function( enabled ) {
-            if ( undef !== enabled )
+            if ( arguments.length )
             {
                 this.enabled = !!enabled;
                 return this;
@@ -60,12 +65,35 @@
         },
 
         getVertices: function( ) {
-            return this.mod.getVertices( );
+            return this.mod ? this.mod.getVertices( ) : null;
         },
 
         // override
-        apply: function( ) {
+        _apply: function( ) {
             return this;
+        },
+        
+        // override
+        apply: function( cb ) {
+            var self = this;
+            if ( self._worker )
+            {
+                self
+                    .bind( 'apply', function( data ) { 
+                        self.unbind('apply');
+                        if ( data && data.modifiable )
+                            self.mod.unserialize( data.modifiable );
+                        if ( cb ) cb.call( self );
+                    })
+                    .send( 'apply', { modifiable: self.mod.serialize( ) } )
+                ;
+            }
+            else
+            {
+                self._apply( );
+                if ( cb ) cb.call( self );
+            }
+            return self;
         },
         
         toString: function( ) {
@@ -73,4 +101,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

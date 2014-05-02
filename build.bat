@@ -8,10 +8,10 @@ REM #
 REM ###################################################
 
 REM to use the python build tool do:
-python ..\scripts\buildtools\build.py --deps ".\dependencies"
+python %BUILDTOOLS%\build.py --deps ".\dependencies"
 
 REM to use the php build tool do:
-REM php -f ..\scripts\buildtools\build.php -- --deps=".\dependencies"
+REM php -f %BUILDTOOLS%\build.php -- --deps=".\dependencies"
 
 REM to use the node build tool do:
-REM node ..\scripts\buildtools\build.js --deps ".\dependencies"
+REM node %BUILDTOOLS%\build.js --deps ".\dependencies"

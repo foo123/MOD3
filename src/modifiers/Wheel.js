@@ -48,6 +48,8 @@
  
 (function(MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var invPI = MOD3.Constants.invPI, 
         doublePI = MOD3.Constants.doublePI,
         Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4

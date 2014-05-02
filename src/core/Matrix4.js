@@ -4,10 +4,12 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    @@USE_STRICT@@
+    
     var Sin = Math.sin, Cos = Math.cos;
 
-    var Matrix4 = MOD3.Matrix4 = MOD3.Class( Object, {
+    var Matrix4 = MOD3.Matrix4 = MOD3.Class({
         
         // static
         __static__: {
@@ -276,4 +278,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

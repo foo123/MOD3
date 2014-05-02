@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -17,6 +19,7 @@
             this.geometry = geometry;
             this.VERTEX_POSITION = J3D.Mesh.VERTEX_POSITION;
             this.$super('constructor', vertex );
+            this.name = "VertexJ3D";
         },
         
         geometry: null,
@@ -242,4 +245,4 @@
     VertexJ3D.prototype.getXYZRef = VertexJ3D.prototype.getXYZ;
     VertexJ3D.prototype.setXYZRef = VertexJ3D.prototype.setXYZ;
     
-})(MOD3);
+}(MOD3);

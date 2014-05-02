@@ -4,7 +4,9 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
+    
+    @@USE_STRICT@@
     
     var VertexPre3D = MOD3.VertexPre3D,
         FaceProxy = MOD3.FaceProxy
@@ -14,6 +16,7 @@
         
         constructor: function( mesh ) { 
             this.$super('constructor', mesh );
+            this.name = "MeshPre3D";
         },
         
         setMesh: function( mesh ) {
@@ -49,4 +52,4 @@
         }*/
     });
     
-})(MOD3);
+}(MOD3);
