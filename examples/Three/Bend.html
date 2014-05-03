@@ -81,19 +81,29 @@
 
                 container.addEventListener( 'mousedown', onDocumentMouseDown, false );
                 
-                mstack=new MOD3.ModifierStack(MOD3.LibraryThree,cube);
-                bend=new MOD3.Bend();
-                bend.setAngle(0);
-                bend.force=0;
-                bend.offset=0.5;
-                bend.switchAxes=true;
-                bend.constraint=MOD3.ModConstant.LEFT;
-                mstack.addModifier(bend);
-                var tobj={angle:Math.PI/4,force:1.2};
+                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube ).worker( true );
+                
+                bend = new MOD3.Bend( );
+                bend.setAngle( 0 );
+                bend.force = 0;
+                bend.offset = 0.5;
+                bend.switchAxes = true;
+                bend.constraint = MOD3.ModConstant.LEFT;
+                
+                mstack.addModifier( bend );
+                
+                var tobj = {angle:Math.PI/4,force:1.2};
                 new TWEEN.Tween(tobj).to({force:-1.2},5000).onUpdate(function(){
                                 bend.setAngle(this.angle);
-                                bend.force=this.force;
-                                mstack.apply();}).start();
+                                bend.force = this.force;
+                                mstack.apply(/*function(){
+                                    mstack.mod.update( );
+                                }*/);
+                        }).onComplete(function(){
+                            //console.log('dispose worker thread');
+                            // dispose worker thread
+                            mstack.worker( false );
+                        }).start();
             }
             
             function onDocumentMouseDown( event ) {

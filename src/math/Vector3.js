@@ -67,11 +67,28 @@
             }
         },
         
+        name: "Vector3",
         xyz: null,
         
         dispose: function( ) {
             this.xyz = null;
             
+            return this;
+        },
+        
+        serialize: function( ) {
+            return { 
+                name: this.name, 
+                xyz: this.xyz
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.name )
+            {
+                this.xyz = json.xyz;
+            }
             return this;
         },
         

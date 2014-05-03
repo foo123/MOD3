@@ -14,7 +14,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -82,6 +82,53 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    force: this.force,
+                    offset: this.offset,
+                    angle: this.angle,
+                    diagAngle: this.diagAngle,
+                    max: this.max,
+                    min: this.min,
+                    mid: this.mid,
+                    width: this.width,
+                    height: this.height,
+                    origin: this.origin,
+                    m1: this.m1.serialize( ),
+                    m2: this.m2.serialize( ),
+                    switchAxes: this.switchAxes,
+                    constraint: this.constraint,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.force = params.force;
+                this.offset = params.offset;
+                this.angle = params.angle;
+                this.diagAngle = params.diagAngle;
+                this.max = params.max;
+                this.min = params.min;
+                this.mid = params.mid;
+                this.width = params.width;
+                this.height = params.height;
+                this.origin = params.origin;
+                this.m1.unserialize( params.m1 );
+                this.m2.unserialize( params.m2 );
+                this.switchAxes = params.switchAxes;
+                this.constraint = params.constraint;
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
         setAngle: function( a ) { 
             this.angle = a; 
             this.m1 = new Matrix( ).rotate( a );
@@ -106,7 +153,7 @@
             return this;
         },
         
-        apply: function( ) {   
+        _apply: function( ) {   
             if ( !this.force ) return  this;
 
             var vs = this.mod.vertices, vc = vs.length,
@@ -172,4 +219,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

@@ -6,16 +6,17 @@
 **/
 !function(root, MOD3, undef){
     
+    @@USE_STRICT@@
+    
     var OP = Object.prototype, FP = Function.prototype, AP = Array.prototype
         ,slice = FP.call.bind( AP.slice ), toString = FP.call.bind( OP.toString )
         
-        ,isNode = "undefined" !== typeof( global ) && '[object global]' === toString( global )
-        ,isBrowser = !isNode && "undefined" !== typeof( navigator )
-        ,isWorker = "function" === typeof( importScripts ) && navigator instanceof WorkerNavigator
-        ,supportsWorker = "function" === typeof( Worker )
+        ,isNode = MOD3.isNode = "undefined" !== typeof( global ) && '[object global]' === toString( global )
+        ,isBrowser = MOD3.isBrowser = !isNode && "undefined" !== typeof( navigator )
+        ,isWorker = MOD3.isWorker = "function" === typeof( importScripts ) && navigator instanceof WorkerNavigator
+        ,supportsWorker = MOD3.supportsWorker = "function" === typeof( Worker )
     ;
     
-    MOD3.supportsWorker = supportsWorker;
     // Get current filename/path
     MOD3.getPath = function( ) {
         var file = null, scripts;
@@ -67,12 +68,12 @@
                 case 'init':
                     if ( modifier ) 
                     {
-                        modifier.dispose( );
+                        modifier.dispose( true );
                         modifier = null;
                     }
-                    if ( data && data.modifier && MOD3[ data.modifier ] )
+                    if ( data && data.modifier )
                     {
-                        modifier = new MOD3[ data.modifier ]( );
+                        modifier = MOD3.Factory.getModifier( data );
                     }
                     break;
                 case 'import':
@@ -82,18 +83,18 @@
                     }
                     break;
                 case 'apply':
-                    if ( modifier )
+                    if ( data && modifier )
                     {
-                        if ( data && data.modifiable )
-                            modifier.setModifiable( MOD3.MeshProxy.unserialize( data.modifiable ) );
-                        modifier.send( 'apply', { modifiable: modifier._apply( ).mod } );
+                        if ( data.modifiable ) modifier.setModifiable( MOD3.Factory.getMesh( data.modifiable ) );
+                        if ( data.params ) modifier.unserialize( data.params );
+                        modifier.send( 'apply', { modifiable: modifier._apply( ).mod.serialize( ) } );
                     }
                     break;
                 case 'dispose':
                 default:
                     if ( modifier ) 
                     {
-                        modifier.dispose( );
+                        modifier.dispose( true );
                         modifier = null;
                     }
                     close( );
@@ -101,6 +102,7 @@
             }
         };        
     }
+    
     var WorkerInterface = MOD3.WorkerInterface = MOD3.Class({
         
         path: MOD3.getPath( )

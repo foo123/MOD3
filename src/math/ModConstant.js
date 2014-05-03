@@ -4,7 +4,7 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -50,4 +50,4 @@
     // vector typed-array
     MOD3.VecArray = MOD3.Array32F;
     
-})(MOD3);
+}(MOD3);

@@ -19,6 +19,7 @@
             this.m22 = (m22===undef) ? 1 : m22;
         },
         
+        name: "Matrix",
         m11: 1,
         m12: 0,
         m21: 0,
@@ -30,6 +31,28 @@
             this.m21 = null;
             this.m22 = null;
             
+            return this;
+        },
+        
+        serialize: function( ) {
+            return { 
+                name: this.name, 
+                m11: this.m11,
+                m12: this.m12,
+                m21: this.m21,
+                m22: this.m22
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.name )
+            {
+                this.m11 = json.m11;
+                this.m12 = json.m12;
+                this.m21 = json.m21;
+                this.m22 = json.m22;
+            }
             return this;
         },
         

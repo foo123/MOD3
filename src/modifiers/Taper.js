@@ -14,7 +14,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -61,7 +61,34 @@
             return this;
         },
         
-        apply: function( ) {
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    force: this.force,
+                    power: this.power,
+                    vector: this.vector.serialize( ),
+                    vector2: this.vector2.serialize( ),
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.force = params.force;
+                this.power = params.power;
+                this.vector.unserialize( params.vector );
+                this.vector2.unserialize( params.vector2 );
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
+        _apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length,
                 vector = this.vector, 
                 vector2 = this.vector2, 
@@ -89,4 +116,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

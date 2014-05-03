@@ -39,6 +39,29 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    axes: this.axes,
+                    constraint: this.constraint,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.axes = params.axes;
+                this.constraint = params.constraint;
+                this.enabled = params.enabled;
+            }
+            return this;
+        },
+        
         enable: function( enabled ) {
             if ( arguments.length )
             {
@@ -82,10 +105,13 @@
                     .bind( 'apply', function( data ) { 
                         self.unbind('apply');
                         if ( data && data.modifiable )
+                        {
                             self.mod.unserialize( data.modifiable );
+                            self.mod.update( );
+                        }
                         if ( cb ) cb.call( self );
                     })
-                    .send( 'apply', { modifiable: self.mod.serialize( ) } )
+                    .send( 'apply', { params: self.serialize( ), modifiable: self.mod.serialize( ) } )
                 ;
             }
             else

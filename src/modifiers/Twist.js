@@ -13,7 +13,7 @@
  * 
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -52,7 +52,36 @@
             return this;
         },
         
-        apply: function( ) {
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    vector: this.vector.serialize( ),
+                    angle: this.angle,
+                    center: this.center.serialize( ),
+                    mat1: this.mat1.serialize( ),
+                    mat2: this.mat2.serialize( ),
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.vector.unserialize( params.vector );
+                this.angle = params.angle;
+                this.center.unserialize( params.center );
+                this.mat1.unserialize( params.mat1 );
+                this.mat2.unserialize( params.mat2 );
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
+        _apply: function( ) {
             var mod = this.mod, vs = mod.vertices, vc = vs.length,
                 vector = this.vector, angle = this.angle, center = this.center,
                 dv = new Vector3([0.5*mod.maxX, 0.5*mod.maxY, 0.5*mod.maxZ]), 
@@ -84,4 +113,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

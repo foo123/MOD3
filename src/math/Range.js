@@ -4,7 +4,7 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
     @@USE_STRICT@@
     
     var 
@@ -13,7 +13,7 @@
         trim = MOD3.XMath.trim
     ;
 
-    var Range = MOD3.Range = MOD3.Class( Object, {
+    var Range = MOD3.Range = MOD3.Class({
         
         constructor: function( s, e )  {
             this.start = 0;
@@ -22,6 +22,7 @@
             if (e !== undef)  this.end=e;
         },
         
+        name: "Range",
         start: 0,
         end: 1,
 
@@ -29,6 +30,24 @@
             this.start = null;
             this.end = null;
             
+            return this;
+        },
+        
+        serialize: function( ) {
+            return { 
+                name: this.name, 
+                start: this.start,
+                end: this.end
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.name )
+            {
+                this.start = json.start;
+                this.end = json.end;
+            }
             return this;
         },
         
@@ -66,4 +85,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

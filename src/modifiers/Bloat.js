@@ -14,7 +14,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -46,6 +46,31 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    center: this.center.serialize( ),
+                    radius: this.radius,
+                    a: this.a,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.center.unserialize( params.center );
+                this.radius = params.radius;
+                this.a = params.a;
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
         setRadius: function( v )  {
             this.radius = Max( 0, v ); 
             
@@ -58,7 +83,7 @@
             return this;
         },
         
-        apply: function( )  {
+        _apply: function( )  {
             var vs = this.mod.vertices, vc = vs.length, 
                 center = this.center, radius = this.radius, a = this.a;
             var v, magn, uu; //=Vector3.ZERO();
@@ -86,4 +111,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

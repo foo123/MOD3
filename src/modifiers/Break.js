@@ -14,7 +14,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -49,7 +49,34 @@
             return this;
         },
         
-        apply: function( ) {
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    bv: this.bv.serialize( ),
+                    range: this.range.serialize( ),
+                    offset: this.offset,
+                    angle: this.angle,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.bv.unserialize( params.bv );
+                this.range.unserialize( params.range );
+                this.offset = params.offset;
+                this.angle = params.angle;
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
+        _apply: function( ) {
             var mod = this.mod, vs = mod.vertices, vc = vs.length,
                 offset = this.offset, range = this.range, angle = this.angle, bv = this.bv, bvxyz = bv.xyz,
                 pv, npv, v, c, rm;
@@ -77,4 +104,4 @@
        }
     });
     
-})(MOD3);
+}(MOD3);

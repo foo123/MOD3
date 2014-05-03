@@ -10,9 +10,26 @@
     
     var ModConstant = MOD3.ModConstant,
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
-        Min = Math.min, Max = Math.max
+        Min = Math.min, Max = Math.max,
+        serialize, unserialize
     ;
+    serialize = function( vertex ) {
+        return vertex ? vertex.serialize( ) : vertex;
+    };
 
+    if ( MOD3.isWorker )
+    {
+        unserialize = function( vertex ) {
+            return vertex && vertex.vertex ? new MOD3.VertexProxy( ).unserialize( vertex ) : vertex;
+        };
+    }
+    else
+    {
+        unserialize = function( vertex, index/*, vertices*/ ) {
+            return vertex && vertex.vertex ? this.vertices[ index ].unserialize( vertex ) : vertex;
+        };
+    }
+    
     var MeshProxy = MOD3.MeshProxy = MOD3.Class({
         
         constructor: function( mesh ) {
@@ -51,7 +68,7 @@
         midAxis : null,
         minAxis : null,
         
-        widht : null,
+        width : null,
         height : null,
         depth : null,
         
@@ -71,7 +88,7 @@
             this.midAxis = null;
             this.minAxis = null;
             
-            this.widht = null;
+            this.width = null;
             this.height = null;
             this.depth = null;
             
@@ -105,32 +122,48 @@
         },
         
         serialize: function( ) {
-            var serialize = function( vertex ) {
-                return vertex ? vertex.serialize( ) : vertex;
-            };
             return { 
                 mesh: this.name, 
+                maxX : this.maxX,
+                maxY : this.maxY,
+                maxZ : this.maxZ,
+                minX : this.minX,
+                minY : this.minY,
+                minZ : this.minZ,
+                maxAxis : this.maxAxis,
+                midAxis : this.midAxis,
+                minAxis : this.minAxis,
+                width : this.width, 
+                height : this.height,
+                depth : this.depth, 
                 vertices: this.vertices ? this.vertices.map( serialize ) : null,
-                faces: null //this.faces ? this.faces.map( serialize ) : null
+                faces: null
             };
             
         },
         
         unserialize: function( json ) {
-            if ( json && this.name === json.mesh )
+            if ( json /*&& this.name === json.mesh*/ )
             {
-                var unserialize = function( vertex ) {
-                    if ( vertex )
-                    {
-                        if ( vertex.vertex ) return MOD3.VertexProxy.unserialize( vertex );
-                        /*else if ( vertex.face ) return MOD3.FaceProxy.unserialize( vertex );*/
-                    }
-                    return vertex;
-                };
-                this.disposeFaces( );
-                this.disposeVertices( );
-                this.vertices = (json.vertices || [ ]).map( unserialize );
-                this.faces = null; // (json.faces || [ ]).map( unserialize );
+                if ( MOD3.isWorker )
+                {
+                    this.disposeFaces( );
+                    this.disposeVertices( );
+                }
+                this.maxX = json.maxX;
+                this.maxY = json.maxY;
+                this.maxZ = json.maxZ;
+                this.minX = json.minX;
+                this.minY = json.minY;
+                this.minZ = json.minZ;
+                this.maxAxis = json.maxAxis;
+                this.midAxis = json.midAxis;
+                this.minAxis = json.minAxis;
+                this.width = json.width;
+                this.height = json.height;
+                this.depth = json.depth;
+                this.vertices = ( json.vertices || [ ] ).map( unserialize, this );
+                this.faces = null;
             }
             return this;
         },
@@ -323,14 +356,5 @@
             return this;
         }
     });
-    MeshProxy.unserialize - function( json ) {
-        if ( json && json.mesh && MOD3[ json.mesh ] )
-        {
-            return new MOD3[ json.mesh ]( ).unserialize( json );
-        }
-        // dummy, default
-        return new MeshProxy( );
-    };
-
     
 }(MOD3);

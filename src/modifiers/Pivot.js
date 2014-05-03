@@ -14,7 +14,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -25,7 +25,7 @@
         constructor: function( x, y, z ) {
             this.$super('constructor');
             this.name = 'Pivot';
-            this.pivot = new Vector3([x, y, z]);
+            this.pivot = new Vector3([x||0, y||0, z||0]);
         },
         
         pivot: null,
@@ -35,6 +35,27 @@
             this.pivot = null;
             this.$super('dispose');
             
+            return this;
+        },
+        
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    pivot: this.pivot.serialize( ),
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.pivot.unserialize( params.pivot );
+                this.enabled = !!params.enabled;
+            }
             return this;
         },
         
@@ -51,7 +72,7 @@
             return this;
         },
         
-        apply: function( ) {
+        _apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, 
                 pivot = this.pivot, v, vv;
 
@@ -68,4 +89,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

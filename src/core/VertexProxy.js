@@ -56,9 +56,9 @@
         },
         
         unserialize: function( json ) {
-            if ( json && this.name === json.vertex )
+            if ( json /*&& this.name === json.vertex*/ )
             {
-                this.xyz = this.setXYZ( json.xyz );
+                this.setXYZ( json.xyz );
                 this.original = json.original;
                 this.ratio = json.ratio;
             }
@@ -213,13 +213,5 @@
             this.setXYZ( v.xyz );
         }
     });
-    VertexProxy.unserialize - function( json ) {
-        if ( json && json.vertex && MOD3[ json.vertex ] )
-        {
-            return new MOD3[ json.vertex ]( ).unserialize( json );
-        }
-        // dummy, default
-        return new VertexProxy( );
-    };
     
 }(MOD3);

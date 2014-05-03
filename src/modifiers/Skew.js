@@ -14,7 +14,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -64,6 +64,43 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    force: this.force,
+                    skewAxis: this.skewAxis,
+                    offset: this.offset,
+                    power: this.power,
+                    falloff:  this.falloff,
+                    inverseFalloff: this.inverseFalloff,
+                    oneSide: this.oneSide,
+                    swapAxes: this.swapAxes,
+                    constraint: this.constraint, 
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.force = params.force;
+                this.skewAxis = params.skewAxis;
+                this.offset = params.offset;
+                this.power = params.power;
+                this.falloff = params.falloff;
+                this.inverseFalloff = params.inverseFalloff;
+                this.oneSide = params.oneSide;
+                this.swapAxes = params.swapAxes;
+                this.constraint = params.constraint;
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
         setModifiable: function( mod ) {
             this.$super("setModifiable", mod)
             this.skewAxis = this.skewAxis || this.mod.maxAxis;
@@ -71,7 +108,7 @@
             return this;
         },
         
-        apply: function( ) {
+        _apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length,
                 constraint = this.constraint, 
                 skewAxis = this.skewAxis, 
@@ -127,4 +164,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

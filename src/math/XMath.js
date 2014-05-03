@@ -4,7 +4,7 @@
 *
 *
 **/
-(function(MOD3, undef){
+!function(MOD3, undef){
     @@USE_STRICT@@
     
     // cache constants
@@ -12,7 +12,7 @@
         toRad = MOD3.Constants.toRad, toDeg = MOD3.Constants.toDeg,
         Min = Math.min, Max = Math.max,
         Pow = Math.pow, Round = Math.round,
-        Floor = Math.florr, Ceil = Math.ceil, Trim
+        Floor = Math.floor, Ceil = Math.ceil, Trim
     ;
 
     var XMath = MOD3.XMath = MOD3.StaticClass({
@@ -88,4 +88,4 @@
     // alias
     Trim = XMath.clamp = XMath.trim;
 
-})(MOD3);
+}(MOD3);

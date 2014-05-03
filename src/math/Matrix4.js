@@ -99,6 +99,7 @@
             this.n44 = (n44===undef) ? 1 : n44;
         },
     
+        name: "Matrix4",
         n11: 1,
         n12: 0,
         n13: 0,
@@ -134,6 +135,52 @@
             this.n43 = null;
             this.n44 = null;
             
+            return this;
+        },
+        
+        serialize: function( ) {
+            return { 
+                name: this.name, 
+                n11: this.n11,
+                n12: this.n12,
+                n13: this.n13,
+                n14: this.n14,
+                n21: this.n21,
+                n22: this.n22,
+                n23: this.n23,
+                n24: this.n24,
+                n31: this.n31,
+                n32: this.n32,
+                n33: this.n33,
+                n34: this.n34,
+                n41: this.n41,
+                n42: this.n42,
+                n43: this.n43,
+                n44: this.n44
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.name )
+            {
+                this.n11 = json.n11;
+                this.n12 = json.n12;
+                this.n13 = json.n13;
+                this.n14 = json.n14;
+                this.n21 = json.n21;
+                this.n22 = json.n22;
+                this.n23 = json.n23;
+                this.n24 = json.n24;
+                this.n31 = json.n31;
+                this.n32 = json.n32;
+                this.n33 = json.n33;
+                this.n34 = json.n34;
+                this.n41 = json.n41;
+                this.n42 = json.n42;
+                this.n43 = json.n43;
+                this.n44 = json.n44;
+            }
             return this;
         },
         

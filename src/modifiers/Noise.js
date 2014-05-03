@@ -13,7 +13,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -46,6 +46,33 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    force: this.force,
+                    start: this.start,
+                    end: this.end,
+                    axes: this.axes,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.force = params.force;
+                this.start = params.start;
+                this.end = params.end;
+                this.axes = params.axes;
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
         setFalloff: function( start, end ) {
             this.start = (start !== undef) ? start : 0;
             this.end = (end !== undef) ? end : 1;
@@ -53,7 +80,7 @@
             return this;
         },
         
-        apply: function( ) {
+        _apply: function( ) {
             var mod = this.mod, axes = this.axes, start = this.start, end = this.end, 
                 vs = mod.vertices, vc = vs.length, force = this.force, halfforce = 0.5*force,
                 maxAxis = mod.maxAxis, v, r, p, rp, xyz;
@@ -95,4 +122,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

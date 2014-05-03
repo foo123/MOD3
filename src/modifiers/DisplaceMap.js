@@ -20,7 +20,7 @@
  * 
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -63,6 +63,37 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    width: this.width,
+                    height: this.height,
+                    bitmapData: this.bitmapData,
+                    force: this.force,
+                    offset: this.offset,
+                    axes: this.axes,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.width = params.width;
+                this.height = params.height;
+                this.bitmapData = params.bitmapData;
+                this.force = params.force;
+                this.offset = params.offset;
+                this.axes = params.axes;
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
         setBitmap: function( bmpData, w, h ) {
             this.bitmapData = bmpData || null;
             this.width = w || 0;
@@ -70,7 +101,7 @@
             return this;
         },
         
-        apply: function( ) {
+        _apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, axes = this.axes,
                 w = this.width, h = this.height, bmp = this.bitmapData,
                 force = this.force, offset = this.offset, v, uv, x, y, xyz;
@@ -98,4 +129,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

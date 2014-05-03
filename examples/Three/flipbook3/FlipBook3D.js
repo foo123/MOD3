@@ -134,13 +134,16 @@
             // flip modifiers
             this.mod = new MOD3.ModifierStack( MOD3.LibraryThree, this );
             this.pivot = new MOD3.Pivot(this.position.x, 0, 0);
-            this.mod.addModifier(this.pivot);
-            this.mod.collapse();
+            this.mod.addModifier( this.pivot );
+            this.mod.collapse( );
             this.bend = new MOD3.Bend(0,0,0);
             this.bend.constraint = MOD3.ModConstant.LEFT;
             if (this.pH>this.pW)
-                this.bend.switchAxes=true;
+                this.bend.switchAxes = true;
             this.mod.addModifier( this.bend );
+            
+            // use parallel modifier worker
+            this.mod.worker( true );
         },
         
         book : null,

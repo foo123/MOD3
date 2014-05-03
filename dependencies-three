@@ -21,21 +21,23 @@ SRC =[]
     
     # core
     ./src/MOD3.js
-    ./src/util/ModConstant.js
+    
+    ./src/math/ModConstant.js
+    ./src/math/XMath.js
+    ./src/math/Range.js
+    ./src/math/Phase.js
+    ./src/math/Point.js
+    ./src/math/Matrix.js
+    ./src/math/Vector3.js
+    ./src/math/Matrix4.js
+    
     ./src/core/WorkerInterface.js
-    ./src/util/XMath.js
-    ./src/util/Range.js
-    ./src/util/Phase.js
-    ./src/core/Point.js
-    ./src/core/Matrix.js
-    ./src/core/Vector3.js
-    ./src/core/Matrix4.js
     ./src/core/VertexProxy.js
     ./src/core/FaceProxy.js
     ./src/core/MeshProxy.js
     ./src/core/Modifier.js
-    ./src/plugins/Library3d.js
-    ./src/ModifierStack.js
+    ./src/core/Factory.js
+    ./src/core/ModifierStack.js
 
     # 3rd-party
     # https://github.com/josephg/noisejs

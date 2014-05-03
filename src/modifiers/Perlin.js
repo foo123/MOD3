@@ -19,7 +19,7 @@
  *  
 [/DOC_MD]**/
 
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -29,7 +29,7 @@
         X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
     ;
 
-    var PerlinNoise = MOD3.PerlinNoise = MOD3.Class(Object, {
+    var PerlinNoise = MOD3.PerlinNoise = MOD3.Class({
         
         constructor: function( w, h ) {
             this.width = (undef !== w) ? round( w ) : 10;
@@ -106,7 +106,7 @@
         constructor: function( f, n, a ) {
             this.$super('constructor');
             this.name = 'Perlin';
-            this.source = undef === n ? new PerlinNoise( 25, 25 ).generate( ) : n;
+            this.source = undef === n && !MOD3.isWorker ? new PerlinNoise( 25, 25 ).generate( ) : n;
             this.force = f || 1;
             this.autoRun = (undef !== a) ? (!!a) : true;
             this.axes = X | Y | Z;
@@ -131,13 +131,50 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    speedX: this.speedX,
+                    speedY: this.speedY,
+                    axes: this.axes,
+                    source: this.source ? {data: this.source.data, width: this.source.width, height: this.source.height} : null,
+                    force: this.force,
+                    offset: this.offset,
+                    autoRun: !!this.autoRun,
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.speedX = params.speedX;
+                this.speedY = params.speedY;
+                this.axes = params.axes;
+                this.force = params.force;
+                this.offset = params.offset;
+                this.autoRun = !!params.autoRun;
+                this.enabled = !!params.enabled;
+                if ( !this.source && this.autoRun && params.source )
+                {
+                    this.source = new PerlinNoise( params.source.width, params.source.height );
+                    this.source.data = params.source.data;
+                }
+            }
+            return this;
+        },
+        
         setSpeed: function( dX, dY ) {
             this.speedX = dX;
             this.speedY = dY;
             return this;
         },
         
-        apply: function( ) {
+        _apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length, axes = this.axes,
                 force = this.force, offset = this.offset, 
                 src = this.source, nsv, v, uv, xyz;
@@ -164,4 +201,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);

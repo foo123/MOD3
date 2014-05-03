@@ -20,9 +20,6 @@ Also the API architecture is setup for more modifiers to be added (even custom o
 The library has a dependency on [Classy.js](https://github.com/foo123/classy.js) micro Object-Oriented framework.
 
 
-**Version 0.4 supporting parallel workers plus other updates in progress**
-
-
 
 ###Contents
 
@@ -67,7 +64,7 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 
 ###TODO
 * possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
-* support parallel modifier workers transparently [IN PROGRESS]
+* support parallel modifier workers transparently [DONE partially]
 * add custom modifiers except the defaults found in AS3dMod library
 * make easier to apply modifiers to complex meshes/objects (which consist of submeshes) (recursion??)
 * optimize (math ops, caching, modifier chain calls etc..) [DONE partially]
@@ -82,6 +79,7 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 
 
 ###Changelog
+* 0.4  support parallel modifiers with web workers transparently, code refactor, optimizations, examples updates
 * 0.3.5  DisplaceMap modifier added, edits / optimizations
 * 0.3.4  update classy.js, code refactor / optimizations, Perlin modifier added
 * 0.3.2-0.3.3  update buildtools, api-reference, classy.js, Three.js revision (r66)

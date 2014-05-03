@@ -79,13 +79,19 @@
 
                 container.addEventListener( 'mousedown', onDocumentMouseDown, false );
                 
-                mstack=new MOD3.ModifierStack(MOD3.LibraryThree,cube);
-                mod=new MOD3.Taper(0);
-                mstack.addModifier(mod);
+                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube ).worker( true );
+                
+                mod = new MOD3.Taper( 0 );
+                mstack.addModifier( mod );
+                
                 var tobj={force:0};
                 new TWEEN.Tween(tobj).to({force:1.5},5000).onUpdate(function(){
                                 mod.force=this.force;
-                                mstack.apply();}).start();
+                                mstack.apply();}).onComplete(function(){
+                            //console.log('dispose worker thread');
+                            // dispose worker thread
+                            mstack.worker( false );
+                        }).start();
             }
             
             function onDocumentMouseDown( event ) {

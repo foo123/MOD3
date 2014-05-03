@@ -46,7 +46,7 @@
  * 
  [/DOC_MD]**/
  
-(function(MOD3, undef){
+!function(MOD3, undef){
     
     @@USE_STRICT@@
     
@@ -89,6 +89,37 @@
             return this;
         },
         
+        serialize: function( ) {
+            return { 
+                modifier: this.name, 
+                params: {
+                    speed:  this.speed,
+                    turn: this.turn,
+                    roll: this.roll,
+                    radius: this.radius,
+                    steerVector: this.steerVector.serialize( ),
+                    rollVector: this.rollVector.serialize( ),
+                    enabled: !!this.enabled
+                }
+            };
+            
+        },
+        
+        unserialize: function( json ) {
+            if ( json && this.name === json.modifier )
+            {
+                var params = json.params;
+                this.speed = params.speed;
+                this.turn = params.turn;
+                this.roll = params.roll;
+                this.radius = params.radius;
+                this.steerVector.unserialize( params.steerVector );
+                this.rollVector.unserialize( params.rollVector );
+                this.enabled = !!params.enabled;
+            }
+            return this;
+        },
+        
         setModifiable: function( mod ) {
             this.$super("setModifiable", mod);
             this.radius = 0.5*this.mod.width;
@@ -96,7 +127,7 @@
             return this;
         },
         
-        apply: function( ) {
+        _apply: function( ) {
             var vs = this.mod.vertices, vc = vs.length,
                 steerVector = this.steerVector, 
                 turn = this.turn, 
@@ -141,4 +172,4 @@
         }
     });
     
-})(MOD3);
+}(MOD3);
