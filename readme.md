@@ -26,10 +26,18 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 * [Live Examples](#live-examples)
 * [3D Engines Support](#support-for-3d-javascript-engines)
 * [3D Modifiers Support](#modifiers-supported-up-to-present)
+* [Source Code License](#source-code-license)
 * [API Reference](/api-reference.md)
 * [Todo](#todo)
 * [How to debug](#how-to-debug)
 * [ChangeLog](#changelog)
+
+
+###Source Code License
+
+This code uses the [MIT Open Source License](http://opensource.org/licenses/mit-license.php), per requests to use the license of the original [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) code.
+
+Fell free to share, modify, contribute etc..
 
 
 ###Live Examples
