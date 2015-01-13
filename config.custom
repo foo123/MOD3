@@ -1,0 +1,246 @@
+###################################################
+#
+#   The buildtools repository is at:
+#   https://github.com/foo123/Beeld
+#
+###################################################
+
+tasks =[{}]
+    
+    build ={}
+        
+        src =[]
+
+            !tpl:umd-header.tpl.js  # include a umd-header template
+            
+            # core
+            ./src/MOD3.js
+            
+            ./src/math/ModConstant.js
+            ./src/math/XMath.js
+            ./src/math/Range.js
+            ./src/math/Phase.js
+            ./src/math/Point.js
+            ./src/math/Matrix.js
+            ./src/math/Vector3.js
+            ./src/math/Matrix4.js
+            
+            ./src/core/WorkerInterface.js
+            ./src/core/VertexProxy.js
+            ./src/core/FaceProxy.js
+            ./src/core/MeshProxy.js
+            ./src/core/Modifier.js
+            ./src/core/Factory.js
+            ./src/core/ModifierStack.js
+
+            # 3rd-party
+            # https://github.com/josephg/noisejs
+            ./src/3rd-party/perlin.js
+            
+            # modifiers
+            ./src/modifiers/Pivot.js
+            ./src/modifiers/Bend.js
+            ./src/modifiers/Bloat.js
+            ./src/modifiers/Twist.js
+            ./src/modifiers/Skew.js
+            ./src/modifiers/Taper.js
+            ./src/modifiers/Wheel.js
+            ./src/modifiers/Break.js
+            ./src/modifiers/Noise.js
+            ./src/modifiers/DisplaceMap.js
+            ./src/modifiers/Perlin.js
+
+            # Support for Three.js
+            ./src/plugins/Three/Vertex.js
+            ./src/plugins/Three/Mesh.js
+            ./src/plugins/Three/Library.js
+
+            # Support for J3D
+            ./src/plugins/J3D/Vertex.js
+            ./src/plugins/J3D/Mesh.js
+            ./src/plugins/J3D/Library.js
+
+            # Support for CubicVR.js
+            ./src/plugins/CubicVR/Vertex.js
+            ./src/plugins/CubicVR/Mesh.js
+            ./src/plugins/CubicVR/Library.js
+
+            # Support for Copperlicht
+            ./src/plugins/Copperlicht/Vertex.js
+            ./src/plugins/Copperlicht/Mesh.js
+            ./src/plugins/Copperlicht/Library.js
+
+            # Support for Pre3D
+            ./src/plugins/Pre3D/Vertex.js
+            ./src/plugins/Pre3D/Mesh.js
+            ./src/plugins/Pre3D/Library.js
+            
+            !tpl:umd-footer.tpl.js  # include a umd-footer template
+
+        @ # end block
+
+        # extract header from this file
+        header = ./src/MOD3.js
+
+        replace =[{}]
+
+            "@@ROOT@@" = "this"
+            "@@EXPORTS@@" = "exports"
+            "@@MODULE_NAME@@" = "MOD3"
+            "@@MODULE_DEPENDENCIES@@" = "[ ['Classy'], ['./classy.js'] ]"
+            "@@MODULE_ARGUMENTS@@"  = "Classy"
+            "@@VERSION@@" = "0.4.1"
+            "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
+            "@@USE_STRICT@@" = '"use strict";'
+            
+        @ # end block
+
+        # extract documentation
+        doc ={}
+            "startdoc" = "/**[DOC_MD]"
+            "enddoc" = "[/DOC_MD]**/"
+            "trimx" = "\\s*\\*\\s?"
+            "output" = ".\api-reference.md"
+        @ # end block
+
+        # Minify the Package (map of lists)
+        minify ={}
+            
+            # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
+            uglifyjs =[]
+                -m -c
+            @ # end block
+            
+            # Options for Java Closure Compiler (if used)
+            closure =[]
+                "--language_in=ECMASCRIPT5_STRICT"
+            @ # end block
+            
+            # Options for Java YUI Compressor Compiler (if used)
+            yui =[]
+                --preserve-semi
+            @ # end block
+
+        @ # end block
+
+        out = ./build/mod3.min.js
+        
+    @ # end block
+    
+    
+    build_three ={}
+        
+        src =[]
+
+            !tpl:umd-header.tpl.js  # include a umd-header template
+            
+            # core
+            ./src/MOD3.js
+            
+            ./src/math/ModConstant.js
+            ./src/math/XMath.js
+            ./src/math/Range.js
+            ./src/math/Phase.js
+            ./src/math/Point.js
+            ./src/math/Matrix.js
+            ./src/math/Vector3.js
+            ./src/math/Matrix4.js
+            
+            ./src/core/WorkerInterface.js
+            ./src/core/VertexProxy.js
+            ./src/core/FaceProxy.js
+            ./src/core/MeshProxy.js
+            ./src/core/Modifier.js
+            ./src/core/Factory.js
+            ./src/core/ModifierStack.js
+
+            # 3rd-party
+            # https://github.com/josephg/noisejs
+            ./src/3rd-party/perlin.js
+            
+            # modifiers
+            ./src/modifiers/Pivot.js
+            ./src/modifiers/Bend.js
+            ./src/modifiers/Bloat.js
+            ./src/modifiers/Twist.js
+            ./src/modifiers/Skew.js
+            ./src/modifiers/Taper.js
+            ./src/modifiers/Wheel.js
+            ./src/modifiers/Break.js
+            ./src/modifiers/Noise.js
+            ./src/modifiers/DisplaceMap.js
+            ./src/modifiers/Perlin.js
+
+            # Support for Three.js
+            ./src/plugins/Three/Vertex.js
+            ./src/plugins/Three/Mesh.js
+            ./src/plugins/Three/Library.js
+            
+            !tpl:umd-footer.tpl.js  # include a umd-footer template
+
+        @ # end block
+
+        # extract header from this file
+        header = ./src/MOD3.js
+
+        replace =[{}]
+
+            "@@ROOT@@" = "this"
+            "@@EXPORTS@@" = "exports"
+            "@@MODULE_NAME@@" = "MOD3"
+            "@@MODULE_DEPENDENCIES@@" = "[ ['Classy'], ['./classy.js'] ]"
+            "@@MODULE_ARGUMENTS@@"  = "Classy"
+            "@@VERSION@@" = "0.4.1"
+            "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
+            "@@USE_STRICT@@" = '"use strict";'
+            
+        @ # end block
+
+        # extract documentation
+        doc ={}
+            "startdoc" = "/**[DOC_MD]"
+            "enddoc" = "[/DOC_MD]**/"
+            "trimx" = "\\s*\\*\\s?"
+            "output" = ".\api-reference.md"
+        @ # end block
+
+        # Minify the Package (map of lists)
+        minify ={}
+            
+            # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
+            uglifyjs =[]
+                -m -c
+            @ # end block
+            
+            # Options for Java Closure Compiler (if used)
+            closure =[]
+                "--language_in=ECMASCRIPT5_STRICT"
+            @ # end block
+            
+            # Options for Java YUI Compressor Compiler (if used)
+            yui =[]
+                --preserve-semi
+            @ # end block
+
+        @ # end block
+
+        out = ./build/mod3.three.min.js
+        
+    @ # end block
+    
+    bundle ={}
+        
+        bundle =[]
+
+            # bundle-in external dependencies
+            ./build/classy.js
+            ./build/mod3.min.js
+            
+        @ # end block
+
+
+        out = ./build/mod3.bundle.js
+    
+    @ # end block
+
+@ # end block
