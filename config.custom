@@ -5,9 +5,14 @@
 #
 ###################################################
 
+plugins =[{}]
+    # include 'doc' plugin from plugins folder
+    "doc" = "!plg:doc"
+@
+
 tasks =[{}]
     
-    build ={}
+    build =[{}]
         
         src =[]
 
@@ -77,7 +82,7 @@ tasks =[{}]
             
             !tpl:umd-footer.tpl.js  # include a umd-footer template
 
-        @ # end block
+        @
 
         # extract header from this file
         header = ./src/MOD3.js
@@ -93,7 +98,7 @@ tasks =[{}]
             "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
             "@@USE_STRICT@@" = '"use strict";'
             
-        @ # end block
+        @
 
         # extract documentation
         doc ={}
@@ -101,7 +106,7 @@ tasks =[{}]
             "enddoc" = "[/DOC_MD]**/"
             "trimx" = "\\s*\\*\\s?"
             "output" = ".\api-reference.md"
-        @ # end block
+        @
 
         # Minify the Package (map of lists)
         minify ={}
@@ -109,26 +114,26 @@ tasks =[{}]
             # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
             uglifyjs =[]
                 -m -c
-            @ # end block
+            @
             
             # Options for Java Closure Compiler (if used)
             closure =[]
                 "--language_in=ECMASCRIPT5_STRICT"
-            @ # end block
+            @
             
             # Options for Java YUI Compressor Compiler (if used)
             yui =[]
                 --preserve-semi
-            @ # end block
+            @
 
-        @ # end block
+        @
 
         out = ./build/mod3.min.js
         
-    @ # end block
+    @
     
     
-    build_three ={}
+    build_three =[{}]
         
         src =[]
 
@@ -178,7 +183,7 @@ tasks =[{}]
             
             !tpl:umd-footer.tpl.js  # include a umd-footer template
 
-        @ # end block
+        @
 
         # extract header from this file
         header = ./src/MOD3.js
@@ -194,7 +199,7 @@ tasks =[{}]
             "@@DEPENDENCIES@@" = "@dependencies: Classy.js"
             "@@USE_STRICT@@" = '"use strict";'
             
-        @ # end block
+        @
 
         # extract documentation
         doc ={}
@@ -202,7 +207,7 @@ tasks =[{}]
             "enddoc" = "[/DOC_MD]**/"
             "trimx" = "\\s*\\*\\s?"
             "output" = ".\api-reference.md"
-        @ # end block
+        @
 
         # Minify the Package (map of lists)
         minify ={}
@@ -210,25 +215,25 @@ tasks =[{}]
             # Options for Node UglifyJS Compiler (if used, default), (mangle and compress)
             uglifyjs =[]
                 -m -c
-            @ # end block
+            @
             
             # Options for Java Closure Compiler (if used)
             closure =[]
                 "--language_in=ECMASCRIPT5_STRICT"
-            @ # end block
+            @
             
             # Options for Java YUI Compressor Compiler (if used)
             yui =[]
                 --preserve-semi
-            @ # end block
+            @
 
-        @ # end block
+        @
 
         out = ./build/mod3.three.min.js
         
-    @ # end block
+    @
     
-    bundle ={}
+    bundle =[{}]
         
         bundle =[]
 
@@ -236,11 +241,11 @@ tasks =[{}]
             ./build/classy.js
             ./build/mod3.min.js
             
-        @ # end block
+        @
 
 
         out = ./build/mod3.bundle.js
     
-    @ # end block
+    @
 
-@ # end block
+@
