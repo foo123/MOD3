@@ -5,18 +5,18 @@
 *
 **/
 !function(MOD3, undef){
+@@USE_STRICT@@
+
+var LibraryCubicVR = MOD3.Class( MOD3.Library3d, {
     
-    @@USE_STRICT@@
-    
-    var LibraryCubicVR = MOD3.Class( MOD3.Library3d, {
-        
-        constructor: function( ) {
-            this.id = "CubicVR.js";
-            this.meshClass = MOD3.MeshCubicVR;
-            this.vertexClass = MOD3.VertexCubicVR;
-        }
-    });
-    // export it, singleton
-    MOD3.LibraryCubicVR = new LibraryCubicVR( );
-    
+    constructor: function( ) {
+        var self = this;
+        self.id = "CubicVR.js";
+        self.meshClass = MOD3.MeshCubicVR;
+        self.vertexClass = MOD3.VertexCubicVR;
+    }
+});
+// export it, singleton
+MOD3.LibraryCubicVR = new LibraryCubicVR( );
+
 }(MOD3);

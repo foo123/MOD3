@@ -11,6 +11,8 @@
     }
     </style>
     <script type="text/javascript" src="./three.min.js"></script>
+    <script type="text/javascript" src="./Projector.js"></script>
+    <script type="text/javascript" src="./CanvasRenderer.js"></script>
     <script type="text/javascript" src="../../build/mod3.bundle.js"></script>
     <script type="text/javascript" src="../js/Tween.js"></script>
     <script type="text/javascript" src="../js/RequestAnimationFrame.js"></script>
@@ -109,21 +111,16 @@
                 displacemap.style.zIndex = 10;
                 container.appendChild( displacemap );
                 
-                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube ).worker( true );
+                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube );
                 
-                mod = new MOD3.DisplaceMap( displaceData.data, displaceData.width, displaceData.height );
-                mod.offset = 128;
+                mod = new MOD3.DisplaceMap( displaceData );
                 mstack.addModifier( mod );
                 
                 var tobj={force:-1.5};
                 new TWEEN.Tween(tobj).to({force:1.5}, 5000).onUpdate(function(){
                                 mod.force = this.force;
                                 mstack.apply( );
-                }).onComplete(function(){
-                            //console.log('dispose worker thread');
-                            // dispose worker thread
-                            mstack.worker( false );
-                        }).start();
+                }).start();
             }
             
             function onDocumentMouseDown( event ) {

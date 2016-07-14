@@ -21,112 +21,82 @@
 [/DOC_MD]**/
 
 !function(MOD3, undef){
+@@USE_STRICT@@
+
+var ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
+    X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
+    each = MOD3.List.each
+;
+
+var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
     
-    @@USE_STRICT@@
-    
-    var ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
-        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z
-    ;
-
-    var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
-        
-        constructor: function( bmp, w, h, f ) {
-            this.$super('constructor');
-            this.name = 'DisplaceMap';
-            if ( arguments.length >= 3 )
-            {
-                this.setBitmap( bmp, w, h );
-                this.force = f || 1;
-            }
-            else
-            {
-                this.force = bmp || 1;
-            }
-            this.offset = 0x7F;
-            this.axes = X | Y | Z;
-        },
-        
-        width: null,
-        height: null,
-        bitmapData: null,
-        force: 1,
-        offset: 0x7F,
-        
-        dispose: function( ) {
-            this.bitmapData = null;
-            this.width = null;
-            this.height = null;
-            this.force = null;
-            this.offset = null;
-            this.$super('dispose');
-            
-            return this;
-        },
-        
-        serialize: function( ) {
-            return { 
-                modifier: this.name, 
-                params: {
-                    width: this.width,
-                    height: this.height,
-                    bitmapData: this.bitmapData,
-                    force: this.force,
-                    offset: this.offset,
-                    axes: this.axes,
-                    enabled: !!this.enabled
-                }
-            };
-            
-        },
-        
-        unserialize: function( json ) {
-            if ( json && this.name === json.modifier )
-            {
-                var params = json.params;
-                this.width = params.width;
-                this.height = params.height;
-                this.bitmapData = params.bitmapData;
-                this.force = params.force;
-                this.offset = params.offset;
-                this.axes = params.axes;
-                this.enabled = !!params.enabled;
-            }
-            return this;
-        },
-        
-        setBitmap: function( bmpData, w, h ) {
-            this.bitmapData = bmpData || null;
-            this.width = w || 0;
-            this.height = h || 0;
-            return this;
-        },
-        
-        _apply: function( ) {
-            var vs = this.mod.vertices, vc = vs.length, axes = this.axes,
-                w = this.width, h = this.height, bmp = this.bitmapData,
-                force = this.force, offset = this.offset, v, uv, x, y, xyz;
-
-            if ( !axes || !bmp ) return this;
-            
-            // optimize loop using while counting down instead of up
-            while ( --vc >= 0 )
-            {
-                v = vs[ vc ];
-                xyz = v.getXYZ( );
-                
-                x = ~~( (w - 1) * v.ratio[ 0 ]/* X */ );
-                y = ~~( (h - 1) * v.ratio[ 2 ]/* Z */ );
-                uv = ( y * w + x ) << 2;
-                
-                if ( axes & X ) xyz[ 0 ] += ((bmp[ uv ] >> 16 & 0xff) - offset) * force;
-                if ( axes & Y ) xyz[ 1 ] += ((bmp[ uv+1 ] >> 8 & 0xff) - offset) * force;
-                if ( axes & Z ) xyz[ 2 ] += ((bmp[ uv+2 ] & 0xff) - offset) * force;
-                
-                v.setXYZ( xyz );
-            }
-
-            return this;
+    constructor: function( bmp, f ) {
+        var self = this;
+        self.$super('constructor');
+        self.name = 'DisplaceMap';
+        if ( +bmp == bmp ) // number
+        {
+            self.force = bmp || 1;
         }
-    });
+        else
+        {
+            self.setBitmap( bmp );
+            self.force = f || 1;
+        }
+        self.offset = 127 // 0x7F;
+        self.axes = X | Y | Z;
+    },
     
+    width: null,
+    height: null,
+    bmpData: null,
+    force: 1,
+    offset: 127,
+    
+    dispose: function( ) {
+        var self = this;
+        self.bmpData = null;
+        self.width = null;
+        self.height = null;
+        self.force = null;
+        self.offset = null;
+        self.$super('dispose');
+        return self;
+    },
+    
+    setBitmap: function( bmpData ) {
+        var self = this;
+        self.bmpData = bmpData ? bmpData.data : null;
+        self.width = bmpData ? bmpData.width : 0;
+        self.height = bmpData ? bmpData.height : 0;
+        return self;
+    },
+    
+    apply: function( ) {
+        var self = this,
+            axes = self.axes,
+            w = self.width, h = self.height, bmp = self.bmpData,
+            force = self.force, offset = self.offset;
+
+        if ( !axes || !bmp ) return self;
+        
+        each(self.mod.vertices, function( v ){
+            var uv, x, y, xyz;
+            xyz = v.getXYZ( );
+            
+            x = ~~( (w - 1) * v.ratio[ 0 ]/* X */ );
+            y = ~~( (h - 1) * v.ratio[ 2 ]/* Z */ );
+            uv = ( y * w + x ) << 2;
+            
+            v.setXYZ([
+                xyz[ 0 ] + (axes & X ? ((bmp[ uv ] & 0xff) - offset) * force : 0),
+                xyz[ 1 ] + (axes & Y ? ((bmp[ uv+1 ] & 0xff) - offset) * force : 0),
+                xyz[ 2 ] + (axes & Z ? ((bmp[ uv+2 ] & 0xff) - offset) * force : 0)
+            ]);
+        });
+
+        return self;
+    }
+});
+
 }(MOD3);

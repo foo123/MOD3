@@ -47,129 +47,99 @@
  [/DOC_MD]**/
  
 !function(MOD3, undef){
-    
-    @@USE_STRICT@@
-    
-    var invPI = MOD3.Constants.invPI, 
-        doublePI = MOD3.Constants.doublePI,
-        Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4
-    ;
-    
-    var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
-       
-       constructor: function( ) {
-            this.$super('constructor');
-            this.name = 'Wheel';
-            this.speed = 0;
-            this.turn = 0;
-            this.roll = 0;
-            this.radius = 0;
-            this.steerVector = new Vector3([0, 1, 0]);
-            this.rollVector = new Vector3([0, 0, 1]);
-        },
-        
-        speed:  0,
-        turn: 0,
-        roll: 0,
-        radius: 0,
-        steerVector: null,
-        rollVector: null,
-        
-        dispose: function( ) {
-            this.speed = null;
-            this.turn = null;
-            this.roll = null;
-            this.radius = null;
-            this.steerVector.dispose( );
-            this.rollVector.dispose( );
-            this.steerVector = null;
-            this.rollVector = null;
-            this.$super('dispose');
-            
-            return this;
-        },
-        
-        serialize: function( ) {
-            return { 
-                modifier: this.name, 
-                params: {
-                    speed:  this.speed,
-                    turn: this.turn,
-                    roll: this.roll,
-                    radius: this.radius,
-                    steerVector: this.steerVector.serialize( ),
-                    rollVector: this.rollVector.serialize( ),
-                    enabled: !!this.enabled
-                }
-            };
-            
-        },
-        
-        unserialize: function( json ) {
-            if ( json && this.name === json.modifier )
-            {
-                var params = json.params;
-                this.speed = params.speed;
-                this.turn = params.turn;
-                this.roll = params.roll;
-                this.radius = params.radius;
-                this.steerVector.unserialize( params.steerVector );
-                this.rollVector.unserialize( params.rollVector );
-                this.enabled = !!params.enabled;
-            }
-            return this;
-        },
-        
-        setModifiable: function( mod ) {
-            this.$super("setModifiable", mod);
-            this.radius = 0.5*this.mod.width;
-            
-            return this;
-        },
-        
-        _apply: function( ) {
-            var vs = this.mod.vertices, vc = vs.length,
-                steerVector = this.steerVector, 
-                turn = this.turn, 
-                rollVector = this.rollVector, 
-                roll = this.roll,
-                ms = null, mt = null, rv = null, v, c
-            ;
-            
-            this.roll += this.speed;
-            
-            if ( turn ) 
-            {
-                mt = new Matrix4( ).rotationMatrixFromVector( steerVector, turn );
-                rv = mt.multiplyVector( rollVector.clone( ) );
-                ms = new Matrix4( ).rotationMatrixFromVector( rv, roll );
-            } 
-            else 
-            {
-                ms = new Matrix4( ).rotationMatrixFrom( rollVector, roll );
-            }
+@@USE_STRICT@@
 
-            // optimize loop using while counting down instead of up
-            while ( --vc >= 0 )
-            {
-                v = vs[ vc ];
-                c = v.getVector( );
-                
-                if ( mt ) mt.multiplyVector( c );
-                
+var invPI = MOD3.Constants.invPI, 
+    doublePI = MOD3.Constants.doublePI,
+    Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, each = MOD3.List.each
+;
+
+var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
+   
+   constructor: function( ) {
+        var self = this;
+        self.$super('constructor');
+        self.name = 'Wheel';
+        self.speed = 0;
+        self.turn = 0;
+        self.roll = 0;
+        self.radius = 0;
+        self.steerVector = new Vector3([0, 1, 0]);
+        self.rollVector = new Vector3([0, 0, 1]);
+    },
+    
+    speed:  0,
+    turn: 0,
+    roll: 0,
+    radius: 0,
+    steerVector: null,
+    rollVector: null,
+    
+    dispose: function( ) {
+        var self = this;
+        self.speed = null;
+        self.turn = null;
+        self.roll = null;
+        self.radius = null;
+        self.steerVector.dispose( );
+        self.rollVector.dispose( );
+        self.steerVector = null;
+        self.rollVector = null;
+        self.$super('dispose');
+        
+        return self;
+    },
+    
+    setModifiable: function( mod ) {
+        var self = this;
+        self.$super("setModifiable", mod);
+        self.radius = 0.5*self.mod.width;
+        return self;
+    },
+    
+    apply: function( ) {
+        var self = this,
+            steerVector = self.steerVector, 
+            turn = self.turn, 
+            rollVector = self.rollVector, 
+            roll = self.roll,
+            ms = null, mt = null, rv = null
+        ;
+        
+        self.roll += self.speed;
+        
+        if ( turn ) 
+        {
+            mt = new Matrix4( ).rotationMatrixFromVector( steerVector, turn );
+            rv = mt.multiplyVector( rollVector.clone( ) );
+            ms = new Matrix4( ).rotationMatrixFromVector( rv, roll );
+        } 
+        else 
+        {
+            ms = new Matrix4( ).rotationMatrixFrom( rollVector, roll );
+        }
+
+        each(self.mod.vertices, mt
+            ? function( v ){
+                var c = v.getVector( );
+                mt.multiplyVector( c );
                 v.setVector( ms.multiplyVector( c ) );
             }
-             
-            return this;
-       },
-        
-        getStep: function( )  {
-            return this.radius * this.speed * invPI;
-        },
-        
-        getPerimeter: function( )  {
-            return this.radius * doublePI;
-        }
-    });
+            : function( v ){
+                v.setVector( ms.multiplyVector( v.getVector( ) ) );
+            }
+        );
+         
+        return self;
+   },
     
+    getStep: function( )  {
+        return this.radius * this.speed * invPI;
+    },
+    
+    getPerimeter: function( )  {
+        return this.radius * doublePI;
+    }
+});
+
 }(MOD3);

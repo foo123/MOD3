@@ -11,6 +11,8 @@
     }
     </style>
     <script type="text/javascript" src="./three.min.js"></script>
+    <script type="text/javascript" src="./Projector.js"></script>
+    <script type="text/javascript" src="./CanvasRenderer.js"></script>
     <script type="text/javascript" src="../../build/mod3.bundle.js"></script>
     <script type="text/javascript" src="../js/Tween.js"></script>
     <script type="text/javascript" src="../js/RequestAnimationFrame.js"></script>
@@ -79,7 +81,7 @@
 
                 container.addEventListener( 'mousedown', onDocumentMouseDown, false );
                 
-                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube ).worker( true );
+                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube );
                 
                 mod = new MOD3.Break( 0,0 );
                 mod.angle = Math.PI/4;
@@ -89,11 +91,7 @@
                 new TWEEN.Tween(tobj).to({offset:0.5,angle:Math.PI/2},5000).onUpdate(function(){
                                 mod.offset=this.offset;
                                 mod.angle=this.angle;
-                                mstack.apply();}).onComplete(function(){
-                            //console.log('dispose worker thread');
-                            // dispose worker thread
-                            mstack.worker( false );
-                        }).start();
+                                mstack.apply();}).start();
             }
             
             function onDocumentMouseDown( event ) {

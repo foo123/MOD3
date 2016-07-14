@@ -5,7 +5,7 @@ __3D Modifier Library for JavaScript__
 
 This is a port of the [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
 
-__supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*
+__supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG.js* (in progress)
 
 
 [![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
@@ -48,11 +48,12 @@ Fell free to share, modify, contribute etc..
 
 ###Support for 3D JavaScript engines
 
-* [Three.js](https://github.com/mrdoob/three.js/) with examples (r66)
+* [Three.js](https://github.com/mrdoob/three.js/) with examples (r78)
+* [OSG.js](https://github.com/cedricpinson/osgjs) with examples (0.2.5) **in progress**
 * [J3D](https://github.com/drojdjou/J3D) with examples (Build 51)
 * [Copperlicht](https://github.com/Sebmaster/copperlicht) with examples
 * [CubicVR](https://github.com/cjcliffe/CubicVR.js/) with examples
-* [Pre3d](https://github.com/deanm/pre3d) with examples (my pre3d examples are a liitle blurry but you'll get the picture)
+* [Pre3d](https://github.com/deanm/pre3d) with examples (my pre3d examples are a little blurry but you'll get the picture)
 
 
 
@@ -72,9 +73,7 @@ Fell free to share, modify, contribute etc..
 
 ###TODO
 * possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
-* support parallel modifier workers transparently [DONE partially]
 * add custom modifiers except the defaults found in AS3dMod library
-* make easier to apply modifiers to complex meshes/objects (which consist of submeshes) (recursion??)
 * optimize (math ops, caching, modifier chain calls etc..) [DONE partially]
 * port the modifiers that use Perlin Noise (using instead the simpler and faster Simplex Noise routine for JavaScript, [noisejs](https://github.com/josephg/noisejs) , or [simplex-noise.js](https://github.com/jwagner/simplex-noise.js)) [DONE partially]
 * keep up with JavaScript 3D Engines updates (will try)
@@ -87,12 +86,13 @@ Fell free to share, modify, contribute etc..
 
 
 ###Changelog
+* 0.5.0  parallel processing through workers is dropped, add support for OSG.js (in progress), update support for Three.js r78, some refactoring and optimisations
 * 0.4  support parallel modifiers with web workers transparently, code refactor, optimizations, examples updates
 * 0.3.5  DisplaceMap modifier added, edits / optimizations
 * 0.3.4  update classy.js, code refactor / optimizations, Perlin modifier added
 * 0.3.2-0.3.3  update buildtools, api-reference, classy.js, Three.js revision (r66)
-* ver 0.3.1  update buildtools, api-reference, use classy.js for OOP
-* ver 0.3  code refactoring, extension framework, various optimizations, tidy up repo, new build scripts, project stopped
+* 0.3.1  update buildtools, api-reference, use classy.js for OOP
+* 0.3  code refactoring, extension framework, various optimizations, tidy up repo, new build scripts, project stopped
 * added support for CubicVR.js 3D Engine, minor optimizations for all engines
 * added support for Three.js revision (r58)
 * added support for Three.js revision (r53)

@@ -5,18 +5,18 @@
 *
 **/
 !function(MOD3, undef){
+@@USE_STRICT@@
+
+var LibraryCopperlicht = MOD3.Class( MOD3.Library3d, {
     
-    @@USE_STRICT@@
-    
-    var LibraryCopperlicht = MOD3.Class( MOD3.Library3d, {
-        
-        constructor: function( ) {
-            this.id = "Copperlicht";
-            this.meshClass = MOD3.MeshCopperlicht;
-            this.vertexClass = MOD3.VertexCopperlicht;
-        }
-    });
-    // export it, singleton
-    MOD3.LibraryCopperlicht = new LibraryCopperlicht( );
-    
+    constructor: function( ) {
+        var self = this;
+        self.id = "Copperlicht";
+        self.meshClass = MOD3.MeshCopperlicht;
+        self.vertexClass = MOD3.VertexCopperlicht;
+    }
+});
+// export it, singleton
+MOD3.LibraryCopperlicht = new LibraryCopperlicht( );
+
 }(MOD3);

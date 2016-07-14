@@ -11,9 +11,12 @@
     }
     </style>
     <script type="text/javascript" src="./three.min.js"></script>
+    <script type="text/javascript" src="./Projector.js"></script>
+    <script type="text/javascript" src="./CanvasRenderer.js"></script>
     <script type="text/javascript" src="../../build/mod3.bundle.js"></script>
     <script type="text/javascript" src="../js/Tween.js"></script>
     <script type="text/javascript" src="../js/RequestAnimationFrame.js"></script>
+    <script type="text/javascript" src="../js/perlin.js"></script>
     </head>
     <body>
         <div id="container" style="position:relative;margin:0 auto;padding:0;z-index:0;cursor:pointer;"></div>
@@ -43,6 +46,19 @@
             init();
             animate();
             
+            
+            function generate_noise2d( w, h, perlinNoise2d )
+            {
+                perlinNoise2d = perlinNoise2d || noise.simplex2;
+                var size = w*h, a = new Float32Array( size ), i, j, index;
+                for (i=0,j=0,index=0; index<size; index++,i++)
+                {
+                    if ( i >= w ) { i = 0; j++; }
+                    a[ index ] = perlinNoise2d( i/w, j/h );
+                }
+                a.width = w; a.height = h;
+                return a;
+            }
             
             function init() {
 
@@ -79,20 +95,16 @@
 
                 container.addEventListener( 'mousedown', onDocumentMouseDown, false );
                 
-                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube ).worker( true );
+                mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube );
                 
-                mod = new MOD3.Perlin( 20 );
+                mod = new MOD3.Perlin( 20, generate_noise2d( 50, 50 ) );
                 mstack.addModifier( mod );
                 
                 var tobj = { force:0 };
                 new TWEEN.Tween(tobj).to({force:200}, 5000).onUpdate(function(){
                                 //mod.force = this.force;
                                 mstack.apply( );
-                }).onComplete(function(){
-                            //console.log('dispose worker thread');
-                            // dispose worker thread
-                            mstack.worker( false );
-                        }).start();
+                }).start();
             }
             
             function onDocumentMouseDown( event ) {

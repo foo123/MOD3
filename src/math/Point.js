@@ -5,48 +5,30 @@
 *
 **/
 !function(MOD3, undef){
-    
-    @@USE_STRICT@@
-    
-    var Point = MOD3.Point = MOD3.Class({
-        
-        constructor: function( x, y ) {
-            this.x = (x===undef) ? 0 : x;
-            this.y = (y===undef) ? 0 : y;
-        },
+@@USE_STRICT@@
 
-        name: "Point",
-        x: 0,
-        y: 0,
-
-        dispose: function( ) {
-            this.x = null;
-            this.y = null;
-            
-            return this;
-        },
-        
-        serialize: function( ) {
-            return { 
-                name: this.name, 
-                x: this.x,
-                y: this.y
-            };
-            
-        },
-        
-        unserialize: function( json ) {
-            if ( json && this.name === json.name )
-            {
-                this.x = json.x;
-                this.y = json.y;
-            }
-            return this;
-        },
-        
-        clone: function( ) {
-            return new Point(this.x, this.y);
-        }
-    });
+var Point = MOD3.Point = MOD3.Class({
     
+    constructor: function( x, y ) {
+        var self = this;
+        self.x = null == x ? 0 : x;
+        self.y = null == y ? 0 : y;
+    },
+
+    name: "Point",
+    x: 0,
+    y: 0,
+
+    dispose: function( ) {
+        var self = this;
+        self.x = null;
+        self.y = null;
+        return self;
+    },
+    
+    clone: function( ) {
+        return new Point(this.x, this.y);
+    }
+});
+
 }(MOD3);

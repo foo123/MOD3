@@ -5,6 +5,19 @@ registerDemo(function(engine) {
 
     console.log("MOD3 Perlin/Simplex Noise Demo| J3D | v0.16");
 
+    function generate_noise2d( w, h, perlinNoise2d )
+    {
+        perlinNoise2d = perlinNoise2d || noise.simplex2;
+        var size = w*h, a = new Float32Array( size ), i, j, index;
+        for (i=0,j=0,index=0; index<size; index++,i++)
+        {
+            if ( i >= w ) { i = 0; j++; }
+            a[ index ] = perlinNoise2d( i/w, j/h );
+        }
+        a.width = w; a.height = h;
+        return a;
+    }
+    
     this.setup = function(callback) {
         engine.setClearColor(J3D.Color.black);
 
@@ -31,7 +44,7 @@ registerDemo(function(engine) {
 
         
         mstack = new MOD3.ModifierStack(MOD3.LibraryJ3D, cube);
-        mod = new MOD3.Perlin(0.1);
+        mod = new MOD3.Perlin(0.1, generate_noise2d( 60, 60 ));
         mstack.addModifier(mod);
         var tobj = { force: 0 };
         new TWEEN.Tween(tobj)

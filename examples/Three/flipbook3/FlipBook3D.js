@@ -1,290 +1,265 @@
-(function(root){
+!function(root) {
+/**
+**  FlipBook3D using Three.js, MOD3.js and Tween.js
+**  Author Nikos M.
+**  url http://nikos-web-development.netai.net/
+**/
 
-    /**
-    **  FlipBook3D using Three.js, MOD3.js and Tween.js
-    **  Author Nikos M.
-    **  url http://nikos-web-development.netai.net/
-    **/
+// 3D Flip Book -------------------------------------------------------------------------------------------
+var self = { }, 
+    Class = root.Classy.Class,
+    THREE = root.THREE, 
+    TWEEN = root.TWEEN, 
+    MOD3 = root.MOD3,
+    Book, Page,
+    Abs = Math.abs, PI = Math.PI
+;
 
-    // 3D Flip Book -------------------------------------------------------------------------------------------
-    var self={}, 
-        Class = root.Classy.Class,
-        THREE=root.THREE, 
-        TWEEN=root.TWEEN, 
-        MOD3=root.MOD3,
-        Book, Page;
-    
-    var Abs=Math.abs, PI=Math.PI
-    ;
-    
-    
-    // Book  Class-------------------------------------------------------------------------------------------
-    Book = self.Book = Class( THREE.Object3D,
-    {
-        constructor : function() {
-            this.$super("constructor");
-            
-            this.pages = null;
-            this.pageWidth = 0;
-            this.pageHeight = 0;
-            this.currentPage = 0;
-            this.flippedleft = 0;
-            this.flippedright = 0;
-            this.duration = 1;
-            this.centerContainer = new THREE.Object3D();
-            this.add( this.centerContainer );
-            this.pages = [];
-        },
-        
-        pages : null,
-        pageWidth : 0,
-        pageHeight : 0,
-        currentPage : 0,
-        flippedleft : 0,
-        flippedright : 0,
-        duration : 1,
-        centerContainer : null,
-        
-        getNumPages : function()  {
-            return( this.pages.length );
-        },
-        
-        addPage : function(pf, pb, hardness, pageColor) {
-            var hardn=0.5, pagecol=0x555555;
-            
-            if (typeof hardness != 'undefined')   hardn=hardness;
-            if (typeof pageColor != 'undefined')  pagecol=pageColor;
-            
-            var i=this.pages.length;
-            var page = new Page(this, i, pf, pb, hardn, pagecol);
-            page.duration = this.duration;
-            
-            this.pages.push( page );
-            this.centerContainer.add( page );
-            
-            return this;
+var Abs = Math.abs, PI = Math.PI;
+
+
+// Book  Class-------------------------------------------------------------------------------------------
+Book = self.Book = Class(THREE.Object3D, {
+    constructor: function( ){
+        var self = this;
+        self.$super("constructor");
+        self.pages = null;
+        self.pageWidth = 0;
+        self.pageHeight = 0;
+        self.currentPage = 0;
+        self.flippedleft = 0;
+        self.flippedright = 0;
+        self.duration = 1;
+        self.centerContainer = new THREE.Object3D( );
+        self.add( self.centerContainer );
+        self.pages = [];
+    },
+
+    pages: null,
+    pageWidth: 0,
+    pageHeight: 0,
+    currentPage: 0,
+    flippedleft: 0,
+    flippedright: 0,
+    duration: 1,
+    centerContainer: null,
+
+    getNumPages: function( ){
+        return this.pages.length;
+    },
+
+    addPage: function( pf, pb, hardness, pageColor ){
+        var self = this, hardn = 0.5, pagecol = 0x555555;
+
+        if ( "undefined" !== typeof hardness ) hardn = hardness;
+        if ( "undefined" !== typeof pageColor )  pagecol = pageColor;
+
+        var i = self.pages.length, page = new Page(self, i, pf, pb, hardn, pagecol);
+
+        self.pages.push( page );
+        self.centerContainer.add( page );
+        return self;
+    }
+});
+
+// Page Class -------------------------------------------------------------------------------------------
+Page = self.Page = Class(THREE.Mesh, {
+    constructor: function( book, i, matf, matb, hard, col ) {
+        var self = this;
+        self.book = book;
+        self.matFront = matf;
+        self.matBack = matb;
+        self.index = i;
+        self.nfacesw = 10;//this.pW*0.1;
+        self.nfacesh = 10;//this.pH*0.1;
+        self.mats = [];
+        self.pageHardness = hard;
+        self.duration = 1;
+        self.angle = .25 * PI * book.pageWidth / book.pageHeight;
+        self.force = 6;
+        self.to = null;
+        self.flipPt = 0.3;
+        self.mod = null;
+        self.bend = null;
+        self.isFlippedLeft = false;
+        self.isFlippedRight = true;
+        self.flippingLeft = false
+        self.flippingRight = false;
+        self.zz = 2;
+        self.pageColor = col;
+        self.sides = {bottom:3, top:2,    right:0, left:1,    front:4, back:5};
+
+        self.book.flippedright++;
+
+        // align flipBook center container
+        if ( 0 === self.index )
+            self.book.centerContainer.position.x = -self.book.pageWidth*0.5;
+
+        // add page flip interaction TO DO..
+
+        for (var mii=0;mii<6;mii++)
+        {
+            // add front - back page images
+            if ( mii === self.sides.front )
+            {
+                self.mats[self.sides.front] = new THREE.MeshBasicMaterial( { map: self.matFront, overdraw: true } );
+                self.mats[self.sides.front].name = "front";
+            }
+            else if ( mii === self.sides.back )
+            {
+                self.mats[self.sides.back] = new THREE.MeshBasicMaterial( { map: self.matBack, overdraw: true } );
+                self.mats[self.sides.back].name = "back";
+            }
+            else
+            {
+                self.mats[mii] = new THREE.MeshBasicMaterial( { color: self.pageColor } );
+                self.mats[mii].name = 'edge';
+            }
         }
-    });
-    
-    // Page Class -------------------------------------------------------------------------------------------
-    Page = self.Page = Class( THREE.Mesh,
-    {
-        constructor : function(book, i, matf, matb, hard, col)  {
-            this.book = book;
-            this.matFront = matf;
-            this.matBack = matb;
-            this.index = i;
-            this.pW = this.book.pageWidth;
-            this.pH = this.book.pageHeight;
-            this.nfacesw = 10;//this.pW*0.1;
-            this.nfacesh = 10;//this.pH*0.1;
-            this.mats = [];
-            this.pageHardness = hard;
-            this.duration = 1;
-            this.angle = .25*PI*this.pW/this.pH;
-            this.force = 6;
-            this.to = null;
-            this.flipPt = 0.3;
-            this.mod = null;
-            this.bend = null;
-            this.pivot = null;
-            this.isFlippedLeft = false;
-            this.isFlippedRight = true;
-            this.flippingLeft = false
-            this.flippingRight = false;
-            this.zz = 2;
-            this.pageColor = col;
-            this.sides = {bottom:3, top:2,    right:0, left:1,    front:4, back:5};
-            
-            this.book.flippedright++;
-            
-            // align flipBook center container
-            if (this.index==0)
-                this.book.centerContainer.position.x = -this.book.pageWidth*0.5;
-            
-            // add page flip interaction TO DO..
-            
-            for (var mii=0;mii<6;mii++)
+        // call super
+        // Three.js has made materials added to FaceMaterial instead of CubeGeometry
+        self.$super("constructor", new THREE.CubeGeometry( book.pageWidth, book.pageHeight, 1, self.nfacesw, self.nfacesh, 1 ), new THREE.MeshFaceMaterial(self.mats));
+        self.overdraw = true;
+        self.position.x = book.pageWidth * 0.5;
+        self.position.z = -self.zz * self.index;
+
+        // flip modifiers
+        self.mod = new MOD3.ModifierStack( MOD3.LibraryThree, self );
+        self.mod.addModifier( new MOD3.Pivot( self.position.x, 0, 0 ) ).collapse( );
+        self.bend = new MOD3.Bend( 0, 0, 0 );
+        self.bend.constraint = MOD3.ModConstant.LEFT;
+        self.bend.switchAxes = book.pageHeight > book.pageWidth ? true : false;
+        self.mod.addModifier( self.bend );
+    },
+
+    book : null,
+    matFront : null,
+    matBack : null,
+    index : null,
+    nfacesw : 10,
+    nfacesh : 10,
+    mats : null,
+    pageHardness : null,
+    angle : null,
+    force : 6,
+    to : null,
+    flipPt : 0.3,
+    mod : null,
+    bend : null,
+    isFlippedLeft : false,
+    isFlippedRight : true,
+    flippingLeft : false,
+    flippingRight : false,
+    zz : 2,
+    pageColor : null,
+    sides : null,
+
+    flipLeft: function( pt ) {
+        var self = this;
+
+        if (
+            !self.isFlippedLeft && 
+            !self.flippingLeft && 
+            !self.flippingRight && 
+            (self.index === self.book.flippedleft)
+        )
+        {
+            if ( null != pt )
             {
-                // add front - back page images
-                if (mii==this.sides.front)
-                {
-                    this.mats[this.sides.front]=new THREE.MeshBasicMaterial( { map: this.matFront, overdraw: true } );
-                    this.mats[this.sides.front].name="front";
-                }
-                else if (mii==this.sides.back)
-                {
-                    this.mats[this.sides.back]=new THREE.MeshBasicMaterial( { map: this.matBack, overdraw: true } );
-                    this.mats[this.sides.back].name="back";
-                }
-                else
-                {
-                    this.mats[mii]=new THREE.MeshBasicMaterial( { color: this.pageColor } );
-                    this.mats[mii].name='edge';
-                }
+                //this.flipPt=pt;//e.localY/this.book.pageHeight;
             }
-            // call super
-            // Three.js has made materials added to FaceMaterial instead of CubeGeometry
-            this.$super("constructor", new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1 ), new THREE.MeshFaceMaterial(this.mats));
-            //this.superCall("constructor", new THREE.CubeGeometry( this.pW, this.pH, 1, this.nfacesw, this.nfacesh, 1 ), new THREE.MeshFaceMaterial(this.mats));
-            this.overdraw = true;
-            this.position.x = this.pW*0.5;
-            this.position.z = -this.zz*this.index;
-            
-            // flip modifiers
-            this.mod = new MOD3.ModifierStack( MOD3.LibraryThree, this );
-            this.pivot = new MOD3.Pivot(this.position.x, 0, 0);
-            this.mod.addModifier( this.pivot );
-            this.mod.collapse( );
-            this.bend = new MOD3.Bend(0,0,0);
-            this.bend.constraint = MOD3.ModConstant.LEFT;
-            if (this.pH>this.pW)
-                this.bend.switchAxes = true;
-            this.mod.addModifier( this.bend );
-            
-            // use parallel modifier worker
-            this.mod.worker( true );
-        },
-        
-        book : null,
-        matFront : null,
-        matBack : null,
-        index : null,
-        pW : null,
-        pH : null,
-        nfacesw : 10,
-        nfacesh : 10,
-        mats : null,
-        pageHardness : null,
-        duration : 1,
-        angle : null,
-        force : 6,
-        to : null,
-        flipPt : 0.3,
-        mod : null,
-        bend : null,
-        pivot : null,
-        isFlippedLeft : false,
-        isFlippedRight : true,
-        flippingLeft : false,
-        flippingRight : false,
-        zz : 2,
-        pageColor : null,
-        sides : null,
-            
-        flipLeft : function(pt)  {
-            var ayto=this;
-            
-            if (
-                !this.isFlippedLeft && 
-                !this.flippingLeft && 
-                !this.flippingRight && 
-                (this.index==this.book.flippedleft)
-            )
-            {
-                if (pt!=null)
-                {
-                    //this.flipPt=pt;//e.localY/this.book.pageHeight;
-                }
-                this.flippingLeft = true;
-                this.bend.setAngle( (2*this.flipPt-1)*this.angle );
-                this.to = { angle: this.rotation.y, t: -1, xx: 0, page: this };
-                new TWEEN.Tween(this.to)
-                    .to({angle:-Math.PI, xx:1, t:1}, this.duration*1000)
-                    .onUpdate(
-                        ayto.renderFlip
-                    )
-                    .onComplete(
-                        ayto.flipFinished
-                    )
-                    .start();
-                this.book.flippedleft++;
-                this.book.flippedright--;
-                this.position.z=1;
-            }
-            
-            return this;
-        },
-        
-        flipRight : function(pt)  {
-            var ayto=this;
-            
-            if (
-                !this.isFlippedRight && 
-                !this.flippingRight && 
-                !this.flippingLeft && 
-                (this.index==this.book.getNumPages()-this.book.flippedright-1)
-            )
-            {
-                if (pt!=null)
-                {
-                    //this.flipPt=pt;//e.localY/this.book.pageHeight;
-                }
-                this.flippingRight = true;
-                this.bend.setAngle( (2*this.flipPt-1)*this.angle );
-                this.to = { angle: this.rotation.y, t: -1, xx: 0, page: this };
-                new TWEEN.Tween(this.to)
-                    .to({angle:0, xx:1, t:1}, this.duration*1000)
-                    .onUpdate(
-                        ayto.renderFlip
-                    )
-                    .onComplete(
-                        ayto.flipFinished
-                    )
-                    .start();
-                this.book.flippedleft--;
-                this.book.flippedright++;
-                this.position.z=1;
-            }
-            
-            return this;
-        },
-        
-        renderFlip : function()  {
-            var p2=Math.PI*0.5;
-            // align flipBook to center
-            if (this.page.flippingLeft && this.page.index==0 && this.page.book.getNumPages()>1)
-                this.page.book.centerContainer.position.x=(1-this.xx)*this.page.book.centerContainer.position.x;
-            else if (this.page.flippingLeft && this.page.index==this.page.book.getNumPages()-1)
-                this.page.book.centerContainer.position.x=(1-this.xx)*this.page.book.centerContainer.position.x+this.xx*this.page.book.pageWidth*0.5;
-            else if (this.page.flippingRight && this.page.index==0)
-                this.page.book.centerContainer.position.x=(1-this.xx)*this.page.book.centerContainer.position.x-this.xx*this.page.book.pageWidth*0.5;
-            else if (this.page.flippingRight && this.page.index==this.page.book.getNumPages()-1)
-                this.page.book.centerContainer.position.x=(1-this.xx)*this.page.book.centerContainer.position.x;
-                
-            // flip page
-            var tt=(1-Abs(this.t));
-            this.page.rotation.y = this.angle;
-            this.page.bend.force = ((Abs(this.angle)-p2)/p2)*tt*this.page.force*(1-this.page.pageHardness);
-            this.page.bend.offset = (1-tt)*0.6+tt*0.5;
-            this.page.mod.apply();
-        },
-        
-        flipFinished : function() {
-            if (this.page.flippingLeft)
-            {
-                this.page.flippingLeft=false;
-                this.page.isFlippedLeft=true;
-                this.page.flippingRight=false;
-                this.page.isFlippedRight=false;
-                this.page.position.z=-this.page.zz*(this.page.book.getNumPages()-this.page.index);
-            }
-            else if (this.page.flippingRight)
-            {
-                this.page.flippingLeft=false;
-                this.page.isFlippedRight=true;
-                this.page.flippingRight=false;
-                this.page.isFlippedLeft=false;
-                this.page.position.z=-this.page.zz*this.page.index;
-            }
-            this.page.bend.force=0.0;
-            this.page.bend.setAngle(0.0);
-            this.page.bend.offset=0.0;
-            this.page.mod.apply();
+            self.flippingLeft = true;
+            self.bend.setAngle( (2*self.flipPt-1)*self.angle );
+            new TWEEN.Tween( self.to={ angle: self.rotation.y, t: -1, xx: 0, page: self } )
+                .to({angle:-Math.PI, xx:1, t:1}, self.book.duration*1000)
+                .onUpdate( self.renderFlip )
+                .onComplete( self.flipFinished )
+                .start( )
+            ;
+            self.book.flippedleft++;
+            self.book.flippedright--;
+            self.position.z = 1;
         }
-    });
 
-    // export it
-    root.FlipBook3D = self;
+        return self;
+    },
 
-})(window);
+    flipRight: function( pt ) {
+        var self = this;
+
+        if (
+            !self.isFlippedRight && 
+            !self.flippingRight && 
+            !self.flippingLeft && 
+            (self.index === self.book.getNumPages()-self.book.flippedright-1)
+        )
+        {
+            if ( null != pt )
+            {
+                //this.flipPt=pt;//e.localY/this.book.pageHeight;
+            }
+            self.flippingRight = true;
+            self.bend.setAngle( (2*this.flipPt-1)*this.angle );
+            new TWEEN.Tween( self.to = { angle: self.rotation.y, t: -1, xx: 0, page: self } )
+                .to({angle:0, xx:1, t:1}, self.book.duration*1000)
+                .onUpdate( self.renderFlip )
+                .onComplete( self.flipFinished )
+                .start( )
+            ;
+            self.book.flippedleft--;
+            self.book.flippedright++;
+            self.position.z = 1;
+        }
+
+        return self;
+    },
+
+    renderFlip: function( ) {
+        var t = this, self = t.page, book = self.book, p2 = Math.PI*0.5, tt;
+        // align flipBook to center
+        if ( self.flippingLeft && 0 === self.index && book.getNumPages() > 1 )
+            book.centerContainer.position.x = (1-t.xx) * book.centerContainer.position.x;
+        else if ( self.flippingLeft && self.index+1 === book.getNumPages() )
+            book.centerContainer.position.x = (1-t.xx)*book.centerContainer.position.x+t.xx*book.pageWidth*0.5;
+        else if ( self.flippingRight && 0 === self.index )
+            book.centerContainer.position.x = (1-t.xx)*book.centerContainer.position.x-t.xx*book.pageWidth*0.5;
+        else if ( self.flippingRight && self.index+1 === book.getNumPages() )
+            book.centerContainer.position.x = (1-t.xx)*book.centerContainer.position.x;
+
+        // flip page
+        tt=(1-Abs(t.t));
+        self.rotation.y = t.angle;
+        self.bend.force = ((Abs(t.angle)-p2)/p2)*tt*self.force*(1-self.pageHardness);
+        self.bend.offset = (1-tt)*0.6+tt*0.5;
+        self.mod.apply( );
+    },
+
+    flipFinished: function( ) {
+        var t = this, self = t.page;
+        if ( self.flippingLeft )
+        {
+            self.flippingLeft = false;
+            self.isFlippedLeft = true;
+            self.flippingRight = false;
+            self.isFlippedRight = false;
+            self.position.z = -self.zz*(self.book.getNumPages()-self.index);
+        }
+        else if ( self.flippingRight )
+        {
+            self.flippingLeft = false;
+            self.isFlippedRight = true;
+            self.flippingRight = false;
+            self.isFlippedLeft = false;
+            self.position.z = -self.zz*self.index;
+        }
+        self.bend.force = 0.0;
+        self.bend.setAngle(0.0);
+        self.bend.offset = 0.0;
+        self.mod.apply();
+    }
+});
+
+// export it
+root.FlipBook3D = self;
+
+}(window);

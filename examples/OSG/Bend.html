@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bend demo and OSG.js</title>
+    <link rel="stylesheet" type="text/css" href="./base.css">
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="./core.js"></script>
+    <script type="text/javascript" src="./bluebird-2.10.2.js"></script>
+    <script type="text/javascript" src="./hammer-2.0.4.js"></script>
+    <!--<script type="text/javascript" src="./leap.js"></script>-->
+    <script type="text/javascript" src="./OSG.js"></script>
+    <script type="text/javascript" src="../../build/mod3.bundle.js"></script>
+</head>
+
+
+
+<body class="osgjs-theme-dark">
+
+  <div id="ViewContainer" class="osgjs-fullpage">
+    <!-- very important change the size of the parent element instead-->
+    <canvas id="View" style="height:100%;width:100%;" oncontextmenu="return false;"></canvas>
+  </div>
+
+</body>
+
+<script type="text/javascript">
+
+var OSG = window.OSG;
+var osg = OSG.osg;
+var osgAnimation = OSG.osgAnimation;
+var osgViewer = OSG.osgViewer;
+var cube, mstack, mod;
+
+function SimpleUpdateCallback() {}
+SimpleUpdateCallback.prototype = {
+    mod_angle: Math.PI/4,
+    mod_force: 1.2,
+    angle: 0,
+
+    update: function ( node, nv ) {
+        var t = nv.getFrameStamp().getSimulationTime();
+        var dt = t - node._lastUpdate;
+        if ( dt < 0 ) { return true;  }
+        node._lastUpdate = t;
+
+        // rotation
+        /*var m = node.getMatrix();
+        osg.Matrix.makeRotate( -this.angle, 0.0, 0.0, 1.0, m );
+        osg.Matrix.setTrans( m, 0, 0, 0 );*/
+        mod.setAngle(this.mod_angle);
+        mod.force = this.mod_force;
+        mstack.apply();
+        this.angle += 0.1;
+        this.mod_force -= 0.1;
+        return true;
+    }
+};
+
+function createScene()
+{
+    var root = new osg.Node();
+
+    cube = osg.createTexturedBoxGeometry( 0, 0, 0, 20, 20, 2 );
+    // attache updatecallback function to cube
+    var cb = new SimpleUpdateCallback();
+    cube.addUpdateCallback( cb );
+    root.addChild( cube );
+    
+    mstack = new MOD3.ModifierStack( MOD3.LibraryOSG, cube );
+    
+    mod = new MOD3.Bend( );
+    mod.setAngle( 0 );
+    mod.force = 0;
+    mod.offset = 0.5;
+    mod.switchAxes = true;
+    mod.constraint = MOD3.ModConstant.LEFT;
+    mstack.addModifier( mod );
+    
+    return root;
+}
+
+function main( )
+{
+    var canvas = document.getElementById( 'View' );
+
+    var viewer;
+    try {
+        viewer = new osgViewer.Viewer( canvas, {
+            antialias: true,
+            alpha: true
+        } );
+        viewer.init();
+        var rotate = new osg.MatrixTransform();
+        rotate.addChild( createScene() );
+        viewer.getCamera().setClearColor( [ 0.0, 0.0, 0.0, 0.0 ] );
+        viewer.setSceneData( rotate );
+        viewer.setupManipulator();
+        viewer.getManipulator().computeHomePosition();
+
+        viewer.run();
+
+    } catch ( er ) {
+        osg.log( 'exception in osgViewer ' + er );
+    }
+}
+
+window.addEventListener( 'load', main, true );
+
+</script>
+</html>

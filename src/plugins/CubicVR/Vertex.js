@@ -5,171 +5,144 @@
 *
 **/
 !function(MOD3, undef){
-    
-    @@USE_STRICT@@
-    
-    var ModConstant = MOD3.ModConstant,
-        X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
-        Vector3 = MOD3.Vector3, A = MOD3.VecArray
-    ;
-    
-    var VertexCubicVR = MOD3.VertexCubicVR = MOD3.Class( MOD3.VertexProxy, {
-        
-        constructor: function( sceneObject, vertex ) {
-            this.sceneObject = sceneObject;
-            this.$super('constructor', vertex );
-            this.name = "VertexCubicVR";
-        },
-        
-        sceneObject: null,
-        
-        dispose: function( ) {
-            this.sceneObject = null;
-            this.$super('dispose');
-            
-            return this;
-        },
-        
-        setVertex: function( vertex ) {
-            this.vertex = vertex;
-            this.original = new A( vertex );
-            this.xyz = new A( vertex );
-            
-            return this;
-        },
-        
-        getXYZ: function( ) {
-            return new A( this.vertex );
-        },
-        
-        getX: function( ) {
-            return this.vertex[0];
-        },
-        
-        getY: function( ) {
-            return this.vertex[1];
-        },
-        
-        getZ: function( ) {  
-            return this.vertex[2];
-        },
-        
-        setXYZ: function( xyz ) {
-            var vt = this.vertex;
-            
-            vt[0] = xyz[0];
-            vt[1] = xyz[1];
-            vt[2] = xyz[2];
-            //this.sceneObject.dirty=true;
-            
-            return this;
-        },
-        
-        setX: function( v ) {
-            var vt = this.vertex, _update = false;
-            
-            //if ( v != vt[0] ) _update = true;
-            
-            vt[0] = v;
-            
-            /*if (_update)
-            {
-                this.sceneObject.dirty=true;
-            }*/
-            
-            return this;
-        },
-        
-        setY: function( v ) {
-            var vt = this.vertex, _update = false;
-            
-            //if ( v != vt[1] ) _update = true;
-            
-            vt[1] = v;
-            
-            /*if (_update)
-            {
-                this.sceneObject.dirty=true;
-            }*/
-            
-            return this;
-        },
-        
-        setZ: function( v ) {
-            var vt = this.vertex, _update = false;
-            
-            //if ( v != vt[2] ) _update = true;
-            
-            vt[2] = v;
-            
-            /*if (_update)
-            {
-                this.sceneObject.dirty=true;
-            }*/
-            
-            return this;
-        },
-        
-        reset: function( ) {
-            var vt = this.vertex, xyz = this.original;
-            
-            vt[0] = xyz[0];
-            vt[1] = xyz[1];
-            vt[2] = xyz[2];
-            //this.sceneObject.dirty=true;
-                
-            return this;
-        },
+@@USE_STRICT@@
 
-        collapse: function( ) {
-            this.original = new A( this.vertex );
-            
-            return this;
-        },
+var ModConstant = MOD3.ModConstant,
+    X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
+    Vector3 = MOD3.Vector3, A = MOD3.VecArray
+;
 
-        getValue: function( axis )  {
-            var vt = this.vertex;
-            switch( axis ) 
-            {
-                case X: return vt[0];
-                case Y: return vt[1];
-                case Z: return vt[2];
-            }
-            return 0;
-        },
-
-        setValue: function( axis, v ) {
-            var vt = this.vertex, _update = false;
-            switch( axis ) 
-            {
-                case X: vt[0] = v; _update = true; break;
-                case Y: vt[1] = v; _update = true; break;
-                case Z: vt[2] = v; _update = true; break;
-            }
-            /*if ( _update )
-            {
-                this.sceneObject.dirty = true;
-            }*/
-            return this;
-       },
-       
-       setVector: function( v ) {
-            var vt = this.vertex, xyz = v.xyz;
-            
-            vt[0] = xyz[0];
-            vt[1] = xyz[1];
-            vt[2] = xyz[2];
-            //this.sceneObject.dirty=true;
-            
-            return this;
-        },
-
-        getVector: function( ) {
-            return new Vector3( this.vertex );
-        }
-    });
-    // aliases
-    VertexCubicVR.prototype.getXYZRef = VertexCubicVR.prototype.getXYZ;
-    VertexCubicVR.prototype.setXYZRef = VertexCubicVR.prototype.setXYZ;
+var VertexCubicVR = MOD3.VertexCubicVR = MOD3.Class( MOD3.VertexProxy, {
     
+    constructor: function( sceneObject, vertex ) {
+        var self = this;
+        self.sceneObject = sceneObject;
+        self.$super('constructor', vertex );
+        self.name = "VertexCubicVR";
+    },
+    
+    sceneObject: null,
+    
+    dispose: function( ) {
+        var self = this;
+        self.sceneObject = null;
+        self.$super('dispose');
+        
+        return self;
+    },
+    
+    setVertex: function( vertex ) {
+        var self = this;
+        self.vertex = vertex;
+        self.original = new A( vertex );
+        self.xyz = new A( vertex );
+        
+        return self;
+    },
+    
+    getXYZ: function( ) {
+        return new A( this.vertex );
+    },
+    
+    getX: function( ) {
+        return this.vertex[0];
+    },
+    
+    getY: function( ) {
+        return this.vertex[1];
+    },
+    
+    getZ: function( ) {  
+        return this.vertex[2];
+    },
+    
+    setXYZ: function( xyz ) {
+        var self = this,
+            vt = self.vertex;
+        
+        vt[0] = xyz[0];
+        vt[1] = xyz[1];
+        vt[2] = xyz[2];
+        //self.sceneObject.dirty=true;
+        
+        return self;
+    },
+    
+    setX: function( v ) {
+        var self = this;
+        self.vertex[0] = v;
+        return self;
+    },
+    
+    setY: function( v ) {
+        var self = this;
+        self.vertex[1] = v;
+        return self;
+    },
+    
+    setZ: function( v ) {
+        var self = this;
+        self.vertex[2] = v;
+        return self;
+    },
+    
+    reset: function( ) {
+        var self = this,
+            vt = self.vertex, xyz = self.original;
+        
+        vt[0] = xyz[0];
+        vt[1] = xyz[1];
+        vt[2] = xyz[2];
+        //self.sceneObject.dirty=true;
+            
+        return self;
+    },
+
+    collapse: function( ) {
+        var self = this;
+        self.original = new A( self.vertex );
+        
+        return self;
+    },
+
+    getValue: function( axis )  {
+        var vt = this.vertex;
+        return X === axis
+            ? vt[0]
+            : (Y === axis
+            ? vt[1]
+            : (Z === axis
+            ? vt[2]
+            : 0))
+        ;
+    },
+
+    setValue: function( axis, v ) {
+        var vt = this.vertex;
+        if ( X === axis ) vt[0] = v;
+        else if ( Y === axis ) vt[1] = v;
+        else if ( Z === axis ) vt[2] = v;
+        return this;
+   },
+   
+   setVector: function( v ) {
+        var self = this,
+            vt = self.vertex, xyz = v.xyz;
+        
+        vt[0] = xyz[0];
+        vt[1] = xyz[1];
+        vt[2] = xyz[2];
+        //self.sceneObject.dirty=true;
+        
+        return self;
+    },
+
+    getVector: function( ) {
+        return new Vector3( this.vertex );
+    }
+});
+// aliases
+VertexCubicVR.prototype.getXYZRef = VertexCubicVR.prototype.getXYZ;
+VertexCubicVR.prototype.setXYZRef = VertexCubicVR.prototype.setXYZ;
+
 }(MOD3);

@@ -5,19 +5,19 @@
 *
 **/
 !function(MOD3, undef){
+@@USE_STRICT@@
+
+var LibraryThree = MOD3.Class( MOD3.Library3d, {
     
-    @@USE_STRICT@@
-    
-    var LibraryThree = MOD3.Class( MOD3.Library3d, {
-        
-        constructor: function( ) {
-            this.id = "Three.js";
-            this.meshClass = MOD3.MeshThree;
-            this.vertexClass = MOD3.VertexThree;
-        }
-    });
-    
-    // export it, singleton
-    MOD3.LibraryThree = new LibraryThree( );
-    
+    constructor: function( ) {
+        var self = this;
+        self.id = "Three.js";
+        self.meshClass = MOD3.MeshThree;
+        self.vertexClass = MOD3.VertexThree;
+    }
+});
+
+// export it, singleton
+MOD3.LibraryThree = new LibraryThree( );
+
 }(MOD3);
