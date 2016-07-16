@@ -17,7 +17,8 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, Pow = Math.pow, each = MOD3.List.each;
+var Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, Pow = Math.pow,
+    mult = Vector3.mul, mod = Vector3.mod, each = MOD3.List.each, mult4XYZ = Matrix4.multXYZ;
 
 var Taper = MOD3.Taper = MOD3.Class ( MOD3.Modifier, {
     
@@ -28,8 +29,8 @@ var Taper = MOD3.Taper = MOD3.Class ( MOD3.Modifier, {
         /*self.start = 0;
         self.end = 1;*/
 
-        self.vector = new Vector3([1, 0, 1]);
-        self.vector2 = new Vector3([0, 1, 0]);
+        self.vector = new Vector3(1, 0, 1);
+        self.vector2 = new Vector3(0, 1, 0);
         
         self.force = f !== undef ? f : 0;
         self.power = p !== undef ? p : 1;
@@ -58,39 +59,24 @@ var Taper = MOD3.Taper = MOD3.Class ( MOD3.Modifier, {
         self.force = null;
         self.power = null;
         self.$super('dispose');
-        
         return self;
     },
     
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
-            vector = self.vector, 
-            vector2 = self.vector2, 
-            force = self.force, 
-            power = self.power,
-            vx = vector.xyz[0],
-            vy = vector.xyz[1],
-            vz = vector.xyz[2],
-            m = new Matrix4( );
-        ;
+            vec = self.vector.xyz, vec2 = self.vector2.xyz,
+            force = self.force, power = self.power, m = new Matrix4( );
         
-        each(self.mod.vertices, (1 < power) || (1 > power)
+        each(modifiable.vertices, 1 != power
             ? function( v ){
-                var ar = v.getRatioVector( ).multiply( vector2 ),
-                    sc = force * Pow(ar.getMagnitude( ), power)
-                ;
-                m.reset( ).scaleMatrix( 1 + sc * vx, 1 + sc * vy, 1 + sc * vz );
-                v.setVector( m.multiplyVector( v.getVector( ) ) );
+                var ar = mod( mult( v.getRatioVector( ), vec2 ) ), sc = force * Pow( ar, power );
+                v.setXYZ( mult4XYZ( m.scale( 1 + sc * vec[0], 1 + sc * vec[1], 1 + sc * vec[2] ), v.getXYZ( ) ) );
             }
             : function( v ){
-                var ar = v.getRatioVector( ).multiply( vector2 ),
-                    sc = force * ar.getMagnitude( )
-                ;
-                m.reset( ).scaleMatrix( 1 + sc * vx, 1 + sc * vy, 1 + sc * vz );
-                v.setVector( m.multiplyVector( v.getVector( ) ) );
+                var ar = mod( mult( v.getRatioVector( ), vec2 ) ), sc = force * ar;
+                v.setXYZ( mult4XYZ( m.scale( 1 + sc * vec[0], 1 + sc * vec[1], 1 + sc * vec[2] ), v.getXYZ( ) ) );
             }
         );
-        
         return self;
     }
 });

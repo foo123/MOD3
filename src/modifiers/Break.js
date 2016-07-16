@@ -17,7 +17,8 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Vector3 = MOD3.Vector3, Range = MOD3.Range, Matrix4 = MOD3.Matrix4, each = MOD3.List.each;
+var Vector3 = MOD3.Vector3, Range = MOD3.Range, Matrix4 = MOD3.Matrix4,
+    Max = Math.max, Min = Math.min, each = MOD3.List.each, mult4XYZ = Matrix4.multXYZ;
 
 var Break = MOD3.Break = MOD3.Class ( MOD3.Modifier, {
     
@@ -40,32 +41,30 @@ var Break = MOD3.Break = MOD3.Class ( MOD3.Modifier, {
     dispose: function( ) {
         var self = this;
         self.bv.dispose( );
-        self.bv = null;
         self.range.dispose( );
+        self.bv = null;
         self.range = null;
         self.offset = null;
         self.angle = null;
         self.$super('dispose');
-        
         return self;
     },
     
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
-            mod = self.mod,
-            offset = self.offset, range = self.range, angle = self.angle, bv = self.bv, bvxyz = bv.xyz,
-            pv, npv, v, rm;
+            offset = Min(1, Max(0, self.offset)), range = self.range, angle = self.angle,
+            bv = self.bv/*.normalizeSelf( )*/.xyz, pv, rm;
 
-        pv = new Vector3([0, 0, -(mod.minZ + mod.depth * offset)]);
-        npv = pv.negate( );
-        rm = new Matrix4( ).rotationMatrix( bvxyz[ 0 ], bvxyz[ 1 ], bvxyz[ 2 ], angle );
+        pv = modifiable.minZ + modifiable.depth*offset;
+        rm = new Matrix4( ).rotate( bv[ 0 ], bv[ 1 ], bv[ 2 ], angle );
 
-        each(mod.vertices, function( v ) {
-            var c = v.getVector( ).addSelf( pv );
-            if( c.xyz[ 2 ] >= 0 && range.isIn( v.ratio[ 1 ] ) ) rm.multiplyVector( c );
-            v.setVector( c.addSelf( npv ) );
+        each(modifiable.vertices, function( v ) {
+            var c = v.getXYZ( );
+            c[ 2 ] -= pv;
+            if ( (0 <= c[ 2 ]) && range.isIn( v.ratio[ 1 ] ) ) mult4XYZ( rm, c );
+            c[ 2 ] += pv;
+            v.setXYZ( c );
         });
-         
         return self;
    }
 });

@@ -51,7 +51,8 @@
 
 var invPI = MOD3.Constants.invPI, 
     doublePI = MOD3.Constants.doublePI,
-    Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, each = MOD3.List.each
+    Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, each = MOD3.List.each,
+    mult4XYZ = Matrix4.multXYZ
 ;
 
 var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
@@ -63,7 +64,6 @@ var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
         self.speed = 0;
         self.turn = 0;
         self.roll = 0;
-        self.radius = 0;
         self.steerVector = new Vector3([0, 1, 0]);
         self.rollVector = new Vector3([0, 0, 1]);
     },
@@ -71,7 +71,6 @@ var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
     speed:  0,
     turn: 0,
     roll: 0,
-    radius: 0,
     steerVector: null,
     rollVector: null,
     
@@ -80,7 +79,6 @@ var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
         self.speed = null;
         self.turn = null;
         self.roll = null;
-        self.radius = null;
         self.steerVector.dispose( );
         self.rollVector.dispose( );
         self.steerVector = null;
@@ -90,55 +88,39 @@ var Wheel = MOD3.Wheel = MOD3.Class( MOD3.Modifier, {
         return self;
     },
     
-    setModifiable: function( mod ) {
-        var self = this;
-        self.$super("setModifiable", mod);
-        self.radius = 0.5*self.mod.width;
-        return self;
-    },
-    
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
             steerVector = self.steerVector, 
             turn = self.turn, 
             rollVector = self.rollVector, 
             roll = self.roll,
-            ms = null, mt = null, rv = null
+            //radius = 0.5*modifiable.width,
+            //step = radius * self.speed * invPI,
+            //perimeter = radius * doublePI,
+            ms = null, mt = null
         ;
         
         self.roll += self.speed;
         
         if ( turn ) 
         {
-            mt = new Matrix4( ).rotationMatrixFromVector( steerVector, turn );
-            rv = mt.multiplyVector( rollVector.clone( ) );
-            ms = new Matrix4( ).rotationMatrixFromVector( rv, roll );
+            mt = new Matrix4( ).rotateFromVector( steerVector, turn );
+            ms = new Matrix4( ).rotateFromVector( mt.multiplyVector( rollVector.clone( ) ), roll );
         } 
         else 
         {
-            ms = new Matrix4( ).rotationMatrixFrom( rollVector, roll );
+            ms = new Matrix4( ).rotateFromVector( rollVector, roll );
         }
 
-        each(self.mod.vertices, mt
+        each(modifiable.vertices, mt
             ? function( v ){
-                var c = v.getVector( );
-                mt.multiplyVector( c );
-                v.setVector( ms.multiplyVector( c ) );
+                v.setXYZ( mult4XYZ( ms, mult4XYZ( mt, v.getXYZ( ) ) ) );
             }
             : function( v ){
-                v.setVector( ms.multiplyVector( v.getVector( ) ) );
+                v.setXYZ( mult4XYZ( ms, v.getXYZ( ) ) );
             }
         );
-         
         return self;
-   },
-    
-    getStep: function( )  {
-        return this.radius * this.speed * invPI;
-    },
-    
-    getPerimeter: function( )  {
-        return this.radius * doublePI;
     }
 });
 

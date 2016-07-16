@@ -84,12 +84,12 @@
                 mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube );
                 
                 mod = new MOD3.Bloat( );
-                mod.setRadius( 0 );
+                mod.radius = 0;
                 mstack.addModifier( mod );
                 
                 var tobj={radius:0};
                 new TWEEN.Tween(tobj).to({radius:100},5000).onUpdate(function(){
-                                mod.setRadius(this.radius);
+                                mod.radius=this.radius;
                                 mstack.apply();}).start();
             }
             

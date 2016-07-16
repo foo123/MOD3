@@ -1,4 +1,4 @@
-﻿/**
+/**
 *
 * MOD3  Twist Modifier
 *
@@ -16,7 +16,8 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, each = MOD3.List.each;
+var Vector3 = MOD3.Vector3, Sqrt = Math.sqrt, Matrix4 = MOD3.Matrix4,
+    each = MOD3.List.each, mult4 = Matrix4.mult, dotp = Vector3.dot, mod = Vector3.mod;
 
 var Twist = MOD3.Twist = MOD3.Class ( MOD3.Modifier, {
     
@@ -24,7 +25,7 @@ var Twist = MOD3.Twist = MOD3.Class ( MOD3.Modifier, {
         var self = this;
         self.$super('constructor');
         self.name = 'Twist';
-        self.vector = new Vector3([0, 1, 0]).normalizeSelf( );
+        self.vector = new Vector3(0, 1, 0);
         self.angle = a !== undef ? a : 0;
         self.center = Vector3.ZERO( );
     },
@@ -41,30 +42,27 @@ var Twist = MOD3.Twist = MOD3.Class ( MOD3.Modifier, {
         self.center.dispose( );
         self.center = null;
         self.$super('dispose');
-        
         return self;
     },
     
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
-            mod = self.mod,
-            vector = self.vector, angle = self.angle, center = self.center,
-            dv = new Vector3([0.5*mod.maxX, 0.5*mod.maxY, 0.5*mod.maxZ]), 
-            factor = angle / dv.getMagnitude( ),
-            mat1 = new Matrix4( ), mat2 = new Matrix4( ),
-            d = -Vector3.dot( vector, center )
+            vector = self.vector.normalizeSelf( ), angle = self.angle, center = self.center, vxyz = vector.xyz,
+            modulo = mod([0.5*modifiable.maxX, 0.5*modifiable.maxY, 0.5*modifiable.maxZ]),
+            d = -dotp( vxyz, center.xyz ),
+            m1 = new Matrix4( ), m2 = new Matrix4( )
         ;
 
-        each(mod.vertices, function( v ){
-            var vec = v.getVector( ),
-                a = factor * (Vector3.dot( vec, vector ) + d),
-                m1 = mat1.reset( ).translationMatrixFromVector( vec ),
-                m2 = mat2.reset( ).rotationMatrixFromVector( vector, a )
+        each(modifiable.vertices, function( v ){
+            var xyz = v.getXYZ( ),
+                a = (dotp( xyz, vxyz ) + d) * angle / modulo,
+                m = mult4(
+                    m2.rotate( vxyz[0], vxyz[1], vxyz[2], a, true ),
+                    m1.translate( xyz[0], xyz[1], xyz[2], true )
+                )
             ;   
-            m2.multiply( m1 );
-            v.setXYZ([ m2.n14, m2.n24, m2.n34 ]);
+            v.setXYZ([ m.m[3], m.m[7], m.m[11] ]);
         });
-        
         return self;
     }
 });

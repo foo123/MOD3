@@ -18,7 +18,7 @@
 
 var NONE = MOD3.ModConstant.NONE,
     X = MOD3.ModConstant.X, Y = MOD3.ModConstant.Y, Z = MOD3.ModConstant.Z,
-    A = MOD3.VecArray, Rand = Math.random, each = MOD3.List.each
+    Rand = Math.random, each = MOD3.List.each
 ;
 
 var Noise = MOD3.Noise = MOD3.Class ( MOD3.Modifier, {
@@ -27,10 +27,10 @@ var Noise = MOD3.Noise = MOD3.Class ( MOD3.Modifier, {
         var self = this;
         self.$super('constructor');
         self.name = 'Noise';
-        self.axes = NONE;
+        self.axes = X | Y | Z;
         self.start = 0;
-        self.end = 0; //1;
-        self.force = (f !== undef) ? f : 0;
+        self.end = 1;
+        self.force = f !== undef ? f : 0;
     },
     
     force: 0,
@@ -43,28 +43,26 @@ var Noise = MOD3.Noise = MOD3.Class ( MOD3.Modifier, {
         self.start = null;
         self.end = null;
         self.$super('dispose');
-        
         return self;
     },
     
     setFalloff: function( start, end ) {
         var self = this;
-        self.start = (start !== undef) ? start : 0;
-        self.end = (end !== undef) ? end : 1;
-        
+        self.start = start !== undef ? start : 0;
+        self.end = end !== undef ? end : 1;
         return self;
     },
     
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
-            mod = self.mod, axes = ~self.axes, start = self.start, end = self.end, 
+            axes = self.axes, start = self.start, end = self.end, 
             force = self.force, halfforce = 0.5*force,
-            maxAxis = mod.maxAxis;
+            maxAxis = modifiable.maxAxis;
 
-        if ( !axes || !force ) return self;
+        if ( (0 == axes) || (0 == force) ) return self;
         
-        each( mod.vertices, function( v ){
-            var r = (Rand( ) * force) - (halfforce),
+        each( modifiable.vertices, function( v ){
+            var r = Rand( ) * force - halfforce,
                 p = v.getRatio( maxAxis ), rp, xyz;
             if ( start < end ) 
             {
@@ -90,7 +88,6 @@ var Noise = MOD3.Noise = MOD3.Class ( MOD3.Modifier, {
                 xyz[ 2 ] + (axes & Z ? rp : 0) 
             ]);
         });
-        
         return self;
     }
 });

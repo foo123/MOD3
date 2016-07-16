@@ -83,7 +83,7 @@
         var mstack=new MOD3.ModifierStack(MOD3.LibraryCubicVR, boxObject);
         // bend modifier
         var bend=new MOD3.Bend();
-        bend.setAngle(0);
+        bend.angle=0;
         bend.force=0;
         bend.offset=0.5;
         bend.switchAxes=true;
@@ -91,7 +91,7 @@
         mstack.addModifier(bend);
         var tobj={angle:Math.PI/4,force:1.2};
         new TWEEN.Tween(tobj).to({force:-1.2},1000).onUpdate(function(){
-                        bend.setAngle(this.angle);
+                        bend.angle=this.angle;
                         bend.force=this.force;
                         mstack.apply();}).start();
         

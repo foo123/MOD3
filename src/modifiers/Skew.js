@@ -17,8 +17,7 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Abs = Math.abs, Pow = Math.pow,
-    Sign = MOD3.XMath.sign,
+var Abs = Math.abs, Pow = Math.pow, Max = Math.max, Min = Math.min,
     ModConstant = MOD3.ModConstant,
     NONE = ModConstant.NONE, LEFT = ModConstant.LEFT, RIGHT = ModConstant.RIGHT,
     X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -62,26 +61,18 @@ var Skew = MOD3.Skew = MOD3.Class ( MOD3.Modifier, {
         self.oneSide = null;
         self.swapAxes = null;
         self.$super('dispose');
-        
         return self;
     },
     
-    setModifiable: function( mod ) {
-        var self = this;
-        self.$super("setModifiable", mod)
-        self.skewAxis = self.skewAxis || self.mod.maxAxis;
-        return self;
-    },
-    
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
             constraint = self.constraint, 
-            skewAxis = self.skewAxis, 
+            skewAxis = self.skewAxis || modifiable.maxAxis, 
             swapAxes = self.swapAxes, 
-            offset = self.offset,
+            offset = Min(1, Max(0, self.offset)),
             oneSide = self.oneSide, 
             inverseFalloff = self.inverseFalloff, 
-            falloff = self.falloff, 
+            falloff = Min(1, Max(0, self.falloff)), 
             mirrorfalloff = 1-falloff,
             power = self.power, 
             force = self.force, 
@@ -94,26 +85,22 @@ var Skew = MOD3.Skew = MOD3.Class ( MOD3.Modifier, {
                 : 0))
         ;
 
-        each(self.mod.vertices, function( v ){
-            var r, dr, f, p, vl, vRatio, sign;
+        each(modifiable.vertices, function( v ){
+            var r, dr, f, p, vRatio;
             vRatio = v.getRatio( skewAxis );
             if ( (LEFT === constraint) && (vRatio <= offset) ) return;
             if ( (RIGHT === constraint) && (vRatio > offset) ) return;
 
             r = vRatio - offset;
-            if ( oneSide ) r = Abs( r );
+            if ( oneSide && (0 > r) ) r = -r;
 
             dr = v.getRatio( displaceAxis );
             if ( inverseFalloff ) dr = 1 - dr;
 
             f = falloff + dr * mirrorfalloff;
-
-            sign = 0 > r ? -1 : 1;
-            p = Pow( Abs( r ), power ) * sign /*Sign(r, 1)*/;
-            vl = v.getValue( displaceAxis ) + force * p * f;
-            v.setValue( displaceAxis, vl );
+            p = (0 > r ? -1 : 1) * Pow( Abs( r ), power );
+            v.setValue( displaceAxis, v.getValue( displaceAxis ) + force * p * f );
         });
-        
         return self;
     },
 });

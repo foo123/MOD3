@@ -35,6 +35,29 @@ MOD3.ModConstant = {
     Xi : 0, Yi : 1, Zi : 2
 };
 
+MOD3.XYZi = [
+    null,
+    0,
+    1,
+    null,
+    2
+];
+MOD3.iXYZ = [
+    1,
+    2,
+    4
+];
+MOD3.xyz = [
+    "x",
+    "y",
+    "z"
+];
+MOD3.XYZ = [
+    "X",
+    "Y",
+    "Z"
+];
+
 //
 //
 // Typed Arrays Substitutes 

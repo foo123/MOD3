@@ -61,8 +61,8 @@ var Perlin = MOD3.Perlin = MOD3.Class ( MOD3.Modifier, {
         var self = this;
         self.$super('constructor');
         self.name = 'Perlin';
-        self.perlin = n;
         self.force = f || 1;
+        self.perlin = n;
         self.autoRun = undef !== a ? !!a : true;
         self.axes = X | Y | Z;
     },
@@ -94,32 +94,31 @@ var Perlin = MOD3.Perlin = MOD3.Class ( MOD3.Modifier, {
         return self;
     },
     
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
             axes = self.axes, force = self.force,
-            offset = self.offset, n = self.perlin,
-            w = n.width, h = n.height;
+            offset = self.offset, pn = self.perlin,
+            w = pn.width, h = pn.height;
 
-        if ( !axes || !n ) return self;
+        if ( !axes || !pn ) return self;
         if ( self.autoRun )
         {
-            n = self.perlin = cyclic_shift( n, w, h, self.speedX, self.speedY );
-            n.width = w; n.height = h;
+            pn = self.perlin = cyclic_shift( pn, w, h, self.speedX, self.speedY );
+            pn.width = w; pn.height = h;
         }
         
-        each(self.mod.vertices, function( v ){
+        each(modifiable.vertices, function( v ){
             var xyz = v.getXYZ( ),
-                x = ~~( (w - 1) * v.ratio[ 0 ]/* u */ ),
-                y = ~~( (h - 1) * v.ratio[ 2 ]/* v */ ),
-                uv = x + y * w;
+                uu = ~~( (w - 1) * v.ratio[ 0 ]/* u */ ),
+                vv = ~~( (h - 1) * v.ratio[ 2 ]/* v */ ),
+                uv = uu + vv * w;
             
             v.setXYZ([
-                xyz[ 0 ] + (axes & X ? (n[ uv ] - offset) * force : 0),
-                xyz[ 1 ] + (axes & Y ? (n[ uv/*+1*/ ] - offset) * force : 0),
-                xyz[ 2 ] + (axes & Z ? (n[ uv/*+2*/ ] - offset) * force : 0)
+                xyz[ 0 ] + (axes & X ? (pn[ uv ] - offset) * force : 0),
+                xyz[ 1 ] + (axes & Y ? (pn[ uv/*+1*/ ] - offset) * force : 0),
+                xyz[ 2 ] + (axes & Z ? (pn[ uv/*+2*/ ] - offset) * force : 0)
             ]);
         });
-
         return self;
     }
 });

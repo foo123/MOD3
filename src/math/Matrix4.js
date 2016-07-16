@@ -7,219 +7,186 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Sin = Math.sin, Cos = Math.cos;
+var Sin = Math.sin, Cos = Math.cos, V = MOD3.VecArray;
 
 var Matrix4 = MOD3.Matrix4 = MOD3.Class({
     
     // static
     __static__: {
         
-        multiplyVector: function( m, v ) {
-            var vxyz = v.xyz,
-                vx = vxyz[0],
-                vy = vxyz[1],
-                vz = vxyz[2];
-
-            vxyz[0] = vx * m.n11 + vy * m.n12 + vz * m.n13 + m.n14;
-            vxyz[1] = vx * m.n21 + vy * m.n22 + vz * m.n23 + m.n24;
-            vxyz[2] = vx * m.n31 + vy * m.n32 + vz * m.n33 + m.n34;
-            
+        multXYZ: function( m4, v ) {
+            var m = m4.m, x = v[0], y = v[1], z = v[2];
+            v[0] = x * m[0 ] + y * m[1 ] + z * m[2 ] + m[3 ];
+            v[1] = x * m[4 ] + y * m[5 ] + z * m[6 ] + m[7 ];
+            v[2] = x * m[8 ] + y * m[9 ] + z * m[10] + m[11];
             return v;
         },
         
-        calculateMultiply: function( a, b ) {
-            var 
-                a11 = a.n11,
-                b11 = b.n11,
-                a21 = a.n21, 
-                b21 = b.n21,
-                a31 = a.n31, 
-                b31 = b.n31,
-                a12 = a.n12, 
-                b12 = b.n12,
-                a22 = a.n22, 
-                b22 = b.n22,
-                a32 = a.n32, 
-                b32 = b.n32,
-                a13 = a.n13, 
-                b13 = b.n13,
-                a23 = a.n23, 
-                b23 = b.n23,
-                a33 = a.n33, 
-                b33 = b.n33,
-                a14 = a.n14, 
-                b14 = b.n14,
-                a24 = a.n24, 
-                b24 = b.n24,
-                a34 = a.n34, 
-                b34 = b.n34;
+        mult: function( m1, m2 ) {
+            var a = m1.m, b = m2.m,
+                a11 = a[0 ], b11 = b[0 ],
+                a21 = a[4 ], b21 = b[4 ],
+                a31 = a[8 ], b31 = b[8 ],
+                a12 = a[1 ], b12 = b[1 ],
+                a22 = a[5 ], b22 = b[5 ],
+                a32 = a[9 ], b32 = b[9 ],
+                a13 = a[2 ], b13 = b[2 ],
+                a23 = a[6 ], b23 = b[6 ],
+                a33 = a[10], b33 = b[10],
+                a14 = a[3 ], b14 = b[3 ],
+                a24 = a[7 ], b24 = b[7 ],
+                a34 = a[11], b34 = b[11];
 
-            a.n11 = a11 * b11 + a12 * b21 + a13 * b31;
-            a.n12 = a11 * b12 + a12 * b22 + a13 * b32;
-            a.n13 = a11 * b13 + a12 * b23 + a13 * b33;
-            a.n14 = a11 * b14 + a12 * b24 + a13 * b34 + a14;
+            a[0 ] = a11 * b11 + a12 * b21 + a13 * b31;
+            a[1 ] = a11 * b12 + a12 * b22 + a13 * b32;
+            a[2 ] = a11 * b13 + a12 * b23 + a13 * b33;
+            a[3 ] = a11 * b14 + a12 * b24 + a13 * b34 + a14;
 
-            a.n21 = a21 * b11 + a22 * b21 + a23 * b31;
-            a.n22 = a21 * b12 + a22 * b22 + a23 * b32;
-            a.n23 = a21 * b13 + a22 * b23 + a23 * b33;
-            a.n24 = a21 * b14 + a22 * b24 + a23 * b34 + a24;
+            a[4 ] = a21 * b11 + a22 * b21 + a23 * b31;
+            a[5 ] = a21 * b12 + a22 * b22 + a23 * b32;
+            a[6 ] = a21 * b13 + a22 * b23 + a23 * b33;
+            a[7 ] = a21 * b14 + a22 * b24 + a23 * b34 + a24;
 
-            a.n31 = a31 * b11 + a32 * b21 + a33 * b31;
-            a.n32 = a31 * b12 + a32 * b22 + a33 * b32;
-            a.n33 = a31 * b13 + a32 * b23 + a33 * b33;
-            a.n34 = a31 * b14 + a32 * b24 + a33 * b34 + a34;
-            
-            return a;
+            a[8 ] = a31 * b11 + a32 * b21 + a33 * b31;
+            a[9 ] = a31 * b12 + a32 * b22 + a33 * b32;
+            a[10] = a31 * b13 + a32 * b23 + a33 * b33;
+            a[11] = a31 * b14 + a32 * b24 + a33 * b34 + a34;
+            return m1;
         }
     },
     
     constructor: function( n11, n12, n13, n14,
-                            n21, n22, n23, n24,
-                            n31, n32, n33, n34,
-                            n41, n42, n43, n44 )
+                           n21, n22, n23, n24,
+                           n31, n32, n33, n34,
+                           n41, n42, n43, n44 )
     {
-        var self = this;
-        self.n11 = (n11===undef) ? 1 : n11;
-        self.n12 = (n12===undef) ? 0 : n12;
-        self.n13 = (n13===undef) ? 0 : n13;
-        self.n14 = (n14===undef) ? 0 : n14;
-        
-        self.n21 = (n21===undef) ? 0 : n21;
-        self.n22 = (n22===undef) ? 1 : n22;
-        self.n23 = (n23===undef) ? 0 : n23;
-        self.n24 = (n24===undef) ? 0 : n24;
-        
-        self.n31 = (n31===undef) ? 0 : n31;
-        self.n32 = (n32===undef) ? 0 : n32;
-        self.n33 = (n33===undef) ? 1 : n33;
-        self.n34 = (n34===undef) ? 0 : n34;
-        
-        self.n41 = (n41===undef) ? 0 : n41;
-        self.n42 = (n42===undef) ? 0 : n42;
-        self.n43 = (n43===undef) ? 0 : n43;
-        self.n44 = (n44===undef) ? 1 : n44;
+        this.m = new V([
+            n11===undef ? 1 : n11,
+            n12===undef ? 0 : n12,
+            n13===undef ? 0 : n13,
+            n14===undef ? 0 : n14,
+            
+            n21===undef ? 0 : n21,
+            n22===undef ? 1 : n22,
+            n23===undef ? 0 : n23,
+            n24===undef ? 0 : n24,
+            
+            n31===undef ? 0 : n31,
+            n32===undef ? 0 : n32,
+            n33===undef ? 1 : n33,
+            n34===undef ? 0 : n34,
+            
+            n41===undef ? 0 : n41,
+            n42===undef ? 0 : n42,
+            n43===undef ? 0 : n43,
+            n44===undef ? 1 : n44
+        ]);
     },
 
     name: "Matrix4",
-    n11: 1,
-    n12: 0,
-    n13: 0,
-    n14: 0,
-    n21: 0,
-    n22: 1,
-    n23: 0,
-    n24: 0,
-    n31: 0,
-    n32: 0,
-    n33: 1,
-    n34: 0,
-    n41: 0,
-    n42: 0,
-    n43: 0,
-    n44: 1,
+    m: null,
 
     dispose: function( ) {
-        var self = this;
-        self.n11 = null;
-        self.n12 = null;
-        self.n13 = null;
-        self.n14 = null;
-        self.n21 = null;
-        self.n22 = null;
-        self.n23 = null;
-        self.n24 = null;
-        self.n31 = null;
-        self.n32 = null;
-        self.n33 = null;
-        self.n34 = null;
-        self.n41 = null;
-        self.n42 = null;
-        self.n43 = null;
-        self.n44 = null;
-        return self;
+        this.m = null;
+        return this;
     },
     
     reset: function( ) {
-        var self = this;
-        self.n11 = 1;
-        self.n12 = 0;
-        self.n13 = 0;
-        self.n14 = 0;
-        self.n21 = 0;
-        self.n22 = 1;
-        self.n23 = 0;
-        self.n24 = 0;
-        self.n31 = 0;
-        self.n32 = 0;
-        self.n33 = 1;
-        self.n34 = 0;
-        self.n41 = 0;
-        self.n42 = 0;
-        self.n43 = 0;
-        self.n44 = 1;
-        return self;
+        var m = this.m;
+        m[0 ] = 1; m[1 ] = 0; m[2 ] = 0; m[3 ] = 0;
+        m[4 ] = 0; m[5 ] = 1; m[6 ] = 0; m[7 ] = 0;
+        m[8 ] = 0; m[9 ] = 0; m[10] = 1; m[11] = 0;
+        m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+        return this;
     },
     
-    translationMatrix: function( x, y, z ) {
-        var self = this;
-        self.n14 = x;
-        self.n24 = y;
-        self.n34 = z;
-        return self;
+    translate: function( tx, ty, tz, reset ) {
+        var m = this.m;
+        if ( true === reset )
+        {
+            m[0 ] = 1; m[1 ] = 0; m[2 ] = 0; m[3 ] = 0;
+            m[4 ] = 0; m[5 ] = 1; m[6 ] = 0; m[7 ] = 0;
+            m[8 ] = 0; m[9 ] = 0; m[10] = 1; m[11] = 0;
+            m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+        }
+        m[3 ] = tx;
+        m[7 ] = ty;
+        m[11] = tz;
+        return this;
     },
 
-    translationMatrixFromVector: function( v ) {
-        return this.translationMatrix( v.xyz[0], v.xyz[1], v.xyz[2] );
+    scale: function( sx, sy, sz, reset ) {
+        var m = this.m;
+        if ( true === reset )
+        {
+            m[0 ] = 1; m[1 ] = 0; m[2 ] = 0; m[3 ] = 0;
+            m[4 ] = 0; m[5 ] = 1; m[6 ] = 0; m[7 ] = 0;
+            m[8 ] = 0; m[9 ] = 0; m[10] = 1; m[11] = 0;
+            m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+        }
+        m[0 ] = sx;
+        m[5 ] = sy;
+        m[10] = sz;
+        return this;
     },
 
-    scaleMatrix: function( x, y, z ) {
-        var self = this;
-        self.n11 = x;
-        self.n22 = y;
-        self.n33 = z;
-        return self;
-    },
-
-    scaleMatrixFromVector: function( v ) {
-        return this.scaleMatrix( v.xyz[0], v.xyz[1], v.xyz[2] );
-    },
-
-    rotationMatrix: function( x, y, z, rad )  {
-        var self = this,
+    rotate: function( rx, ry, rz, rad, reset )  {
+        var m = this.m,
             nCos = Cos(rad), nSin = Sin(rad), scos = 1 - nCos,
-            sxy = x * y * scos, syz = y * z * scos, sxz = x * z * scos,
-            sz = nSin * z, sy = nSin * y, sx = nSin * x
+            sxy = rx * ry * scos, syz = ry * rz * scos, sxz = rx * rz * scos,
+            sz = nSin * rz, sy = nSin * ry, sx = nSin * rx
         ;
+        if ( true === reset )
+        {
+            m[0 ] = 1; m[1 ] = 0; m[2 ] = 0; m[3 ] = 0;
+            m[4 ] = 0; m[5 ] = 1; m[6 ] = 0; m[7 ] = 0;
+            m[8 ] = 0; m[9 ] = 0; m[10] = 1; m[11] = 0;
+            m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+        }
+        m[0 ] = nCos + rx * rx * scos;
+        m[1 ] = -sz + sxy;
+        m[2 ] = sy + sxz;
+        m[3 ] = 0;
 
-        self.n11 = nCos + x * x * scos;
-        self.n12 = -sz + sxy;
-        self.n13 = sy + sxz;
-        self.n14 = 0;
+        m[4 ] = sz + sxy;
+        m[5 ] = nCos + ry * ry * scos;
+        m[6 ] = -sx + syz;
+        m[7 ] = 0;
 
-        self.n21 = sz + sxy;
-        self.n22 = nCos + y * y * scos;
-        self.n23 = -sx + syz;
-        self.n24 = 0;
-
-        self.n31 = -sy + sxz;
-        self.n32 = sx + syz;
-        self.n33 = nCos + z * z * scos;
-        self.n34 = 0;
-
-        return self;
+        m[8 ] = -sy + sxz;
+        m[9 ] = sx + syz;
+        m[10] = nCos + rz * rz * scos;
+        m[11] = 0;
+        return this;
     },
 
-    rotationMatrixFromVector: function( v, rad )  {
-        return this.rotationMatrix( v.xyz[0], v.xyz[1], v.xyz[2], rad );
+    translateFromVector: function( v, reset ) {
+        return this.translate( v.xyz[0], v.xyz[1], v.xyz[2], reset );
+    },
+
+    scaleFromVector: function( v, reset ) {
+        return this.scale( v.xyz[0], v.xyz[1], v.xyz[2], reset );
+    },
+
+    rotateFromVector: function( v, rad, reset )  {
+        return this.rotate( v.xyz[0], v.xyz[1], v.xyz[2], rad, reset );
     },
 
     multiply: function( b ) {
-        return Matrix4.calculateMultiply( this, b );
+        return Matrix4.mult( this, b );
     },
 
     multiplyVector: function( v ) {
-        return Matrix4.multiplyVector( this, v );
+        Matrix4.multXYZ( this, v.xyz );
+        return v;
     }
 });
+// aliases
+Matrix4.prototype.translationMatrix = Matrix4.prototype.translate;
+Matrix4.prototype.scaleMatrix = Matrix4.prototype.scale;
+Matrix4.prototype.rotationMatrix = Matrix4.prototype.rotate;
+Matrix4.prototype.translationMatrixFromVector = Matrix4.prototype.translateFromVector;
+Matrix4.prototype.scaleMatrixFromVector = Matrix4.prototype.scaleFromVector;
+Matrix4.prototype.rotationMatrixFromVector = Matrix4.prototype.rotateFromVector;
 
 }(MOD3);

@@ -7,107 +7,99 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Sin = Math.sin, Cos = Math.cos, Point = MOD3.Point;
+var Sin = Math.sin, Cos = Math.cos, Point = MOD3.Point, V = MOD3.VecArray;
 
 var Matrix = MOD3.Matrix = MOD3.Class({
     
-    constructor: function( m11, m12, m21, m22 ) {
-        var self = this;
-        self.m11 = (m11===undef) ? 1 : m11;
-        self.m12 = (m12===undef) ? 0 : m12;
-        self.m21 = (m21===undef) ? 0 : m21;
-        self.m22 = (m22===undef) ? 1 : m22;
+    // static
+    __static__: {
+        
+        transform: function( m2, xy ) {
+            var m = m2.m, x = xy[0], y = xy[1];
+            xy[0] = m[0]*x + m[1]*y;
+            xy[1] = m[2]*x + m[3]*y;
+            return xy;
+        },
+        
+        mult: function( m1, m2 ) {
+            var a = m1.m, b = m2.m, a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
+            a[0] = a0*b[0] + a1*b[2];
+            a[1] = a0*b[1] + a1*b[3];
+            a[2] = a2*b[0] + a3*b[2];
+            a[3] = a2*b[1] + a3*b[3];
+            return m1;
+        }
+    },
+    
+    constructor: function( m11, m12,
+                           m21, m22 )
+   {
+        this.m = new V([
+            m11===undef ? 1 : m11,
+            m12===undef ? 0 : m12,
+            m21===undef ? 0 : m21,
+            m22===undef ? 1 : m22
+        ]);
     },
     
     name: "Matrix",
-    m11: 1,
-    m12: 0,
-    m21: 0,
-    m22: 1,
+    m: null,
 
     dispose: function( ) {
-        var self = this;
-        self.m11 = null;
-        self.m12 = null;
-        self.m21 = null;
-        self.m22 = null;
-        return self;
+        this.m = null;
+        return this;
     },
     
     reset: function( ) {
-        var self = this;
-        self.m11 = 1;
-        self.m12 = 0;
-        self.m21 = 0;
-        self.m22 = 1;
-        return self;
+        var m = this.m;
+        m[0] = 1; m[1] = 0;
+        m[2] = 0; m[3] = 1;
+        return this;
     },
     
     rotate: function( angle )  {
-        var self = this,
-            c = Cos( angle ),
-            s = Sin( angle );
-        
-        self.m11 = c;
-        self.m12 = -s;
-        self.m21 = s;
-        self.m22 = c;
-        return self;
+        var m = this.m, c = Cos( angle ), s = Sin( angle );
+        m[0] = c; m[1] = -s;
+        m[2] = s; m[3] = c;
+        return this;
     },
 
     scale: function( sx, sy ) {
-        var self = this;
-        self.m12 = 0;
-        self.m21 = 0;
-        self.m11 = 1;
-        self.m22 = 1;
+        var m = this.m;
+        m[0] = 1; m[1] = 0;
+        m[2] = 0; m[3] = 1;
         
-        if ( sx!==undef )
+        if ( sx !== undef )
         {
-            self.m11 = sx;
-            self.m22 = sx;
+            m[0] = sx;
+            m[3] = sx;
         }
-        
-        if ( sy!==undef )
+        if ( sy !== undef )
         {
-            self.m22 = sy;
+            m[3] = sy;
         }
-        
-        return self;
+        return this;
     },
 
-    multiply: function( a ) {
-        // optimize by caching
-        var self = this, m11 = self.m11, m12 = self.m12, m21 = self.m21, m22 = self.m22,
-            am11 = a.m11, am12 = a.m12, am21 = a.m21, am22 = a.m22
-        ;
-        
-        self.m11 = m11*am11 + m12*am21;
-        self.m12 = m11*am12 + m12*am22;
-        self.m21 = m21*am11 + m22*am21;
-        self.m22 = m21*am12 + m22*am22;
-        
-        return self;
+    multiply: function( b ) {
+        return Matrix.mult( this, b );
     },
 
     transformPoint: function( p ) {
-        var self = this, ipx = p.x, ipy = p.y,
-            px = self.m11*ipx + self.m12*ipy,
-            py = self.m21*ipx + self.m22*ipy;
-        
-        return new Point( px, py );
+        var xy = Matrix.transform( this, [p.x, p.y] );
+        return new Point( xy[0], xy[1] );
     },
     
     transformPointSelf: function( p ) {
-        var self = this, ipx = p.x, ipy = p.y;
-        p.x = self.m11*ipx + self.m12*ipy;
-        p.y = self.m21*ipx + self.m22*ipy;
-        
+        var xy = Matrix.transform( this, [p.x, p.y] );
+        p.x = xy[0]; p.y = xy[1];
         return p;
     },
     
     clone: function( ) {
-        return new Matrix( this.m11, this.m12, this.m21, this.m22 );
+        var m = this.m;
+        return new Matrix( m[0], m[1],
+                           m[2], m[3] );
     }
 });
 

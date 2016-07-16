@@ -7,7 +7,7 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Sqrt = Math.sqrt, A = MOD3.VecArray;
+var Sqrt = Math.sqrt, V = MOD3.VecArray;
 
 var Vector3 = MOD3.Vector3 = MOD3.Class({
     
@@ -15,55 +15,98 @@ var Vector3 = MOD3.Vector3 = MOD3.Class({
     __static__: {
         
         ZERO: function( ) {
-            return new Vector3( [0, 0, 0] );
+            return new Vector3( 0, 0, 0 );
         },
         
-        dot: function( a, b ) { 
-            var aa = a.xyz, bb = b.xyz;
-            return aa[0]*bb[0] + aa[1]*bb[1] + aa[2]*bb[2]; 
+        dot: function( v, w ) { 
+            return v[0]*w[0] + v[1]*w[1] + v[2]*w[2]; 
         },
         
-        equals: function( a, b ) {
-            var aa = a.xyz, bb = b.xyz;
-            return (aa[0] === bb[0]) && (aa[1] === bb[1]) && (aa[2] === bb[2]);
+        equals: function( v, w ) {
+            return (v[0] === w[0]) && (v[1] === w[1]) && (v[2] === w[2]);
         },
         
-        cross: function( a, b ) {
-            var aa = a.xyz, bb = b.xyz,
-                ax = aa[0], ay = aa[1], az = aa[2], 
-                bx = bb[0], by = bb[1], bz = bb[2];
-            return new Vector3( [ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx] );
+        cross: function( v, w ) {
+            var vw = new V(3);
+            vw[0] = v[1] * w[2] - v[2] * w[1];
+            vw[1] = v[2] * w[0] - v[0] * w[2];
+            vw[2] = v[0] * w[1] - v[1] * w[0];
+            return vw;
         },
         
-        distance: function( a, b ) {
-            var aa = a.xyz, bb = b.xyz,
-                dx = aa[0] - bb[0],
-                dy = aa[1] - bb[1],
-                dz = aa[2] - bb[2];
-            return Sqrt(dx * dx + dy * dy + dz * dz);
+        mod: function( v ) {
+            var x = v[0], y = v[1], z = v[2];
+            return Sqrt(x*x + y*y + z*z);
         },
         
-        sum: function( a, b ) {
-            var aa = a.xyz, bb = b.xyz;
-            return new Vector3( [aa[0] + bb[0], aa[1] + bb[1], aa[2] + bb[2]] );
+        dist: function( v, w ) {
+            var dx = v[0] - w[0],
+                dy = v[1] - w[1],
+                dz = v[2] - w[2];
+            return Sqrt(dx*dx + dy*dy + dz*dz);
+        },
+        
+        add: function( v, w ) {
+            v[0] += w[0];
+            v[1] += w[1];
+            v[2] += w[2];
+            return v;
+        },
+        
+        sub: function( v, w ) {
+            v[0] -= w[0];
+            v[1] -= w[1];
+            v[2] -= w[2];
+            return v;
+        },
+        
+        mul: function( v, w ) {
+            v[0] *= w[0];
+            v[1] *= w[1];
+            v[2] *= w[2];
+            return v;
+        },
+        
+        muls: function( v, m ) {
+            v[0] *= m;
+            v[1] *= m;
+            v[2] *= m;
+            return v;
+        },
+        
+        norm: function( v ) {
+            var x = v[0], y = v[1], z = v[2],
+                m = x*x + y*y + z*z, n;
+            if ( 0 < m ) 
+            {
+                n = Sqrt(m);
+                x /= n;
+                y /= n;
+                z /= n;
+            }
+            v[0] = x; v[1] = y; v[2] = z;
+            return v;
         }
     },
     
     constructor: function( x, y, z ) {
         // use an internal typed-array for speed
-        if ( x && x.length )
+        var v = new V(3);
+        if ( x && (3 === x.length) )
         {
             // array passed
-            this.xyz = new A( [x[0], x[1], x[2]] );
+            v[0] = x[0] || 0;
+            v[1] = x[1] || 0;
+            v[2] = x[2] || 0;
         }
         else
         {
             // numbers passed
-            x = (x===undef) ? 0 : x;
-            y = (y===undef) ? 0 : y;
-            z = (z===undef) ? 0 : z;
-            this.xyz = new A( [ x, y, z ] );
+            v[0] = x || 0;
+            v[1] = y || 0;
+            v[2] = z || 0;
         }
+        this.xyz = v;
     },
     
     name: "Vector3",
@@ -71,22 +114,23 @@ var Vector3 = MOD3.Vector3 = MOD3.Class({
     
     dispose: function( ) {
         this.xyz = null;
-        
         return this;
     },
     
     getXYZ: function( ) {
        // copy it
-       return new A( this.xyz );
+       return new V( this.xyz );
     },
     
     getXYZRef: function( ) {
        return this.xyz;
     },
     
-    setXYZ: function( xyz ) {
-       // copy it
-       this.xyz = new A( xyz );
+    setXYZ: function( w ) {
+       var v = this.xyz;
+       v[0] = w[0];
+       v[1] = w[1];
+       v[2] = w[2];
        return this;
     },
     
@@ -99,151 +143,163 @@ var Vector3 = MOD3.Vector3 = MOD3.Class({
         return new Vector3( this.xyz );
     },
 
-    equalsSelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        return (aa[0] === bb[0]) && (aa[1] === bb[1]) && (aa[2] === bb[2]);
+    equalsSelf: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        return (v[0] === w[0]) && (v[1] === w[1]) && (v[2] === w[2]);
     },
 
     zeroSelf: function( ) {
-        var aa = this.xyz;
-        a[0] = 0; a[1] = 0; a[2] = 0;
+        var v = this.xyz;
+        v[0] = 0; v[1] = 0; v[2] = 0;
         return this;
     },
 
     negate: function( ) {
-        var aa = this.xyz;
-        return new Vector3( [-aa[0], -aa[1], -aa[2]] );
+        var v = this.xyz;
+        return new Vector3( -v[0], -v[1], -v[2] );
     },
 
     negateSelf: function( ) {
-        var aa = this.xyz;
-        aa[0] = -aa[0]; aa[1] = -aa[1]; aa[2] = -aa[2];
+        var v = this.xyz;
+        v[0] = -v[0]; v[1] = -v[1]; v[2] = -v[2];
         return this;
     },
 
-    add: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        return new Vector3( [aa[0] + bb[0], aa[1] + bb[1], aa[2] + bb[2]] );
+    add: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        return new Vector3( v[0] + w[0], v[1] + w[1], v[2] + w[2] );
     },
 
-    addSelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        aa[0] += bb[0]; aa[1] += bb[1]; aa[2] += bb[2];
+    addSelf: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        v[0] += w[0]; v[1] += w[1]; v[2] += w[2];
         return this;
     },
 
-    subtract: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        return new Vector3( [aa[0] - bb[0], aa[1] - bb[1], aa[2] - bb[2]] );
+    subtract: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        return new Vector3( v[0] - w[0], v[1] - w[1], v[2] - w[2] );
     },
 
-    subtractSelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        aa[0] -= bb[0]; aa[1] -= bb[1]; aa[2] -= bb[2];
+    subtractSelf: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        v[0] -= w[0]; v[1] -= w[1]; v[2] -= w[2];
         return this;
     },
 
     multiplyScalar: function( s ) {
-        var aa = this.xyz;
-        return new Vector3( [aa[0] * s, aa[1] * s, aa[2] * s] );
+        var v = this.xyz;
+        return new Vector3( v[0] * s, v[1] * s, v[2] * s );
     },
 
     multiplyScalarSelf: function( s ) {
-        var aa = this.xyz;
-        aa[0] *= s; aa[1] *= s; aa[2] *= s;
+        var v = this.xyz;
+        v[0] *= s; v[1] *= s; v[2] *= s;
         return this;
     },
 
-    multiply: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        return new Vector3( [aa[0] * bb[0], aa[1] * bb[1], aa[2] * bb[2]] );
+    multiply: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        return new Vector3( v[0] * w[0], v[1] * w[1], v[2] * w[2] );
     },
 
-    multiplySelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        aa[0] *= bb[0]; aa[1] *= bb[1]; aa[2] *= bb[2];
+    multiplySelf: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        v[0] *= w[0]; v[1] *= w[1]; v[2] *= w[2];
         return this;
     },
 
     divide: function( s ) {
-        var aa = this.xyz;
-        return new Vector3( [aa[0] / s, aa[1] / s, aa[2] / s] );
+        var v = this.xyz;
+        return new Vector3( v[0] / s, v[1] / s, v[2] / s );
     },
 
     divideSelf: function( s ) {
-        var aa = this.xyz;
-        aa[0] /= s; aa[1] /= s; aa[2] /= s;
+        var v = this.xyz;
+        v[0] /= s; v[1] /= s; v[2] /= s;
         return this;
     },
 
     normalize: function( ) {
-        var aa = this.xyz,
-            x = aa[0], y = aa[1], z = aa[2],
+        var v = this.xyz,
+            x = v[0], y = v[1], z = v[2],
             m = x * x + y * y + z * z, n;
         if ( 0 < m ) 
         {
-            n = 1 / Sqrt(m);
-            x *= n;
-            y *= n;
-            z *= n;
+            n = Sqrt(m);
+            x /= n;
+            y /= n;
+            z /= n;
         }
-        return new Vector3( [x, y, z] );
+        return new Vector3( x, y, z );
     },
 
     normalizeSelf: function( ) {
-        var aa = this.xyz,
-            x = aa[0], y = aa[1], z = aa[2],
+        var v = this.xyz,
+            x = v[0], y = v[1], z = v[2],
             m = x * x + y * y + z * z, n;
         if ( 0 < m ) 
         {
-            n = 1 / Sqrt(m);
-            x *= n;
-            y *= n;
-            z *= n;
+            n = Sqrt(m);
+            x /= n;
+            y /= n;
+            z /= n;
         }
-        aa[0] = x; aa[1] = y; aa[2] = z;
+        v[0] = x; v[1] = y; v[2] = z;
         return this;
     },
 
     getMagnitude: function( ) {
-        var aa = this.xyz,
-            x = aa[0], y = aa[1], z = aa[2];
-        return Sqrt(x * x + y * y + z * z);
+        var v = this.xyz, x = v[0], y = v[1], z = v[2];
+        return Sqrt(x*x + y*y + z*z);
     },
 
     setMagnitude: function( m ) {
         this.normalizeSelf( ); 
-        var aa = this.xyz;
-        aa[0] *= m;  aa[1] *= m;  aa[2] *= m;
+        var v = this.xyz;
+        v[0] *= m; v[1] *= m; v[2] *= m;
         return this;
     },
 
-    dotSelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz;
-        return aa[0] * bb[0] + aa[1] * bb[1] + aa[2] * bb[2];
+    dot: function( b ) {
+        var v = this.xyz, w = b.xyz;
+        return v[0]*w[0] + v[1]*w[1] + v[2]*w[2];
+    },
+
+    cross: function( b ) {
+        var v = this.xyz, w = b.xyz,
+            x1 = v[0], y1 = v[1], z1 = v[2], 
+            x2 = w[0], y2 = w[1], z2 = w[2];
+        return new Vector3( y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2 );
     },
 
     crossSelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz,
-            ax = aa[0], ay = aa[1], az = aa[2], 
-            bx = bb[0], by = bb[1], bz = bb[2];
-        aa[0] = ay * bz - az * by; 
-        aa[1] = az * bx - ax * bz; 
-        aa[2] = ax * by - ay * bx;
+        var v = this.xyz, w = b.xyz,
+            x1 = v[0], y1 = v[1], z1 = v[2], 
+            x2 = w[0], y2 = w[1], z2 = w[2];
+        v[0] = y1 * z2 - z1 * y2; 
+        v[1] = z1 * x2 - x1 * z2; 
+        v[2] = x1 * y2 - y1 * x2;
         return this;
     },
 
-    distanceSelf: function( v ) {
-        var aa = this.xyz, bb = v.xyz,
-            dx = aa[0] - bb[0],
-            dy = aa[1] - bb[1],
-            dz = aa[2] - bb[2];
-        return Sqrt(dx * dx + dy * dy + dz * dz);
+    distance: function( b ) {
+        var v = this.xyz, w = b.xyz,
+            dx = v[0] - w[0],
+            dy = v[1] - w[1],
+            dz = v[2] - w[2];
+        return Sqrt(dx*dx + dy*dy + dz*dz);
     },
 
     toString: function( ) {
-        return "[" + this.xyz[0] + " , " + this.xyz[1] + " , " + this.xyz[2] + "]";
+        var v = this.xyz;
+        return "[" + v[0] + " , " + v[1] + " , " + v[2] + "]";
     }
 });
+// alaises
+Vector3.modulo = Vector3.mod;
+Vector3.distance = Vector3.dist;
+Vector3.prototype.dotSelf = Vector3.prototype.dot;
+Vector3.prototype.distanceSelf = Vector3.prototype.distance;
 
 }(MOD3);

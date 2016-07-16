@@ -32,7 +32,7 @@ registerDemo(function(engine) {
         
         mstack = new MOD3.ModifierStack(MOD3.LibraryJ3D, cube);
         mod = new MOD3.Bend();
-        mod.setAngle(0);
+        mod.angle = 0;
         mod.force = 0;
         mod.offset = 0.1;
         mod.switchAxes = true;
@@ -43,7 +43,7 @@ registerDemo(function(engine) {
         new TWEEN.Tween(tobj)
                     .to( { force: -1.2 }, 5000)
                     .onUpdate(function(){
-                        mod.setAngle( this.angle );
+                        mod.angle = this.angle;
                         mod.force = this.force;
                         mstack.apply();
                     })

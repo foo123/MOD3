@@ -1,95 +1,136 @@
 /**
 *
-* MOD3  ModifierStack Class
+* MOD3  Modifier & ModifierStack Classes
 *
 *
 **/
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var getMeshProxy = MOD3.Factory.getMeshProxy;
+var _modCount = 0, NONE = MOD3.ModConstant.NONE,
+    getMeshProxy = MOD3.Factory.getMeshProxy,
+    Modifier, ModifierStack;
 
-var ModifierStack = MOD3.ModifierStack = MOD3.Class({
+Modifier = MOD3.Modifier = MOD3.Class({
     
-    constructor: function( lib3d, mesh ) {
+    constructor: function Modifier( ) {
         var self = this;
-        self.mod = null;
-        self.stack = [ ];
-        
-        self.lib3d = lib3d;
-        self.mod = getMeshProxy( self.lib3d );
-        if ( mesh )
+        self.id = ++_modCount;
+        self.name = 'Modifier';
+        self.axes = NONE;
+        self.constraint = NONE;
+        self.enabled = true;
+    },
+    
+    id: null,
+    name: 'Modifier',
+    axes: null,
+    constraint: null,
+    enabled: true,
+
+    dispose: function( ) {
+        var self = this;
+        self.name = null;
+        self.axes = null;
+        self.constraint = null;
+        return self;
+    },
+    
+    enable: function( enabled ) {
+        if ( arguments.length )
         {
-            self.mod.setMesh( mesh );
-            self.mod.analyzeGeometry( );
+            this.enabled = !!enabled;
+            return this;
         }
+        return this.enabled;
+    },
+    
+    constraintAxes: function( axes ) {
+        this.axes = axes || NONE;
+        return this;
+    },
+    
+    setConstraint: function( c ) {
+        this.constraint = c || NONE;
+        return this;
+    },
+    
+    // override
+    apply: function( modifiable ) {
+        return this;
+    },
+    
+    toString: function( ) {
+        return '[Modifier '+this.name+']';
+    }
+});
+
+ModifierStack = MOD3.ModifierStack = MOD3.Class({
+    
+    constructor: function ModifierStack( lib3d, mesh ) {
+        var self = this;
+        if ( !(self instanceof ModifierStack) ) return new ModifierStack(lib3d, mesh);
+        self.stack = [ ];
+        self.setModifiable( getMeshProxy( lib3d ), mesh );
     },
 
     name: "ModifierStack",
-    
-    lib3d: null,
-    mod: null,
+    modifiable: null,
     stack: null,
 
     dispose: function( withModifiers ) {
         var self = this;
-        self.lib3d = null;
-        if ( withModifiers && self.stack )
-        {
-            while ( self.stack.length ) 
-                self.stack.pop( ).dispose( );
-        }
+        if ( withModifiers && self.stack ) while ( self.stack.length ) self.stack.pop( ).dispose( );
+        if ( self.modifiable ) self.modifiable.dispose( );
         self.stack = null;
-        if ( self.mod ) self.mod.dispose( );
-        self.mod = null;
-        
+        self.modifiable = null;
         return self;
     },
     
-    setModifiable: function( mod ) {
+    getModifiable: function( ) {
+        return this.modifiable;
+    },
+
+    setModifiable: function( modifiable, mesh ) {
         var self = this;
-        self.mod = mod;
+        self.modifiable = modifiable;
+        if ( mesh ) self.modifiable.setMesh( mesh );
         return self;
     },
 
     add: function( modifier ) {
         var self = this;
-        if ( modifier )
-        {
-            modifier.setModifiable( self.mod );
-            self.stack.push( modifier );
-        }
+        if ( modifier ) self.stack.push( modifier );
         return self;
     },
 
     apply: function( ) {
-        var self = this;
-        if ( self.mod && self.stack && self.stack.length )
-        {
-            var stack = self.stack, sl = stack.length, 
-               mod = self.mod, i;
-
-            mod.resetGeometry( );
-            
-            for (i=0; i<sl; i++) stack[ i ].enabled && stack[ i ].apply( );
-            
-            mod.update( );
-            
-            // do any post-process if needed
-            //mod.postApply( );
-        }
+        var self = this, modifiable = self.modifiable, stack = self.stack;
+        if ( modifiable && stack && stack.length )
+            modifiable
+                .preApply( )
+                .resetGeometry( )
+                .applyModifiers( stack )
+                .postApply( )
+                .update( )
+            ;
         return self;
     },
 
     collapse: function( ) {
-        var self = this;
-        if ( self.mod && self.stack && self.stack.length )
+        var self = this, modifiable = self.modifiable;
+        if ( modifiable && self.stack && self.stack.length )
         {
-            self.apply( );
-            self.mod.collapseGeometry( );
+            modifiable
+                .preApply( )
+                .resetGeometry( )
+                .applyModifiers( self.stack )
+                .collapseGeometry( )
+                .postApply( )
+                .update( )
+            ;
             self.stack.length = 0;
         }
-        
         return self;
     },
 
@@ -97,13 +138,10 @@ var ModifierStack = MOD3.ModifierStack = MOD3.Class({
         var self = this;
         if ( self.stack ) self.stack.length = 0;
         return self;
-    },
-
-    getMeshInfo: function( ) {
-        return this.mod;
     }
 });
 // aliases
+ModifierStack.prototype.getMeshInfo = ModifierStack.prototype.getModifiable;
 ModifierStack.prototype.addModifier = ModifierStack.prototype.add;
 
 }(MOD3);

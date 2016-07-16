@@ -17,7 +17,8 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Vector3 = MOD3.Vector3, Max = Math.max, Exp = Math.exp, each = MOD3.List.each;
+var Vector3 = MOD3.Vector3, Max = Math.max, Exp = Math.exp, each = MOD3.List.each,
+    add = Vector3.add, sub = Vector3.sub, mul = Vector3.muls, mod = Vector3.mod, norm = Vector3.norm;
 
 var Bloat = MOD3.Bloat = MOD3.Class ( MOD3.Modifier, {
     
@@ -43,36 +44,22 @@ var Bloat = MOD3.Bloat = MOD3.Class ( MOD3.Modifier, {
         self.radius = null;
         self.a = null;
         self.$super('dispose');
-        
         return self;
     },
     
-    setRadius: function( v )  {
-        this.radius = Max( 0, v ); 
-        return this;
-    },
-    
-    setA: function( v )  {
-        this.a = Max( 0, v ); 
-        return this;
-    },
-    
-    apply: function( )  {
-        var self = this,
-            center = self.center, radius = self.radius, a = self.a;
+    apply: function( modifiable )  {
+        var self = this, center = self.center.xyz, radius = Max( 0, self.radius ), a = Max( 0, self.a );
 
-        each(self.mod.vertices, function( v ){
+        each(modifiable.vertices, function( v ){
             // get a vector towards vertex
-            var uu = v.getVector( ).subtractSelf( center ),
             // change norm to norm + r * exp (-a * norm)
-                magn = uu.getMagnitude( );
-            uu.setMagnitude( magn + radius * Exp ( - magn * a ) );
+            var uu = sub( v.getXYZ( ), center ), magn = mod( uu );
+            mul( norm( uu ), magn + radius * Exp ( - magn * a ) );
             // move vertex accordingly
-            v.setVector( uu.addSelf( center ) );
+            v.setXYZ( add( uu, center ) );
             // ?? needed??
             //self.u=uu;
         });
-        
         return self;
     }
 });

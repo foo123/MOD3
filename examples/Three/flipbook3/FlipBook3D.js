@@ -169,7 +169,7 @@ Page = self.Page = Class(THREE.Mesh, {
                 //this.flipPt=pt;//e.localY/this.book.pageHeight;
             }
             self.flippingLeft = true;
-            self.bend.setAngle( (2*self.flipPt-1)*self.angle );
+            self.bend.angle = (2*self.flipPt-1)*self.angle;
             new TWEEN.Tween( self.to={ angle: self.rotation.y, t: -1, xx: 0, page: self } )
                 .to({angle:-Math.PI, xx:1, t:1}, self.book.duration*1000)
                 .onUpdate( self.renderFlip )
@@ -199,7 +199,7 @@ Page = self.Page = Class(THREE.Mesh, {
                 //this.flipPt=pt;//e.localY/this.book.pageHeight;
             }
             self.flippingRight = true;
-            self.bend.setAngle( (2*this.flipPt-1)*this.angle );
+            self.bend.angle = (2*self.flipPt-1)*self.angle;
             new TWEEN.Tween( self.to = { angle: self.rotation.y, t: -1, xx: 0, page: self } )
                 .to({angle:0, xx:1, t:1}, self.book.duration*1000)
                 .onUpdate( self.renderFlip )
@@ -253,7 +253,7 @@ Page = self.Page = Class(THREE.Mesh, {
             self.position.z = -self.zz*self.index;
         }
         self.bend.force = 0.0;
-        self.bend.setAngle(0.0);
+        self.bend.angle = 0.0;
         self.bend.offset = 0.0;
         self.mod.apply();
     }

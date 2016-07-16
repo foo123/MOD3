@@ -5,7 +5,7 @@ __3D Modifier Library for JavaScript__
 
 This is a port of the [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
 
-__supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG.js* (in progress)
+__supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG.js*
 
 
 [![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
@@ -49,7 +49,7 @@ Fell free to share, modify, contribute etc..
 ###Support for 3D JavaScript engines
 
 * [Three.js](https://github.com/mrdoob/three.js/) with examples (r78)
-* [OSG.js](https://github.com/cedricpinson/osgjs) with examples (0.2.5) **in progress**
+* [OSG.js](https://github.com/cedricpinson/osgjs) with examples (0.2.5)
 * [J3D](https://github.com/drojdjou/J3D) with examples (Build 51)
 * [Copperlicht](https://github.com/Sebmaster/copperlicht) with examples
 * [CubicVR](https://github.com/cjcliffe/CubicVR.js/) with examples
@@ -86,6 +86,7 @@ Fell free to share, modify, contribute etc..
 
 
 ###Changelog
+* 0.6.0  support for OSG.js (almost complete), further refactoring and optimisations, some method changes
 * 0.5.0  parallel processing through workers is dropped, add support for OSG.js (in progress), update support for Three.js r78, some refactoring and optimisations
 * 0.4  support parallel modifiers with web workers transparently, code refactor, optimizations, examples updates
 * 0.3.5  DisplaceMap modifier added, edits / optimizations

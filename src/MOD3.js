@@ -9,6 +9,7 @@
 *   https://github.com/foo123/MOD3
 *
 **/
+@@USE_STRICT@@
 var MOD3 = exports['@@MODULE_NAME@@'] = { 
     VERSION: "@@VERSION@@", 
     Class: Classy.Class, StaticClass: function( classdef ){ return Classy.Class(Classy.STATIC, classdef); }

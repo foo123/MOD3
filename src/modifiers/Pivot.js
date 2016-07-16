@@ -17,7 +17,7 @@
 !function(MOD3, undef){
 @@USE_STRICT@@
 
-var Vector3 = MOD3.Vector3, each = MOD3.List.each;
+var Vector3 = MOD3.Vector3, each = MOD3.List.each, add = Vector3.add;
 
 var Pivot = MOD3.Pivot = MOD3.Class ( MOD3.Modifier, {
     
@@ -25,7 +25,7 @@ var Pivot = MOD3.Pivot = MOD3.Class ( MOD3.Modifier, {
         var self = this;
         self.$super('constructor');
         self.name = 'Pivot';
-        self.pivot = new Vector3([x||0, y||0, z||0]);
+        self.pivot = new Vector3( x||0, y||0, z||0 );
     },
     
     pivot: null,
@@ -38,28 +38,23 @@ var Pivot = MOD3.Pivot = MOD3.Class ( MOD3.Modifier, {
         return self;
     },
     
-    setMeshCenter: function( ) {
-        var self = this,
-        // cache
-        mod = self.mod;
-        
+    setMeshCenter: function( modifiable ) {
+        var self = this;
         self.pivot = new Vector3(
-            -(mod.minX + 0.5*mod.width), 
-            -(mod.minY + 0.5*mod.height), 
-            -(mod.minZ + 0.5*mod.depth)
+        -(modifiable.minX + 0.5*modifiable.width), 
+        -(modifiable.minY + 0.5*modifiable.height), 
+        -(modifiable.minZ + 0.5*modifiable.depth)
         );
-        
         return self;
     },
     
-    apply: function( ) {
-        var self = this, pivot = self.pivot;
+    apply: function( modifiable ) {
+        var self = this, pivot = self.pivot, pv = pivot.xyz;
 
-        each(self.mod.vertices, function( v ){
-            v.setVector( v.getVector( ).addSelf( pivot ) );
+        each(modifiable.vertices, function( v ){
+            v.setXYZ( add( v.getXYZ( ), pv ) );
         });
-        self.mod.updateMeshPosition( pivot.negate( ) );
-        
+        modifiable.updateMeshPosition( pivot.negate( ) );
         return self;
     }
 });

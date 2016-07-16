@@ -52,11 +52,11 @@
         
         var mstack=new MOD3.ModifierStack(MOD3.LibraryCopperlicht,cubenode);
         var mod=new MOD3.Bloat();
-        mod.setRadius(0);
+        mod.radius=0;
         mstack.addModifier(mod);
         var tobj={radius:0};
         new TWEEN.Tween(tobj).to({radius:10},5000).onUpdate(function(){
-                        mod.setRadius(this.radius);
+                        mod.radius=this.radius;
                         mstack.apply();}).start();
     
     setInterval("TWEEN.update()",1000/30);

@@ -86,7 +86,7 @@
                 mstack = new MOD3.ModifierStack( MOD3.LibraryThree, cube );
                 
                 bend = new MOD3.Bend( );
-                bend.setAngle( 0 );
+                bend.angle = 0;
                 bend.force = 0;
                 bend.offset = 0.5;
                 bend.switchAxes = true;
@@ -96,7 +96,7 @@
                 
                 var tobj = {angle:Math.PI/4,force:1.2};
                 new TWEEN.Tween(tobj).to({force:-1.2},5000).onUpdate(function(){
-                                bend.setAngle(this.angle);
+                                bend.angle = this.angle;
                                 bend.force = this.force;
                                 mstack.apply();
                         }).start();

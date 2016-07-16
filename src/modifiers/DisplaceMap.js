@@ -72,7 +72,7 @@ var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
         return self;
     },
     
-    apply: function( ) {
+    apply: function( modifiable ) {
         var self = this,
             axes = self.axes,
             w = self.width, h = self.height, bmp = self.bmpData,
@@ -80,13 +80,12 @@ var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
 
         if ( !axes || !bmp ) return self;
         
-        each(self.mod.vertices, function( v ){
-            var uv, x, y, xyz;
-            xyz = v.getXYZ( );
+        each(modifiable.vertices, function( v ){
+            var uv, uu, vv, xyz = v.getXYZ( );
             
-            x = ~~( (w - 1) * v.ratio[ 0 ]/* X */ );
-            y = ~~( (h - 1) * v.ratio[ 2 ]/* Z */ );
-            uv = ( y * w + x ) << 2;
+            uu = ~~( (w - 1) * v.ratio[ 0 ]/* X */ );
+            vv = ~~( (h - 1) * v.ratio[ 2 ]/* Z */ );
+            uv = ( vv * w + uu ) << 2;
             
             v.setXYZ([
                 xyz[ 0 ] + (axes & X ? ((bmp[ uv ] & 0xff) - offset) * force : 0),
@@ -94,7 +93,6 @@ var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
                 xyz[ 2 ] + (axes & Z ? ((bmp[ uv+2 ] & 0xff) - offset) * force : 0)
             ]);
         });
-
         return self;
     }
 });
