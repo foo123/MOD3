@@ -8,6 +8,11 @@ This is a port of the [AS3dMod Modifier Library for ActionScript 3](http://code.
 __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG.js*
 
 
+
+**IMPORTANT: Further development on this project has stopped! If anyone is interested in taking over this project for further development, send me a message through github.**
+
+
+
 [![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
 
 
