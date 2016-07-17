@@ -57,13 +57,14 @@ function cyclic_shift( a, w, h, dX, dY )
 
 var Perlin = MOD3.Perlin = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( f, n, a ) {
+    constructor: function Perlin( force, noise, autoRun ) {
         var self = this;
+        if ( !(self instanceof Perlin) ) return new Perlin( force, noise, autoRun );
         self.$super('constructor');
         self.name = 'Perlin';
-        self.force = f || 1;
-        self.perlin = n;
-        self.autoRun = undef !== a ? !!a : true;
+        self.force = undef!==force ? force : 1;
+        self.perlin = noise;
+        self.autoRun = undef!==autoRun ? !!autoRun : true;
         self.axes = X | Y | Z;
     },
     

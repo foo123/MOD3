@@ -22,19 +22,20 @@ var Vector3 = MOD3.Vector3, Max = Math.max, Exp = Math.exp, each = MOD3.List.eac
 
 var Bloat = MOD3.Bloat = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( ) {
+    constructor: function Bloat( radius, a, center ) {
         var self = this;
+        if ( !(self instanceof Bloat) ) return new Bloat( radius, a, center );
         self.$super('constructor');
         self.name = 'Bloat';
-        self.radius = 0;
-        self.a = 0.01;
-        self.center = Vector3.ZERO( );
+        self.radius = radius || 0;
+        self.a = null == a ? 0.01 : a;
+        self.center = center || Vector3.ZERO( );
         //self.u = Vector3.ZERO();
     },
     
-    center: null,
     radius: 0,
     a: 0.01,
+    center: null,
     //u: null,
     
     dispose: function( ) {

@@ -22,18 +22,17 @@ var Vector3 = MOD3.Vector3, Matrix4 = MOD3.Matrix4, Pow = Math.pow,
 
 var Taper = MOD3.Taper = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( f, p )  {
+    constructor: function Taper( force, power, v1, v2 )  {
         var self = this;
+        if ( !(self instanceof Taper) ) return new Taper( force, power, v1, v2 );
         self.$super('constructor');
         self.name = 'Taper';
         /*self.start = 0;
         self.end = 1;*/
-
-        self.vector = new Vector3(1, 0, 1);
-        self.vector2 = new Vector3(0, 1, 0);
-        
-        self.force = f !== undef ? f : 0;
-        self.power = p !== undef ? p : 1;
+        self.force = force !== undef ? force : 0;
+        self.power = power !== undef ? power : 1;
+        self.vector = v1 || Vector3.Y( false );
+        self.vector2 = v2 || Vector3.Y( );
     },
     
     force: 0,

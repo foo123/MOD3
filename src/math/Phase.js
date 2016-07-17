@@ -11,9 +11,10 @@ var Sin = Math.sin, Abs = Math.abs;
 
 var Phase = MOD3.Phase = MOD3.Class({
     
-    constructor: function( v ) {
-        this.value = 0;
-        if  ( null != v ) this.value = v;
+    constructor: function Phase( v ) {
+        var self = this;
+        if ( !(self instanceof Phase) ) return new Phase( v );
+        self.value = v || 0;
     },
     
     name: "Phase",

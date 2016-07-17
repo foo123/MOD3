@@ -19,7 +19,7 @@ __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG
 It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
 
 
-It is an (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
+It is a (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
 Also the API architecture is setup for more modifiers to be added (even custom ones).
 
 The library has a dependency on [Classy.js](https://github.com/foo123/classy.js) micro Object-Oriented framework.
@@ -42,7 +42,7 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 
 This code uses the [MIT Open Source License](http://opensource.org/licenses/mit-license.php), per requests to use the license of the original [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) code.
 
-Fell free to share, modify, contribute etc..
+Feel free to share, modify, contribute etc..
 
 
 ###Live Examples
@@ -85,13 +85,13 @@ Fell free to share, modify, contribute etc..
 
 
 ###How to debug
-1. If the problem is in one 3D engine, while the other engines work correctly for this example/modifier, then the problem is probably with that engine's proxy classes (plugins/3DENGINENAME/Vertex.js, plugins/3DENGINENAME/Mesh.js)
+1. If the problem is in one 3D engine, while the other engines work correctly for this example/modifier, then the problem is probably with that engine's proxy classes (plugins/3DENGINENAME/3DENGINENAME.js)
 2. If the specific example/modifier does not work in any 3D engine, but other modifiers/examples do work, then the problem is probably with that modifier's code (modifiers/MODIFIERNAME.js)
 3. If no example works for any engine, then the problem is probably in the core classes, or some class throws a js error which stops the whole execution
 
 
 ###Changelog
-* 0.6.0  support for OSG.js (almost complete), further refactoring and optimisations, some method changes
+* 0.6.0  3d engine plugins have been removed from the final build to make packaged code lighter, include the appropriate 3D plugin **manualy in your application** after the main **mod3** script (see examples), support for OSG.js (almost complete), further refactoring and optimisations, some method changes
 * 0.5.0  parallel processing through workers is dropped, add support for OSG.js (in progress), update support for Three.js r78, some refactoring and optimisations
 * 0.4  support parallel modifiers with web workers transparently, code refactor, optimizations, examples updates
 * 0.3.5  DisplaceMap modifier added, edits / optimizations

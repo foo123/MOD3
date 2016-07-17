@@ -30,20 +30,22 @@ var ModConstant = MOD3.ModConstant, NONE = ModConstant.NONE,
 
 var DisplaceMap = MOD3.DisplaceMap = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( bmp, f ) {
+    constructor: function DisplaceMap( bmp, force, offset ) {
         var self = this;
+        if ( !(self instanceof DisplaceMap) ) return new DisplaceMap( bmp, force, offset );
         self.$super('constructor');
         self.name = 'DisplaceMap';
         if ( +bmp == bmp ) // number
         {
             self.force = bmp || 1;
+            self.offset = null == force ? 127 : force;// 0x7F;
         }
         else
         {
             self.setBitmap( bmp );
-            self.force = f || 1;
+            self.force = force || 1;
+            self.offset = null == offset ? 127 : offset;// 0x7F;
         }
-        self.offset = 127 // 0x7F;
         self.axes = X | Y | Z;
     },
     

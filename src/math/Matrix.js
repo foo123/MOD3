@@ -31,10 +31,13 @@ var Matrix = MOD3.Matrix = MOD3.Class({
         }
     },
     
-    constructor: function( m11, m12,
-                           m21, m22 )
+    constructor: function Matrix( m11, m12,
+                                  m21, m22 )
    {
-        this.m = new V([
+        var self = this;
+        if ( !(self instanceof Matrix) ) return new Matrix( m11, m12,
+                                                            m21, m22 );
+        self.m = new V([
             m11===undef ? 1 : m11,
             m12===undef ? 0 : m12,
             m21===undef ? 0 : m21,

@@ -15,8 +15,9 @@ var
 
 var Range = MOD3.Range = MOD3.Class({
     
-    constructor: function( s, e )  {
+    constructor: function Range( s, e )  {
         var self = this;
+        if ( !(self instanceof Range) ) return new Range( s, e );
         self.start = null != s ? s : 0;
         self.end = null != e ? e : 1;
     },

@@ -22,27 +22,27 @@ var Vector3 = MOD3.Vector3, Range = MOD3.Range, Matrix4 = MOD3.Matrix4,
 
 var Break = MOD3.Break = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( o, a ) {
+    constructor: function Break( offset, angle, vector ) {
         var self = this;
+        if ( !(self instanceof Break) ) return new Break( offset, angle, vector );
         self.$super('constructor');
         self.name = 'Break';
-        self.bv = new Vector3([0, 1, 0]);
-        self.range = new Range(0, 1);
-        
-        self.offset = o !== undef ? o : 0;
-        self.angle = a !== undef ? a : 0;
+        self.offset = offset || 0;
+        self.angle = angle || 0;
+        self.vector = vector || Vector3.Y( );
+        self.range = new Range( 0, 1 );
     },
     
-    bv: null,
-    range: null,
     offset: 0,
     angle: 0,
+    vector: null,
+    range: null,
     
     dispose: function( ) {
         var self = this;
-        self.bv.dispose( );
+        self.vector.dispose( );
         self.range.dispose( );
-        self.bv = null;
+        self.vector = null;
         self.range = null;
         self.offset = null;
         self.angle = null;
@@ -53,7 +53,7 @@ var Break = MOD3.Break = MOD3.Class ( MOD3.Modifier, {
     apply: function( modifiable ) {
         var self = this,
             offset = Min(1, Max(0, self.offset)), range = self.range, angle = self.angle,
-            bv = self.bv/*.normalizeSelf( )*/.xyz, pv, rm;
+            bv = self.vector.normalizeSelf( ).xyz, pv, rm;
 
         pv = modifiable.minZ + modifiable.depth*offset;
         rm = new Matrix4( ).rotate( bv[ 0 ], bv[ 1 ], bv[ 2 ], angle );

@@ -55,12 +55,17 @@ var Matrix4 = MOD3.Matrix4 = MOD3.Class({
         }
     },
     
-    constructor: function( n11, n12, n13, n14,
-                           n21, n22, n23, n24,
-                           n31, n32, n33, n34,
-                           n41, n42, n43, n44 )
+    constructor: function Matrix4( n11, n12, n13, n14,
+                                   n21, n22, n23, n24,
+                                   n31, n32, n33, n34,
+                                   n41, n42, n43, n44 )
     {
-        this.m = new V([
+        var self = this;
+        if ( !(self instanceof Matrix4) ) return new Matrix4( n11, n12, n13, n14,
+                                                              n21, n22, n23, n24,
+                                                              n31, n32, n33, n34,
+                                                              n41, n42, n43, n44 );
+        self.m = new V([
             n11===undef ? 1 : n11,
             n12===undef ? 0 : n12,
             n13===undef ? 0 : n13,

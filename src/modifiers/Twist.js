@@ -21,17 +21,18 @@ var Vector3 = MOD3.Vector3, Sqrt = Math.sqrt, Matrix4 = MOD3.Matrix4,
 
 var Twist = MOD3.Twist = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( a ) {
+    constructor: function Twist( angle, vector, center ) {
         var self = this;
+        if ( !(self instanceof Twist) ) return new Twist( angle, vector, center );
         self.$super('constructor');
         self.name = 'Twist';
-        self.vector = new Vector3(0, 1, 0);
-        self.angle = a !== undef ? a : 0;
-        self.center = Vector3.ZERO( );
+        self.angle = angle || 0;
+        self.vector = vector || Vector3.Y( );
+        self.center = center || Vector3.ZERO( );
     },
     
-    vector: null,
     angle: 0,
+    vector: null,
     center: null,
     
     dispose: function( ) {
@@ -47,17 +48,17 @@ var Twist = MOD3.Twist = MOD3.Class ( MOD3.Modifier, {
     
     apply: function( modifiable ) {
         var self = this,
-            vector = self.vector.normalizeSelf( ), angle = self.angle, center = self.center, vxyz = vector.xyz,
+            tvec = self.vector.normalizeSelf( ).xyz, angle = self.angle, center = self.center.xyz,
             modulo = mod([0.5*modifiable.maxX, 0.5*modifiable.maxY, 0.5*modifiable.maxZ]),
-            d = -dotp( vxyz, center.xyz ),
+            d = -dotp( tvec, center ),
             m1 = new Matrix4( ), m2 = new Matrix4( )
         ;
 
         each(modifiable.vertices, function( v ){
             var xyz = v.getXYZ( ),
-                a = (dotp( xyz, vxyz ) + d) * angle / modulo,
+                a = (dotp( xyz, tvec ) + d) * angle / modulo,
                 m = mult4(
-                    m2.rotate( vxyz[0], vxyz[1], vxyz[2], a, true ),
+                    m2.rotate( tvec[0], tvec[1], tvec[2], a, true ),
                     m1.translate( xyz[0], xyz[1], xyz[2], true )
                 )
             ;   

@@ -25,16 +25,16 @@ var NONE = MOD3.ModConstant.NONE, LEFT = MOD3.ModConstant.LEFT,  RIGHT = MOD3.Mo
 
 var Bend = MOD3.Bend = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( f, o, a ) {
+    constructor: function Bend( force, offset, angle ) {
         var self = this;
+        if ( !(self instanceof Bend) ) return new Bend( force, offset, angle );
         self.$super('constructor');
         self.name = 'Bend';
         self.constraint = NONE;
         self.switchAxes = false;
-
-        self.force = f!==undef ? f : 0;
-        self.offset = o!==undef ? o : 0;
-        self.angle = a!==undef ? a : 0;
+        self.force = force || 0;
+        self.offset = offset || 0;
+        self.angle = angle || 0;
     },
 
     force: 0,

@@ -9,8 +9,9 @@
 
 var Point = MOD3.Point = MOD3.Class({
     
-    constructor: function( x, y ) {
+    constructor: function Point( x, y ) {
         var self = this;
+        if ( !(self instanceof Point) ) return new Point( x, y );
         self.x = null == x ? 0 : x;
         self.y = null == y ? 0 : y;
     },

@@ -5,7 +5,7 @@
 *
 **/
 !function(MOD3, undef){
-@@USE_STRICT@@
+"use strict";
 
 var ModConstant = MOD3.ModConstant,
     X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
@@ -123,13 +123,14 @@ MeshOSG = MOD3.MeshOSG = MOD3.Class( MOD3.MeshProxy, {
     update: function( )  {
         var self = this;
         //self.mesh.dirtyBound();
+        //self.mesh.setVertexAttribArray("Vertex", new osg.BufferArray( osg.BufferArray.ARRAY_BUFFER, self.v, 3 ));
         self.mesh.dirty();
-        //self.mesh.setVertexAttribArray("Vertex");
         return self;
     },
 
     preApply: function( )  {
         var self = this;
+        //self.v = new osg.BufferArray( osg.BufferArray.ARRAY_BUFFER, self.mesh.getVertexAttributeList().Vertex.getElements(), 3 );
         self.v = self.mesh.getVertexAttributeList().Vertex.getElements();
         return self;
     },

@@ -12,7 +12,7 @@
     <!--<script type="text/javascript" src="./leap.js"></script>-->
     <script type="text/javascript" src="./OSG.js"></script>
     <script type="text/javascript" src="../../build/mod3.bundle.js"></script>
-    <script type="text/javascript" src="../js/Tween.js"></script>
+    <script type="text/javascript" src="../../src/plugins/OSG/OSG.js"></script>
 </head>
 
 
@@ -27,15 +27,17 @@
 </body>
 
 <script type="text/javascript">
+!function( window ){
+var OSG = window.OSG, osg = OSG.osg, osgAnimation = OSG.osgAnimation, osgViewer = OSG.osgViewer;
+var mstack, mod;
 
-var OSG = window.OSG;
-var osg = OSG.osg;
-var osgAnimation = OSG.osgAnimation;
-var osgViewer = OSG.osgViewer;
-var cube, mstack, mod, rotate;
+// dynamic update
+osg.Geometry.enableVAO = true;
 
-function SimpleUpdateCallback() {}
+function SimpleUpdateCallback( ){ }
 SimpleUpdateCallback.prototype = {
+    constructor: SimpleUpdateCallback,
+    
     angle: 0,
     
     update: function ( node, nv ) {
@@ -44,12 +46,15 @@ SimpleUpdateCallback.prototype = {
         if ( dt < 0 ) { return true;  }
         node._lastUpdate = t;
 
-        var m = rotate.getMatrix();
+        var m = node.getMatrix();
         osg.Matrix.makeRotate( -this.angle, 0.0, 1.0, 0.0, m );
         osg.Matrix.setTrans( m, 0, 0, 10 );
         this.angle += 0.02;
-        mod.force = 1.2;
-        mstack.apply( );
+        if ( mod.force < 1.8 )
+        {
+            mstack.apply( );
+            mod.force += 0.1;
+        }
         return true;
     }
 };
@@ -112,16 +117,15 @@ function createBox( cx, cy, cz, wx, wy, wz, hx, hy, hz, res1, res2 )
     return g;
 }
 
-function createScene()
+function createScene( )
 {
-    var root = new osg.Node();
-    cube = createBox( -5, -5, 0.0, 10.0, 0.0, 0.0, 0.0, 10.0, 0, 100, 5 );
-    cube.addUpdateCallback( new SimpleUpdateCallback() );
+    var root = new osg.Node( );
+    var cube = createBox( -5, -5, 0.0, 10.0, 0.0, 0.0, 0.0, 10.0, 0, 100, 5 );
     root.addChild( cube );
     mstack = new MOD3.ModifierStack( MOD3.LibraryOSG, cube );
     mod = new MOD3.Bend( );
     mod.angle = Math.PI/8;
-    mod.force = 0;
+    mod.force = -1.6;
     mod.offset = 0.5;
     //mod.switchAxes = true;
     mod.constraint = MOD3.ModConstant.LEFT;
@@ -135,27 +139,20 @@ function main( )
 
     var viewer;
     try {
-        viewer = new osgViewer.Viewer( canvas, {
+        viewer = new osgViewer.Viewer(canvas, {
             antialias: true,
             alpha: true
-        } );
-        viewer.init();
-        var scene = createScene();
-        rotate = new osg.MatrixTransform();
-        rotate.addChild( scene );
-        viewer.getCamera().setClearColor( [ 0.7, 0.7, 0.7, 0.0 ] );
+        });
+        viewer.init( );
+        var rotate = new osg.MatrixTransform( );
+        rotate.addChild( createScene( ) );
+        rotate.addUpdateCallback( new SimpleUpdateCallback() );
+        viewer.getCamera( ).setClearColor( [ 0.7, 0.7, 0.7, 0.0 ] );
         viewer.setSceneData( rotate );
         //viewer._requestContinousUpdate = true;
-        //viewer.setupManipulator();
-        //viewer.getManipulator().computeHomePosition();
-
-        viewer.run();
-
-        /*var tobj = { force:0 };
-        new TWEEN.Tween(tobj).to({force:200}, 2000).onUpdate(function(){
-                        mod.force = this.force;
-                        //mstack.apply( );
-        }).start();*/
+        viewer.setupManipulator();
+        viewer.getManipulator().computeHomePosition();
+        viewer.run( );
         
     } catch ( er ) {
         osg.log( 'exception in osgViewer ' + er );
@@ -163,6 +160,6 @@ function main( )
 }
 
 window.addEventListener( 'load', main, true );
-
+}( window );
 </script>
 </html>

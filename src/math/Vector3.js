@@ -18,6 +18,18 @@ var Vector3 = MOD3.Vector3 = MOD3.Class({
             return new Vector3( 0, 0, 0 );
         },
         
+        X: function( direct_or_complement ) {
+            return false === direct_or_complement ? new Vector3( 0, 1, 1 ) : new Vector3( 1, 0, 0 );
+        },
+        
+        Y: function( direct_or_complement ) {
+            return false === direct_or_complement ? new Vector3( 1, 0, 1 ) : new Vector3( 0, 1, 0 );
+        },
+        
+        Z: function( direct_or_complement ) {
+            return false === direct_or_complement ? new Vector3( 1, 1, 0 ) : new Vector3( 0, 0, 1 );
+        },
+        
         dot: function( v, w ) { 
             return v[0]*w[0] + v[1]*w[1] + v[2]*w[2]; 
         },
@@ -89,7 +101,10 @@ var Vector3 = MOD3.Vector3 = MOD3.Class({
         }
     },
     
-    constructor: function( x, y, z ) {
+    constructor: function Vector3( x, y, z ) {
+        var self = this;
+        if ( !(self instanceof Vector3) ) return new Vector3( x, y, z );
+        
         // use an internal typed-array for speed
         var v = new V(3);
         if ( x && (3 === x.length) )
@@ -106,7 +121,7 @@ var Vector3 = MOD3.Vector3 = MOD3.Class({
             v[1] = y || 0;
             v[2] = z || 0;
         }
-        this.xyz = v;
+        self.xyz = v;
     },
     
     name: "Vector3",

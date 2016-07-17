@@ -26,15 +26,16 @@ var Abs = Math.abs, Pow = Math.pow, Max = Math.max, Min = Math.min,
 
 var Skew = MOD3.Skew = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( f ) {
+    constructor: function Skew( force, offset, power, falloff ) {
         var self = this;
+        if ( !(self instanceof Skew) ) return new Skew( force, offset, power, falloff );
         self.$super('constructor');
         self.name = 'Skew';
-        self.force = f!==undef ? f : 0;
-        self.offset = 0.5;
         self.constraint = NONE;
-        self.power = 1;
-        self.falloff = 1;
+        self.force = force!==undef ? force : 0;
+        self.offset = offset!==undef ? offset : 0.5;
+        self.power = power!==undef ? power : 1;
+        self.falloff = falloff!==undef ? falloff : 1;
         self.inverseFalloff = false;
         self.oneSide = false;
         self.swapAxes = false;
@@ -71,7 +72,7 @@ var Skew = MOD3.Skew = MOD3.Class ( MOD3.Modifier, {
             swapAxes = self.swapAxes, 
             offset = Min(1, Max(0, self.offset)),
             oneSide = self.oneSide, 
-            inverseFalloff = self.inverseFalloff, 
+            inverseFalloff = !!self.inverseFalloff, 
             falloff = Min(1, Max(0, self.falloff)), 
             mirrorfalloff = 1-falloff,
             power = self.power, 

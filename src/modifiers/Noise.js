@@ -23,14 +23,15 @@ var NONE = MOD3.ModConstant.NONE,
 
 var Noise = MOD3.Noise = MOD3.Class ( MOD3.Modifier, {
     
-    constructor: function( f ) {
+    constructor: function Noise( force ) {
         var self = this;
+        if ( !(self instanceof Noise) ) return new Noise( force );
         self.$super('constructor');
         self.name = 'Noise';
-        self.axes = X | Y | Z;
+        self.force = force || 0;
         self.start = 0;
         self.end = 1;
-        self.force = f !== undef ? f : 0;
+        self.axes = X | Y | Z;
     },
     
     force: 0,

@@ -5,7 +5,7 @@
 *
 **/
 !function(MOD3, undef){
-@@USE_STRICT@@
+"use strict";
 
 var ModConstant = MOD3.ModConstant,
     X = ModConstant.X, Y = ModConstant.Y, Z = ModConstant.Z,
