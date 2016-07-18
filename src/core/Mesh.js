@@ -385,7 +385,7 @@ MeshProxy = MOD3.MeshProxy = MOD3.Class({
 
         each(vertices, function( v ){
             var xyz = v.getXYZ( );
-            v.setRatios((xyz[ 0 ] - minX) / width, (xyz[ 1 ] - minY) / height, (xyz[ 2 ] - minZ) / depth);
+            v.setRatios(width > 0 ? (xyz[ 0 ] - minX) / width : 0, height > 0 ? (xyz[ 1 ] - minY) / height : 0, depth > 0 ? (xyz[ 2 ] - minZ) / depth : 0);
         });
         return self;
     },

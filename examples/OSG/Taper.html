@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Twist demo and OSG.js</title>
+    <title>Taper demo and OSG.js</title>
     <link rel="stylesheet" type="text/css" href="./base.css">
 
     <!-- Javascript -->
@@ -46,10 +46,10 @@ SimpleUpdateCallback.prototype = {
         osg.Matrix.setTrans( m, 0, 0, 10 );
         this.angle += 0.02;
         
-        if ( mod.angle <= Math.PI/4 )
+        if ( mod.force <= 1.2 )
         {
             mstack.apply( );
-            mod.angle += 0.01;
+            mod.force += 0.01;
         }
         return true;
     }
@@ -119,7 +119,7 @@ function createScene()
     var cube = createBox( -5, -5, 0.0, 10.0, 0.0, 0.0, 0.0, 10.0, 0, 100, 5 );
     root.addChild( cube );
     mstack = new MOD3.ModifierStack( MOD3.LibraryOSG, cube );
-    mod = new MOD3.Twist( );
+    mod = new MOD3.Taper( 0 );
     mstack.addModifier( mod );
     return root;
 }

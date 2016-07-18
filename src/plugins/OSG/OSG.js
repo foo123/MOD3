@@ -122,15 +122,15 @@ MeshOSG = MOD3.MeshOSG = MOD3.Class( MOD3.MeshProxy, {
     // use a batch update, instead of update vertex by vertex (faster??)
     update: function( )  {
         var self = this;
-        //self.mesh.dirtyBound();
-        //self.mesh.setVertexAttribArray("Vertex", new osg.BufferArray( osg.BufferArray.ARRAY_BUFFER, self.v, 3 ));
-        self.mesh.dirty();
+        // https://github.com/cedricpinson/osgjs/issues/623
+        self.mesh.getVertexAttributeList().Vertex.dirty();
+        //self.mesh.dirty();
+        self.mesh.dirtyBound();
         return self;
     },
 
     preApply: function( )  {
         var self = this;
-        //self.v = new osg.BufferArray( osg.BufferArray.ARRAY_BUFFER, self.mesh.getVertexAttributeList().Vertex.getElements(), 3 );
         self.v = self.mesh.getVertexAttributeList().Vertex.getElements();
         return self;
     },

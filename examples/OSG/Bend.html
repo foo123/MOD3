@@ -32,12 +32,10 @@ var OSG = window.OSG, osg = OSG.osg, osgAnimation = OSG.osgAnimation, osgViewer 
 var mstack, mod;
 
 // dynamic update
-osg.Geometry.enableVAO = true;
+//osg.Geometry.enableVAO = true;
 
 function SimpleUpdateCallback( ){ }
 SimpleUpdateCallback.prototype = {
-    constructor: SimpleUpdateCallback,
-    
     angle: 0,
     
     update: function ( node, nv ) {
@@ -50,10 +48,10 @@ SimpleUpdateCallback.prototype = {
         osg.Matrix.makeRotate( -this.angle, 0.0, 1.0, 0.0, m );
         osg.Matrix.setTrans( m, 0, 0, 10 );
         this.angle += 0.02;
-        if ( mod.force < 1.8 )
+        if ( mod.force <= 1.8 )
         {
             mstack.apply( );
-            mod.force += 0.1;
+            mod.force += 0.01;
         }
         return true;
     }
@@ -149,9 +147,8 @@ function main( )
         rotate.addUpdateCallback( new SimpleUpdateCallback() );
         viewer.getCamera( ).setClearColor( [ 0.7, 0.7, 0.7, 0.0 ] );
         viewer.setSceneData( rotate );
-        //viewer._requestContinousUpdate = true;
-        viewer.setupManipulator();
-        viewer.getManipulator().computeHomePosition();
+        //viewer.setupManipulator();
+        //viewer.getManipulator().computeHomePosition();
         viewer.run( );
         
     } catch ( er ) {

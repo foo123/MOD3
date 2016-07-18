@@ -28,12 +28,9 @@
 </body>
 
 <script type="text/javascript">
-
-var OSG = window.OSG;
-var osg = OSG.osg;
-var osgAnimation = OSG.osgAnimation;
-var osgViewer = OSG.osgViewer;
-var cube, mstack, mod, rotate;
+!function( window ){
+var OSG = window.OSG, osg = OSG.osg, osgAnimation = OSG.osgAnimation, osgViewer = OSG.osgViewer;
+var mstack, mod;
 
 function generate_noise2d( w, h, perlinNoise2d )
 {
@@ -50,7 +47,6 @@ function generate_noise2d( w, h, perlinNoise2d )
 
 function SimpleUpdateCallback() {}
 SimpleUpdateCallback.prototype = {
-    mod_force: 1,
     angle: 0,
     
     update: function ( node, nv ) {
@@ -59,12 +55,11 @@ SimpleUpdateCallback.prototype = {
         if ( dt < 0 ) { return true;  }
         node._lastUpdate = t;
 
-        var m = rotate.getMatrix();
+        var m = node.getMatrix();
         osg.Matrix.makeRotate( -this.angle, 0.0, 1.0, 0.0, m );
         osg.Matrix.setTrans( m, 0, 0, 10 );
         this.angle += 0.02;
         
-        mod.force = this.mod_force;
         mstack.apply( );
         return true;
     }
@@ -131,11 +126,10 @@ function createBox( cx, cy, cz, wx, wy, wz, hx, hy, hz, res1, res2 )
 function createScene()
 {
     var root = new osg.Node();
-    cube = createBox( -5, -5, 0.0, 10.0, 0.0, 0.0, 0.0, 10.0, 0, 100, 5 );
-    cube.addUpdateCallback( new SimpleUpdateCallback() );
+    var cube = createBox( -5, -5, 0.0, 10.0, 0.0, 0.0, 0.0, 10.0, 0, 100, 5 );
     root.addChild( cube );
     mstack = new MOD3.ModifierStack( MOD3.LibraryOSG, cube );
-    mod = new MOD3.Perlin( 20, generate_noise2d( 50, 50 ) );
+    mod = new MOD3.Perlin( 1.5, generate_noise2d( 50, 50 ) );
     mstack.addModifier( mod );
     return root;
 }
@@ -152,13 +146,13 @@ function main( )
         } );
         viewer.init();
         var scene = createScene();
-        rotate = new osg.MatrixTransform();
+        var rotate = new osg.MatrixTransform();
         rotate.addChild( scene );
+        rotate.addUpdateCallback( new SimpleUpdateCallback() );
         viewer.getCamera().setClearColor( [ 0.7, 0.7, 0.7, 0.0 ] );
         viewer.setSceneData( rotate );
         //viewer.setupManipulator();
         //viewer.getManipulator().computeHomePosition();
-
         viewer.run();
 
     } catch ( er ) {
@@ -167,6 +161,6 @@ function main( )
 }
 
 window.addEventListener( 'load', main, true );
-
+}( window );
 </script>
 </html>
