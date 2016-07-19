@@ -10,7 +10,7 @@
 *
 **/
 @@USE_STRICT@@
-var MOD3 = exports['@@MODULE_NAME@@'] = { 
+var MOD3 = { 
     VERSION: "@@VERSION@@", 
     Class: Classy.Class, StaticClass: function( classdef ){ return Classy.Class(Classy.STATIC, classdef); }
 };
