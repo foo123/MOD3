@@ -2,7 +2,7 @@
 *
 *   MOD3.js
 *   @version: @@VERSION@@
-*   @@DEPENDENCIES@@
+*   @dependencies: Classy.js
 *
 *   MOD3 3D Modifier Library for JavaScript 
 *   port of AS3DMod ActionScript3 library (http://code.google.com/p/as3dmod/)
