@@ -1,4 +1,4 @@
-#MOD3 
+# MOD3 
 
 
 __3D Modifier Library for JavaScript__
@@ -13,7 +13,7 @@ __supports:__  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG
 
 
 
-[![MOD3.js](/flipbook2.png)](http://foo123.github.com/examples/flipbook3/)
+[![MOD3.js](/flipbook2.png)](https://foo123.github.com/examples/flipbook3/)
 
 
 It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
@@ -26,7 +26,7 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 
 
 
-###Contents
+### Contents
 
 * [Live Examples](#live-examples)
 * [3D Engines Support](#support-for-3d-javascript-engines)
@@ -38,20 +38,20 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 * [ChangeLog](#changelog)
 
 
-###Source Code License
+### Source Code License
 
 This code uses the [MIT Open Source License](http://opensource.org/licenses/mit-license.php), per requests to use the license of the original [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) code.
 
 Feel free to share, modify, contribute etc..
 
 
-###Live Examples
+### Live Examples
 
-* [3D flipbook](http://foo123.github.com/examples/flipbook3/) (Three.js, MOD3.js and Tween.js)
-* [Dancing Box](http://foo123.github.com/examples/dancing-box/)  (a simple blend of 3D manipulation and sound visualization)
+* [3D flipbook](https://foo123.github.com/examples/flipbook3/) (Three.js, MOD3.js and Tween.js)
+* [Dancing Box](https://foo123.github.com/examples/dancing-box/)  (a simple blend of 3D manipulation and sound visualization)
 
 
-###Support for 3D JavaScript engines
+### Support for 3D JavaScript engines
 
 * [Three.js](https://github.com/mrdoob/three.js/) with examples (r78)
 * [OSG.js](https://github.com/cedricpinson/osgjs) with examples (0.2.5)
@@ -62,7 +62,7 @@ Feel free to share, modify, contribute etc..
 
 
 
-###Modifiers supported (up to present)  
+### Modifiers supported (up to present)  
 * Pivot (note: Pivot does not work with Pre3d)  
 * Bend
 * Twist
@@ -76,7 +76,7 @@ Feel free to share, modify, contribute etc..
 * DisplaceMap ( MOD3 v.0.3.5 )
 
 
-###TODO
+### TODO
 * possible generic way to use (at least some) 3D modifiers directly in GLSL for all supported engines (??)
 * add custom modifiers except the defaults found in AS3dMod library
 * optimize (math ops, caching, modifier chain calls etc..) [DONE partially]
@@ -84,13 +84,13 @@ Feel free to share, modify, contribute etc..
 * keep up with JavaScript 3D Engines updates (will try)
 
 
-###How to debug
+### How to debug
 1. If the problem is in one 3D engine, while the other engines work correctly for this example/modifier, then the problem is probably with that engine's proxy classes (plugins/3DENGINENAME/3DENGINENAME.js)
 2. If the specific example/modifier does not work in any 3D engine, but other modifiers/examples do work, then the problem is probably with that modifier's code (modifiers/MODIFIERNAME.js)
 3. If no example works for any engine, then the problem is probably in the core classes, or some class throws a js error which stops the whole execution
 
 
-###Changelog
+### Changelog
 * 0.6.0  3d engine plugins have been removed from the final build to make packaged code lighter, include the appropriate 3D plugin **manualy in your application** after the main **mod3** script (see examples), modifiers are independent of the underlying modifiable mesh (it is a parameter), and this enables them to be shared (if the exact same modifier is needed) across multiple different modifierStacks for different underlying meshes, support for OSG.js, further refactoring and optimisations, some method changes
 * 0.5.0  parallel processing through workers is dropped, add support for OSG.js (in progress), update support for Three.js r78, some refactoring and optimisations
 * 0.4  support parallel modifiers with web workers transparently, code refactor, optimizations, examples updates
@@ -103,7 +103,8 @@ Feel free to share, modify, contribute etc..
 * added support for Three.js revision (r58)
 * added support for Three.js revision (r53)
 
-
+<!--
 *URL* [Nikos Web Development](http://nikos-web-development.netai.net/ "Nikos Web Development")  
 *URL* [MOD3 blog post](http://nikos-web-development.netai.net/blog/mod3-a-javascript-port-of-as3mod-for-three-js/ "MOD3 blog post")  
 *URL* [WorkingClassCode](http://workingclasscode.uphero.com/ "Working Class Code")  
+-->

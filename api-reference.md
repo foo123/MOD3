@@ -1,5 +1,5 @@
 
-###Pivot modifier 
+### Pivot modifier 
 
 Allows to move the pivot point of a 3D mesh.
 
@@ -8,7 +8,7 @@ Allows to move the pivot point of a 3D mesh.
 
 
 
-###Bend modifier 
+### Bend modifier 
 
 Bends an object along an axis. 
 
@@ -17,7 +17,7 @@ Bends an object along an axis.
 
 
 
-###Bloat modifier 
+### Bloat modifier 
 
 Bloats a mesh by forcing vertices out of specified sphere
 
@@ -26,7 +26,7 @@ Bloats a mesh by forcing vertices out of specified sphere
 
 
 
-###Twist modifier 
+### Twist modifier 
 
 Twist mesh along an axis
 Adapted from the Twist modifier for PV3D
@@ -34,7 +34,7 @@ Adapted from the Twist modifier for PV3D
 
 
 
-###Skew modifier 
+### Skew modifier 
 
 Skew mesh along an axis
 
@@ -43,7 +43,7 @@ Skew mesh along an axis
 
 
 
-###Taper modifier 
+### Taper modifier 
 
 The taper modifier displaces the vertices on two axes proportionally to their position on the third axis.
 
@@ -52,7 +52,7 @@ The taper modifier displaces the vertices on two axes proportionally to their po
 
 
 
-###Wheel modifier 
+### Wheel modifier 
 
 Use it with vehicle models for wheels.
 
@@ -93,7 +93,7 @@ It should work with most car models imported from 3D editors as this is the natu
  
 
 
-###Break modifier 
+### Break modifier 
 
 Allow to break a mesh
 
@@ -102,7 +102,7 @@ Allow to break a mesh
 
 
 
-###Noise modifier 
+### Noise modifier 
 
 Randomly displaces each vertex in all 3 axes
 
@@ -110,7 +110,7 @@ Randomly displaces each vertex in all 3 axes
 
 
 
-###DisplaceMap (BitmapDisplacement) Modifier 
+### DisplaceMap (BitmapDisplacement) Modifier 
 
 Displaces vertices based on RGB values of bitmapData pixels. 
 
@@ -125,7 +125,7 @@ channel in the bitmap: X for Red, Y for Green and Z for Blue.
 
 
 
-###Perlin modifier 
+### Perlin modifier 
 
  Displaces vertices based on a perlin/simplex noise source.
 
