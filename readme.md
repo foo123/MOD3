@@ -1,29 +1,17 @@
-# MOD3 
-
+# MOD3
 
 **3D Modifier Library for JavaScript**
 
-This is a port of the [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) to JavaScript.  
+This is a port of the [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) to JavaScript.
 
-**supports:**  *Three.js* , *Pre3d* , *J3D* , *Copperlicht* , *CubicVR.js*, *OSG.js*
+**version: 1.0.0**
 
-
-
-**IMPORTANT: Further development on this project has stopped! If anyone is interested in taking over this project for further development, send me a message through github.**
-
-
+**supports: Three.js, CubicVR.js, OSG.js, J3D, Copperlicht, Pre3d
 
 [![MOD3.js](/flipbook2.png)](https://foo123.github.io/examples/flipbook3/)
 
-
-It is named *MOD3* to signify that it has support for [Three.js](https://github.com/mrdoob/three.js/)
-
-
-It is a (almost) complete port. All Modifiers found in AS3DMod are scheduled to be ported. 
+It is an almost complete port. All Modifiers found in AS3DMod are scheduled to be ported.
 Also the API architecture is setup for more modifiers to be added (even custom ones).
-
-The library has a dependency on [Classy.js](https://github.com/foo123/classy.js) micro Object-Oriented framework.
-
 
 
 ### Contents
@@ -40,10 +28,7 @@ The library has a dependency on [Classy.js](https://github.com/foo123/classy.js)
 
 ### Source Code License
 
-This code uses the [MIT Open Source License](http://opensource.org/licenses/mit-license.php), per requests to use the license of the original [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/) code.
-
-Feel free to share, modify, contribute etc..
-
+[MIT Open Source License](http://opensource.org/licenses/mit-license.php) like the original [AS3dMod Modifier Library for ActionScript 3](http://code.google.com/p/as3dmod/).
 
 ### Live Examples
 
@@ -55,15 +40,15 @@ Feel free to share, modify, contribute etc..
 
 * [Three.js](https://github.com/mrdoob/three.js/) with examples (r78)
 * [OSG.js](https://github.com/cedricpinson/osgjs) with examples (0.2.5)
+* [CubicVR](https://github.com/cjcliffe/CubicVR.js/) with examples
 * [J3D](https://github.com/drojdjou/J3D) with examples (Build 51)
 * [Copperlicht](https://github.com/Sebmaster/copperlicht) with examples
-* [CubicVR](https://github.com/cjcliffe/CubicVR.js/) with examples
-* [Pre3d](https://github.com/deanm/pre3d) with examples (my pre3d examples are a little blurry but you'll get the picture)
+* [Pre3d](https://github.com/deanm/pre3d) with examples (pre3d examples are a little blurry but you'll get the picture)
 
 
 
-### Modifiers supported (up to present)  
-* Pivot (note: Pivot does not work with Pre3d)  
+### Modifiers supported (up to present)
+* Pivot (note: Pivot does not work with Pre3d)
 * Bend
 * Twist
 * Taper
@@ -72,8 +57,8 @@ Feel free to share, modify, contribute etc..
 * Wheel
 * Bloat
 * Break
-* Perlin ( MOD3 v.0.3.4 )
-* DisplaceMap ( MOD3 v.0.3.5 )
+* Perlin
+* DisplaceMap
 
 
 ### TODO
@@ -91,6 +76,7 @@ Feel free to share, modify, contribute etc..
 
 
 ### Changelog
+* 1.0.0 refactor, simplify and minify code, remove classy dependency
 * 0.6.0  3d engine plugins have been removed from the final build to make packaged code lighter, include the appropriate 3D plugin **manualy in your application** after the main **mod3** script (see examples), modifiers are independent of the underlying modifiable mesh (it is a parameter), and this enables them to be shared (if the exact same modifier is needed) across multiple different modifierStacks for different underlying meshes, support for OSG.js, further refactoring and optimisations, some method changes
 * 0.5.0  parallel processing through workers is dropped, add support for OSG.js (in progress), update support for Three.js r78, some refactoring and optimisations
 * 0.4  support parallel modifiers with web workers transparently, code refactor, optimizations, examples updates
@@ -125,6 +111,7 @@ Feel free to share, modify, contribute etc..
 * [Carousel3](https://github.com/foo123/Carousel3) HTML5 Photo Carousel using Three.js
 * [Rubik3](https://github.com/foo123/Rubik3) intuitive 3D Rubik Cube with Three.js
 * [MOD3](https://github.com/foo123/MOD3) JavaScript port of AS3DMod ActionScript 3D Modifier Library
+* [Geometrize](https://github.com/foo123/Geometrize) Computational Geometry and Rendering Library for JavaScript
 * [RT](https://github.com/foo123/RT) unified client-side real-time communication for JavaScript using XHR polling / BOSH / WebSockets / WebRTC
 * [AjaxListener.js](https://github.com/foo123/AjaxListener.js): Listen to any AJAX event on page with JavaScript, even by other scripts
 * [asynchronous.js](https://github.com/foo123/asynchronous.js) simple manager for asynchronous, linear, parallel, sequential and interleaved tasks for JavaScript

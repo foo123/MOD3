@@ -1,67 +1,50 @@
 /**
-*
 * MOD3  Math Utilities Class
-*
-*
 **/
-!function(MOD3, undef){
-@@USE_STRICT@@
-
-// cache constants
-var 
-    toRad = MOD3.Constants.toRad, toDeg = MOD3.Constants.toDeg,
-    Min = Math.min, Max = Math.max,
-    Pow = Math.pow, Round = Math.round,
-    Floor = Math.floor, Ceil = Math.ceil, Trim
-;
-
-var XMath = MOD3.XMath = MOD3.StaticClass({
-
-    normalize: function( start, end, val ) {
+MOD3.XMath = {
+    normalize: function(start, end, val) {
         var range = end - start;
-        return 0 === range ? 1 : Trim(0, 1, (val - start) / end);
+        return 0 === range ? 1 : MOD3.XMath.trim(0, 1, (val - start)/end);
     },
 
-    toRange: function( start, end, normalized ) {
+    toRange: function(start, end, normalized) {
         var range = end - start;
-        return 0 === range ? 0 : start + range * normalized;
+        return 0 === range ? 0 : (start + range*normalized);
     },
 
-    inRange: function( start, end, value, excluding ) {
+    inRange: function(start, end, value, excluding) {
         return false !== excluding ? (value >= start && value <= end) : (value > start && value < end);
     },
 
-    sign: function( val, ifZero ) {
-        return 0 == val ? ifZero||0 : (val > 0 ? 1 : -1);
+    sign: function(val, ifZero) {
+        return 0 === val ? (ifZero || 0) : (val > 0 ? 1 : -1);
     },
 
-    trim: function( start, end, value ) {
+    trim: function(start, end, value) {
         return value < start ? start : (value > end ? end : value);
     },
 
-    wrap: function( start, end, value ) {
-        var r = end-start;
-        return value < start ? value + r : (value >= end ? value - r : value);
+    wrap: function(start, end, value) {
+        var r = end - start;
+        return value < start ? (value + r) : (value >= end ? value - r : value);
     },
 
-    degToRad: function( deg ) {
-        return deg * toRad;
+    degToRad: function(deg) {
+        return deg/180*PI;
     },
 
-    radToDeg: function( rad )  {
-        return rad * toDeg;
+    radToDeg: function(rad)  {
+        return rad/PI*180;
     },
 
-    presicion: function( number, precision ) {
-        var r = Pow( 10, precision );
-        return Round( number * r ) / r;
+    presicion: function(number, precision) {
+        var r = stdMath.pow(10, precision);
+        return stdMath.round(number*r)/r;
     },
 
-    uceil: function( val ) {
-        return (val < 0) ? Floor(val) : Ceil(val);
+    uceil: function(val) {
+        return val < 0 ? stdMath.floor(val) : stdMath.ceil(val);
     }
-});
+};
 // alias
-Trim = XMath.clamp = XMath.trim;
-
-}(MOD3);
+MOD3.XMath.clamp = MOD3.XMath.trim;

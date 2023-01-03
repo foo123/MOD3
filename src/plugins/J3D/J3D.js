@@ -14,107 +14,105 @@ var ModConstant = MOD3.ModConstant,
     VertexJ3D, MeshJ3D
 ;
 
-VertexJ3D = MOD3.VertexJ3D = MOD3.Class( MOD3.VertexProxy, {
-    
-    constructor: function VertexJ3D( vertex, mesh ) {
+VertexJ3D = MOD3.Class(MOD3.VertexProxy, {
+    constructor: function VertexJ3D(vertex, mesh) {
         var self = this;
-        self.$super('constructor', vertex, mesh);
+        self.$super('constructor', [vertex, mesh]);
         self.name = "VertexJ3D";
     },
-    
-    setVertex: function( vt )  {
+
+    setVertex: function(vt)  {
         var self = this, v = self.mesh.mesh.geometry.arraysByName[J3D.Mesh.VERTEX_POSITION].data;
         self.vertex = vt;
-        self.original = new V( [v[vt  ], v[vt+1], v[vt+2]] );
+        self.original = new V([v[vt  ], v[vt+1], v[vt+2]]);
         return self;
     },
-    
-    getXYZ: function( ) {
+
+    getXYZ: function() {
         var self = this, vt = self.vertex, v = self.mesh.v, xyz = new V(3);
         xyz[0] = v[vt  ]; xyz[1] = v[vt+1]; xyz[2] = v[vt+2];
         return xyz;
     },
-    
-    getX: function( ) {
+
+    getX: function() {
         return this.mesh.v[this.vertex  ];
     },
-    
-    getY: function( ) {
+
+    getY: function() {
         return this.mesh.v[this.vertex+1];
     },
-    
-    getZ: function( ) {
+
+    getZ: function() {
         return this.mesh.v[this.vertex+2];
     },
-    
-    getValue: function( axis )  {
+
+    getValue: function(axis)  {
         return this.mesh.v[this.vertex + XYZ[axis]] || 0;
     },
 
-    setXYZ: function( xyz ) {
+    setXYZ: function(xyz) {
         var self = this, vt = self.vertex, v = self.mesh.v;
         v[vt  ] = xyz[0]; v[vt+1] = xyz[1]; v[vt+2] = xyz[2];
         return self;
     },
-    
-    setX: function( vo ) {
+
+    setX: function(vo) {
         this.mesh.v[this.vertex  ] = vo;
         return this;
     },
-    
-    setY: function( vo ) {
+
+    setY: function(vo) {
         this.mesh.v[this.vertex+1] = vo;
         return this;
     },
-    
-    setZ: function( vo ) {
+
+    setZ: function(vo) {
         this.mesh.v[this.vertex+2] = vo;
         return this;
     },
 
-    setValue: function( axis, vo ) {
+    setValue: function(axis, vo) {
         this.mesh.v[this.vertex + XYZ[axis]] = vo;
         return this;
     },
-    
-    reset: function( ) {
+
+    reset: function() {
         var self = this, vt = self.vertex, v = self.mesh.v, o = self.original;
         v[vt  ] = o[0]; v[vt+1] = o[1]; v[vt+2] = o[2];
         return self;
     },
 
-    collapse: function( ) {
+    collapse: function() {
         var self = this, vt = self.vertex, v = self.mesh.v, o = self.original;
         o[0] = v[vt  ]; o[1] = v[vt+1]; o[2] = v[vt+2];
         return self;
     }
 });
 
-MeshJ3D = MOD3.MeshJ3D = MOD3.Class( MOD3.MeshProxy, {
-    
-    constructor: function MeshJ3D( mesh ) { 
+MeshJ3D = MOD3.Class(MOD3.MeshProxy, {
+    constructor: function MeshJ3D(mesh) {
         var self = this;
-        self.$super('constructor', mesh);
+        self.$super('constructor', [mesh]);
         self.name = "MeshJ3D";
     },
-    
-    init: function( transformObject ) {
+
+    init: function(transformObject) {
         var self = this;
-        self.$super('init', transformObject);
-        
+        self.$super('init', [transformObject]);
+
         var geometry = transformObject.geometry,
             vbo = geometry.arraysByName[J3D.Mesh.VERTEX_POSITION],
             vs = vbo.data, vc = vs.length,
             ii = vbo.itemSize, i, j, vertices, nv;
-        
+
         self.faces = null;
-        self.vertices = vertices = new Array( ceil(vc/ii) );
-        for (j=0,i=0; i<vc; i+=ii) vertices[j++] = new VertexJ3D( i, self );
+        self.vertices = vertices = new Array(ceil(vc/ii));
+        for (j=0,i=0; i<vc; i+=ii) vertices[j++] = new VertexJ3D(i, self);
         return self;
     },
-    
+
     // use a batch update, instead of update vertex by vertex (faster??)
-    update: function( )  {
+    update: function() {
         var self = this, geometry = self.mesh.geometry,
             vbo = geometry.arraysByName[J3D.Mesh.VERTEX_POSITION],
             data = vbo.data;
@@ -122,13 +120,13 @@ MeshJ3D = MOD3.MeshJ3D = MOD3.Class( MOD3.MeshProxy, {
         return self;
     },
 
-    preApply: function( )  {
+    preApply: function() {
         var self = this;
         self.v = self.mesh.geometry.arraysByName[J3D.Mesh.VERTEX_POSITION].data;
         return self;
     },
 
-    postApply: function( )  {
+    postApply: function() {
         var self = this;
         self.v = null;
         return self;
