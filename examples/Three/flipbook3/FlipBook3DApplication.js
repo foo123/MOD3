@@ -13,27 +13,25 @@ if (!window.requestAnimationFrame) {
     window.oRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-
-    window.setTimeout( callback, 1000 / 60 );
-
+        window.setTimeout(callback, 1000 / 60);
     };
 
     })();
 
 }
 
-var multx = 0.5*Math.PI,
+var multx = 0.5 * Math.PI,
     multy = -Math.PI,
     Sin = Math.sin,
     Cos = Math.cos,
 
     container, camera, scene, renderer, projector,
     targetRotationY = 0, targetRotationOnMouseDownY = 0, targetRotationX = 0, targetRotationOnMouseDownX = 0,
-    rad=700, mouse={x:0,y:0}, mouseX = 0, mouseXOnMouseDown = 0, mouseY = 0, mouseYOnMouseDown = 0,
+    rad=700, mouse={x:0, y:0}, mouseX = 0, mouseXOnMouseDown = 0, mouseY = 0, mouseYOnMouseDown = 0,
     mstack, bend,
     windowHalfX = window.innerWidth / 2, windowHalfY = window.innerHeight / 2,
     w,h,w2,h2,
-    book, pagew=300, pageh=pagew*10/7,
+    book, pagew = 300, pageh = pagew * 10 / 7,
     fl,fr
 ;
 
@@ -103,10 +101,10 @@ var self = {
         container = document.getElementById('container');
         w = window.innerWidth;
         h = window.innerHeight;
-        w2 = w/2; h2 = h/2;
-        container.style.width = String(w)+"px";
-        container.style.height = String(h)+"px";
-        container.style.marginTop = String(0.5*(window.innerHeight-h))+'px';
+        w2 = w / 2; h2 = h / 2;
+        container.style.width = String(w) + "px";
+        container.style.height = String(h) + "px";
+        container.style.marginTop = String(0.5 * (window.innerHeight - h)) + 'px';
 
         scene = new THREE.Scene();
         projector = new THREE.Projector();
@@ -138,17 +136,11 @@ var self = {
         // add flip controls
         fl = document.getElementById('flipleft');
         fl.addEventListener('click', function() {
-            var plen = book.pages.length,
-                pindex = plen-book.flippedright
-            ;
-            if (pindex >= 0 && pindex < plen) book.pages[pindex].flipLeft();
+            book.flipLeft();
         });
         fr = document.getElementById('flipright');
         fr.addEventListener('click', function() {
-            var plen = book.pages.length,
-                pindex = book.flippedleft-1
-            ;
-            if (pindex >= 0 && pindex < plen) book.pages[pindex].flipRight();
+            book.flipRight();
         });
 
         // start rendering

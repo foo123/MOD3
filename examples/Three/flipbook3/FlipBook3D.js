@@ -20,24 +20,20 @@ Book = self.Book = MOD3.Class(THREE.Object3D, {
     constructor: function() {
         var self = this;
         self.$super("constructor");
-        self.pages = null;
+        self.pages = [];
+        self.index = -1;
         self.pageWidth = 0;
         self.pageHeight = 0;
         self.currentPage = 0;
-        self.flippedleft = 0;
-        self.flippedright = 0;
         self.duration = 1;
         self.centerContainer = new THREE.Object3D();
         self.add(self.centerContainer);
-        self.pages = [];
     },
 
-    pages: null,
+    pages: [],
     pageWidth: 0,
     pageHeight: 0,
     currentPage: 0,
-    flippedleft: 0,
-    flippedright: 0,
     duration: 1,
     centerContainer: null,
 
@@ -46,22 +42,62 @@ Book = self.Book = MOD3.Class(THREE.Object3D, {
     },
 
     addPage: function(pf, pb, hardness, pageColor) {
-        var self = this, hardn = 0.5, pagecol = 0x555555;
+        var self = this, hardn = 0.5, pagecol = 0xdddddd;
 
         if ("undefined" !== typeof hardness) hardn = hardness;
         if ("undefined" !== typeof pageColor)  pagecol = pageColor;
 
-        var i = self.pages.length, page = new Page(self, i, pf, pb, hardn, pagecol);
+        var i = self.pages.length, page = new Page(self, i, pf, pb, hardn, pagecol, self.onPageTurnFinished.bind(self));
 
         self.pages.push(page);
         self.centerContainer.add(page);
         return self;
+    },
+
+    onPageTurnFinished: function() {
+        this.updateSpine();
+    },
+
+    // keep stacked pages from overlapping in the same space on flip
+    updateSpine: function() {
+        var self = this;
+
+        for (var page of self.pages) {
+            if (page.index >= self.index) {
+                page.position.z = -((page.zz * page.index) - (page.zz * self.index - 1))
+            } else {
+                page.position.z = (page.zz * page.index) - (page.zz * self.index)
+            }
+        }
+    },
+
+    flipLeft: function() {
+        if (this.index < this.pages.length - 1 &&
+            !this.pages[this.index + 1].flippingLeft &&
+            !this.pages[this.index + 1].flippingRight
+        ) {
+            this.index += 1;
+            this.updateSpine();
+            this.pages[this.index].flipLeft();
+        }
+    },
+
+    flipRight: function() {
+        if (this.index >= 0 && 
+            this.index < this.pages.length &&
+            !this.pages[this.index].flippingLeft &&
+            !this.pages[this.index].flippingRight
+        ) {
+            this.pages[this.index].flipRight();
+            this.updateSpine();
+            this.index -= 1;
+        }
     }
 });
 
 // Page Class -------------------------------------------------------------------------------------------
 Page = self.Page = MOD3.Class(THREE.Mesh, {
-    constructor: function(book, i, matf, matb, hard, col) {
+    constructor: function(book, i, matf, matb, hard, col, onFinishCallback) {
         var self = this;
         self.book = book;
         self.matFront = matf;
@@ -82,15 +118,16 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
         self.isFlippedRight = true;
         self.flippingLeft = false
         self.flippingRight = false;
-        self.zz = 2;
+        self.zz = 1;
         self.pageColor = col;
-        self.sides = {bottom:3, top:2,    right:0, left:1,    front:4, back:5};
+        self.sides = {bottom:3, top:2, right:0, left:1, front:4, back:5};
+        self.onFinishCallback = onFinishCallback
 
-        ++self.book.flippedright;
+        ++self.book.flippedRight;
 
         // align flipBook center container
         if (0 === self.index)
-            self.book.centerContainer.position.x = -self.book.pageWidth*0.5;
+            self.book.centerContainer.position.x = -self.book.pageWidth * 0.5;
 
         // add page flip interaction TO DO..
 
@@ -100,11 +137,13 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
             if (mii === self.sides.front)
             {
                 self.mats[self.sides.front] = new THREE.MeshBasicMaterial({map: self.matFront, overdraw: true});
+                self.mats[self.sides.front].map.minFilter = THREE.LinearFilter
                 self.mats[self.sides.front].name = "front";
             }
             else if (mii === self.sides.back)
             {
                 self.mats[self.sides.back] = new THREE.MeshBasicMaterial({map: self.matBack, overdraw: true});
+                self.mats[self.sides.back].map.minFilter = THREE.LinearFilter
                 self.mats[self.sides.back].name = "back";
             }
             else
@@ -129,36 +168,35 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
         self.mod.addModifier(self.bend);
     },
 
-    book : null,
-    matFront : null,
-    matBack : null,
-    index : null,
-    nfacesw : 10,
-    nfacesh : 10,
-    mats : null,
-    pageHardness : null,
-    angle : null,
-    force : 6,
-    to : null,
-    flipPt : 0.3,
-    mod : null,
-    bend : null,
-    isFlippedLeft : false,
-    isFlippedRight : true,
-    flippingLeft : false,
-    flippingRight : false,
-    zz : 2,
-    pageColor : null,
-    sides : null,
+    book: null,
+    matFront: null,
+    matBack: null,
+    index: null,
+    nfacesw: 10,
+    nfacesh: 10,
+    mats: null,
+    pageHardness: null,
+    angle: null,
+    force: 6,
+    to: null,
+    flipPt: 0.3,
+    mod: null,
+    bend: null,
+    isFlippedLeft: false,
+    isFlippedRight: true,
+    flippingLeft: false,
+    flippingRight: false,
+    zz: 1,
+    pageColor: null,
+    sides: null,
+    onFinishCallback: () => {},
 
     flipLeft: function(pt) {
         var self = this;
 
         if (
-            !self.isFlippedLeft &&
             !self.flippingLeft &&
-            !self.flippingRight &&
-            (self.index === self.book.flippedleft)
+            !self.flippingRight
         )
         {
             if (null != pt)
@@ -168,14 +206,11 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
             self.flippingLeft = true;
             self.bend.angle = (2*self.flipPt-1)*self.angle;
             new TWEEN.Tween(self.to={angle: self.rotation.y, t: -1, xx: 0, page: self})
-                .to({angle:-Math.PI, xx:1, t:1}, self.book.duration*1000)
+                .to({angle: -Math.PI, xx: 1, t: 1}, self.book.duration*1000)
                 .onUpdate(self.renderFlip)
                 .onComplete(self.flipFinished)
                 .start()
             ;
-            ++self.book.flippedleft;
-            --self.book.flippedright;
-            self.position.z = 1;
         }
 
         return self;
@@ -185,10 +220,8 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
         var self = this;
 
         if (
-            !self.isFlippedRight &&
             !self.flippingRight &&
-            !self.flippingLeft &&
-            (self.index === self.book.getNumPages()-self.book.flippedright-1)
+            !self.flippingLeft
         )
         {
             if (null != pt)
@@ -203,31 +236,28 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
                 .onComplete(self.flipFinished)
                 .start()
             ;
-            --self.book.flippedleft;
-            ++self.book.flippedright;
-            self.position.z = 1;
         }
 
         return self;
     },
 
     renderFlip: function() {
-        var t = this, self = t.page, book = self.book, p2 = Math.PI*0.5, tt;
+        var t = this, self = t.page, book = self.book, p2 = Math.PI * 0.5, tt;
         // align flipBook to center
         if (self.flippingLeft && 0 === self.index && book.getNumPages() > 1)
             book.centerContainer.position.x = (1 - t.xx) * book.centerContainer.position.x;
-        else if (self.flippingLeft && self.index+1 === book.getNumPages())
-            book.centerContainer.position.x = (1 - t.xx)*book.centerContainer.position.x + t.xx*book.pageWidth*0.5;
+        else if (self.flippingLeft && self.index + 1 === book.getNumPages())
+            book.centerContainer.position.x = (1 - t.xx)*book.centerContainer.position.x + t.xx * book.pageWidth * 0.5;
         else if (self.flippingRight && 0 === self.index)
-            book.centerContainer.position.x = (1 - t.xx)*book.centerContainer.position.x - t.xx*book.pageWidth*0.5;
-        else if (self.flippingRight && self.index+1 === book.getNumPages())
+            book.centerContainer.position.x = (1 - t.xx) * book.centerContainer.position.x - t.xx * book.pageWidth * 0.5;
+        else if (self.flippingRight && self.index + 1 === book.getNumPages())
             book.centerContainer.position.x = (1 - t.xx) * book.centerContainer.position.x;
 
         // flip page
         tt = 1 - Abs(t.t);
         self.rotation.y = t.angle;
-        self.bend.force = ((Abs(t.angle)-p2)/p2)*tt*self.force*(1-self.pageHardness);
-        self.bend.offset = (1 - tt)*0.6 + tt*0.5;
+        self.bend.force = ((Abs(t.angle) - p2) / p2) * tt * self.force * (1 - self.pageHardness);
+        self.bend.offset = (1 - tt) * 0.6 + tt * 0.5;
         self.mod.apply();
     },
 
@@ -239,7 +269,6 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
             self.isFlippedLeft = true;
             self.flippingRight = false;
             self.isFlippedRight = false;
-            self.position.z = -self.zz*(self.book.getNumPages()-self.index);
         }
         else if (self.flippingRight)
         {
@@ -247,12 +276,12 @@ Page = self.Page = MOD3.Class(THREE.Mesh, {
             self.isFlippedRight = true;
             self.flippingRight = false;
             self.isFlippedLeft = false;
-            self.position.z = -self.zz*self.index;
         }
         self.bend.force = 0.0;
         self.bend.angle = 0.0;
         self.bend.offset = 0.0;
         self.mod.apply();
+        self.onFinishCallback();
     }
 });
 
