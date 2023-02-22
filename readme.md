@@ -110,8 +110,10 @@ Also the API architecture is setup for more modifiers to be added (even custom o
 * [Imagik](https://github.com/foo123/Imagik) fully-featured, fully-customisable and extendable Responsive CSS3 Slideshow
 * [Carousel3](https://github.com/foo123/Carousel3) HTML5 Photo Carousel using Three.js
 * [Rubik3](https://github.com/foo123/Rubik3) intuitive 3D Rubik Cube with Three.js
-* [MOD3](https://github.com/foo123/MOD3) JavaScript port of AS3DMod ActionScript 3D Modifier Library
+* [MOD3](https://github.com/foo123/MOD3) 3D Modifier Library in JavaScript
 * [Geometrize](https://github.com/foo123/Geometrize) Computational Geometry and Rendering Library for JavaScript
+* [Plot.js](https://github.com/foo123/Plot.js) simple and small library which can plot graphs of functions and various simple charts and can render to Canvas, SVG and plain HTML
+* [Abacus](https://github.com/foo123/Abacus) advanced Combinatorics and Algebraic Number Theory Symbolic Computation library for JavaScript, Python
 * [RT](https://github.com/foo123/RT) unified client-side real-time communication for JavaScript using XHR polling / BOSH / WebSockets / WebRTC
 * [AjaxListener.js](https://github.com/foo123/AjaxListener.js): Listen to any AJAX event on page with JavaScript, even by other scripts
 * [asynchronous.js](https://github.com/foo123/asynchronous.js) simple manager for asynchronous, linear, parallel, sequential and interleaved tasks for JavaScript
